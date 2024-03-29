@@ -1,0 +1,50 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.side-bar {
+  width: 13vw;
+  height: 100%;
+  border: 1px solid black;
+  background-color: aquamarine;
+}
+
+.content {
+  width: calc(100vw - 13vw);
+  height: 100%;
+  border: 1px solid black;
+}
+
+.header,
+.footer {
+  height: 6.6vh;
+  border: 1px solid black;
+  background-color: green;
+}
+
+.header {
+  background-color: blue;
+}
+
+.main {
+  height: calc(100vh - 13.3vh);
+  border: 1px solid black;
+  background-color: skyblue;
+  padding: 3.34vh;
+}
+
+.content-main {
+  height: 100%;
+  background-color: burlywood;
+}
