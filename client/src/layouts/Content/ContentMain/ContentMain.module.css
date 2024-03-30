@@ -1,0 +1,8 @@
+/* TODO size 결정하기 */
+.contentMain {
+  height: 86.3vh;
+  /* padding: 3.34vh; */
+  /* TODO 삭제하기 */
+  border: 1px solid black;
+  background-color: skyblue;
+}

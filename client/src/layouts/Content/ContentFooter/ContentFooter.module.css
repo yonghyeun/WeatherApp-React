@@ -1,0 +1,7 @@
+/* TODO height 범위 결정하기 */
+.contentFooter {
+  height: 6.6vh;
+  /* TODO 삭제하기 */
+  border: 1px solid black;
+  background-color: green;
+}
