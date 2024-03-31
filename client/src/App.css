@@ -1,0 +1,10 @@
+/* TODO CSS 손보기 */
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+div {
+  box-sizing: border-box;
+}
