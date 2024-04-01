@@ -1,0 +1,17 @@
+.SidebarList {
+  display: flex;
+  align-items: center;
+  padding-left: 15%;
+  height: 8vh;
+  border: 1px solid black;
+}
+
+.SidebarList a:visited {
+  color: black;
+}
+
+.SidebarList a {
+  text-decoration: none;
+  font-size: 1.5vw;
+  color: black;
+}

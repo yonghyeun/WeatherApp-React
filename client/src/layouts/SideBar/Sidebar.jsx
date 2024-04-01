@@ -1,7 +1,13 @@
 import style from './SideBar.module.css';
+import React from 'react';
 
-const SideBar = ({ children }) => {
-  return <nav className={style.sideBar}>{children}</nav>;
+const SideBar = ({ title, children }) => {
+  return (
+    <nav className={style.sideBar}>
+      {title}
+      <ul>{children}</ul>
+    </nav>
+  );
 };
 
 export default SideBar;

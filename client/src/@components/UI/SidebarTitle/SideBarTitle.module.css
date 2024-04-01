@@ -1,0 +1,12 @@
+.sideBarTitle {
+  height: 8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vw;
+  border: 1px solid black;
+}
+
+.sideBarTitle svg {
+  margin-right: 0.5vw;
+}
