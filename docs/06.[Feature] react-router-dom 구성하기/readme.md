@@ -248,7 +248,7 @@ export default router;
 
 ![alt text](image-2.png)
 
-# `Side-bar NavLink` 추가하기
+# `Sidebar NavLink` 추가하기
 
 ```jsx
 import React from 'react';
@@ -289,3 +289,96 @@ export default SidebarList;
 `SPR` 에서는 `a` 태그가 아닌 `window.history` 조작과 조작 내용에 맞는 렌더링 동기화로 `SPR` 을 구현한다.
 
 `react-router-dom` 에서 제공하는 컴포넌트인 `NavLink` 를 이용해주자
+
+```jsx
+import { NavLink } from 'react-router-dom';
+
+import style from './SidebarList.module.css';
+
+const SidebarList = ({ to, content }) => {
+  return (
+    <li key={content} className={style.sidebarList}>
+      <NavLink
+        to={to}
+        className={({ isActive }) =>
+          isActive ? style.selected : style.notSelected
+        }
+      >
+        {content}
+      </NavLink>
+    </li>
+  );
+};
+export default SidebarList;
+```
+
+```jsx
+.sidebarList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 8vh;
+  border: 1px solid black;
+}
+
+/* TODO padding , border-radius , backgroundColor 완벽히 결정하기 */
+
+.notSelected {
+  text-decoration: none;
+  font-size: 1.5vw;
+  padding: 3% 20%;
+  border-radius: 10%;
+  background-color: none;
+}
+
+.notSelected:visited {
+  color: inherit;
+}
+
+.selected {
+  text-decoration: none;
+  font-size: 1.5vw;
+  padding: 3% 20%;
+  border-radius: 10%;
+  background-color: green;
+  color: white;
+}
+
+.selected :visited {
+  color: inherit;
+}
+```
+
+![alt text](image-3.png)
+
+물론 아직까진 어떤 메뉴를 넣을지 결정이 안되었기 때문에 모든 메뉴에 대해 동일한 페이지를 제공하고 있지만
+
+우선 구역이 나눠지고 난 후에는 기능 별로 메뉴를 구성해보자
+
+### `/` 으로 가는 `router` 추가
+
+```jsx
+import Title from '../Title/Title';
+import style from './SideBarTitle.module.css';
+import { RiDashboardFill } from 'react-icons/ri';
+import { NavLink } from 'react-router-dom';
+
+// TODO props 를 넘겨주는 방식에 대해 재고하기
+// TODO 킹받게 ICON 하고 text 사이즈 정렬 안맞는거 수정하기
+const SidebarTitle = () => {
+  return (
+    <>
+      <Title
+        className={style.sideBarTitle}
+        text={<NavLink to='/'>TDweather</NavLink>} // text 부분을 NavLink 로 변경
+        icon={<RiDashboardFill />}
+      ></Title>
+    </>
+  );
+};
+
+export default SidebarTitle;
+```
+
+기본 페이지로도 라우팅 될 수 있도록 사이드바의 타이틀을 누르면 기존 홈페이지로 변경되게 해주자

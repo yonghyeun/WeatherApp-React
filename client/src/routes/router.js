@@ -5,6 +5,7 @@ import Dashboard from '../Dashboard.jsx';
 // Page import
 import ErrorPage from '../pages/ErrorPage/ErrorPage.jsx';
 import AboutPage from '../pages/AboutPage/AboutPage.jsx';
+import MenuPage from '../pages/MenuPage/MenuPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <AboutPage />,
+      },
+      {
+        path: '/:menuId',
+        element: <MenuPage />,
       },
     ],
   },

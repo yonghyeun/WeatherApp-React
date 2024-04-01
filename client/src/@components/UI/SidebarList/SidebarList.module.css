@@ -1,17 +1,35 @@
-.SidebarList {
+.sidebarList {
   display: flex;
   align-items: center;
-  padding-left: 15%;
+  justify-content: center;
+  width: 100%;
   height: 8vh;
   border: 1px solid black;
 }
 
-.SidebarList a:visited {
-  color: black;
-}
+/* TODO padding , border-radius , backgroundColor 완벽히 결정하기 */
 
-.SidebarList a {
+.notSelected {
   text-decoration: none;
   font-size: 1.5vw;
-  color: black;
+  padding: 3% 20%;
+  border-radius: 10%;
+  background-color: none;
+}
+
+.notSelected:visited {
+  color: inherit;
+}
+
+.selected {
+  text-decoration: none;
+  font-size: 1.5vw;
+  padding: 3% 20%;
+  border-radius: 10%;
+  background-color: green;
+  color: white;
+}
+
+.selected :visited {
+  color: inherit;
 }

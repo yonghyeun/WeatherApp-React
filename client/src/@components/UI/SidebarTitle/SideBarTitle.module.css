@@ -10,3 +10,11 @@
 .sideBarTitle svg {
   margin-right: 0.5vw;
 }
+
+.sideBarTitle a {
+  text-decoration: none;
+}
+
+.sideBarTitle :visited {
+  color: black;
+}
