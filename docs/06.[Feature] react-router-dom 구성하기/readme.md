@@ -90,4 +90,202 @@ export default router;
 
 아직 `/` 이후 라우팅 되는 주소에 대한 페이지를 만들어두지 않았으니 라우팅 되면 에러 페이지가 나타난다.
 
-다만 엔트리파일을 조금 지워보자
+다만 엔트리파일을 조금 수정해보자
+
+```jsx
+import DashboardPage from './pages/DashboardPage';
+import './App.css';
+
+const App = () => {
+  return <DashboardPage />;
+};
+
+export default App;
+```
+
+현재 `App` 컴포넌트는 단순하게 `DashboardPage` 를 그대로 리턴하는 불필요한 파일이다.
+
+`DashboardPage` 를 `pages` 레이어에서 빼주고 `App` 파일을 제거해주자
+
+### Dashboard 리팩토링 : 최하위 계층으로 이동
+
+```jsx
+// Component import
+import DashboardWrapper from './@components/UI/DashboardWrapper/DashboardWrapper';
+
+// Layout import
+import Sidebar from './layouts/SideBar/Sidebar';
+import Content from './layouts/Content/Content';
+
+// Style import
+import './Dashboard.module.css';
+
+const Dashboard = () => {
+  // TODO react-router-dom 계층 만들고 NavLink 로 변경하기
+  // TODO Sidebar 합성 컴포지션으로 변경 할 수 있도록 리팩토링 공부하기
+  return (
+    <DashboardWrapper>
+      <Sidebar />
+      <Content />
+    </DashboardWrapper>
+  );
+};
+
+export default Dashboard;
+```
+
+기존 `DashboardPage` 로 작성되어 있던 컴포넌트를 `App` 컴포넌트 역할을 하도록 변경시켜주었다.
+
+이후 불필요하던 `App.js` 파일을 제거해주엇다.
+
+```jsx
+import { createBrowserRouter } from 'react-router-dom';
+import ErrorPage from '../pages/ErrorPage/ErrorPage.jsx';
+import Dashboard from '../Dashboard.jsx';
+
+const router = createBrowserRouter([
+  { path: '/', element: <Dashboard />, errorElement: <ErrorPage /> },
+]);
+
+export default router;
+```
+
+그에 따라 `router.js` 파일내에서 메인 컴포넌트를 `App -> Dashboard` 로 변경해주었다.
+
+# `Outlet` 영역 설정하기
+
+`Single Page Routing` 을 구현 할 때 라우팅 되는 페이지를 어느 영역에 렌더링 할지를 정해줘야 한다.
+
+나는 `Content` 영역 중 `ContentMain` 에 `Outlet` 컴포넌트를 넣어두고 모든 라우팅에 의한 렌더링은
+
+해당 영역에 해주려고 한다.
+
+```jsx
+import ContentHeader from './ContentHeader/ContentHeader';
+import ContentMain from './ContentMain/ContentMain';
+import ContentFooter from './ContentFooter/ContentFooter';
+
+const Content = () => {
+  return (
+    <section className={style.Content}>
+      <ContentHeader />
+      <ContentMain /> // Outlet 컴포넌트가 담길 영억
+      <ContentFooter />
+    </section>
+  );
+};
+
+export default Content;
+```
+
+그러니 `ContentMain` 컴포넌트에 `<Outlet/>` 을 추가해주자
+
+```jsx
+import style from './ContentMain.module.css';
+import { Outlet } from 'react-router-dom';
+
+const ContentMain = () => {
+  return (
+    <main className={style.contentMain}>
+      <Outlet />
+    </main>
+  );
+};
+
+export default ContentMain;
+```
+
+# `AboutPage` 생성하기
+
+`<Outlet/>` 컴포넌트를 이용한 `SPR` 이 잘 작동하는지 확인하는 간단한 방법은 `/ path` 에서 `<Outlet/>` 부분에 렌더링 될 페이지를 하나 만들고 렌더링 해보는 것이다.
+
+```jsx
+import style from './AboutPage.module.css';
+
+// TODO 내용 채우기
+const AboutPage = () => {
+  return (
+    <section className={style.about}>
+      <h1>TDweather 를 소개하는 내용들</h1>
+      <p>
+        <i>나중에 채웁시다</i>
+      </p>
+    </section>
+  );
+};
+
+export default AboutPage;
+```
+
+`AboutPage` 컴포넌트를 하나 만들고 `router` 계층에서 `/ path` 의 `children` 레이어에 `AboutPage` 를 `index` 역할을 하도록 추가해주자
+
+```jsx
+import { createBrowserRouter } from 'react-router-dom';
+// Element import
+import Dashboard from '../Dashboard.jsx';
+
+// Page import
+import ErrorPage from '../pages/ErrorPage/ErrorPage.jsx';
+import AboutPage from '../pages/AboutPage/AboutPage.jsx';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Dashboard />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        // index 에 추가된 AboutPage 는 상위 element 의 <Outlet/> 영역에 렌더링 됨
+        index: true,
+        element: <AboutPage />,
+      },
+    ],
+  },
+]);
+
+export default router;
+```
+
+![alt text](image-2.png)
+
+# `Side-bar NavLink` 추가하기
+
+```jsx
+import React from 'react';
+
+import SidebarWrapper from '../../@components/UI/SidebarWrapper/SidebarWrapper';
+import SidebarTitle from '../../@components/UI/SidebarTitle/SidebarTitle';
+import SidebarList from '../../@components/UI/SidebarList/SidebarList';
+
+const SideBar = () => {
+  return (
+    <SidebarWrapper title={<SidebarTitle />}>
+      <SidebarList to='./menu1' content='menu1' />
+      <SidebarList to='./menu2' content='menu2' />
+      <SidebarList to='./menu3' content='menu3' />
+    </SidebarWrapper>
+  );
+};
+
+export default SideBar;
+```
+
+```jsx
+import style from './SidebarList.module.css';
+
+const SidebarList = ({ to, content }) => {
+  return (
+    <li key={content} className={style.SidebarList}>
+      <a href={to}>{content}</a>
+    </li>
+  );
+};
+
+export default SidebarList;
+```
+
+이전 `SideBar` 컴포넌트에서 `SidebarList` 는 `a` 태그로 구성되어 있다.
+
+`SPR` 에서는 `a` 태그가 아닌 `window.history` 조작과 조작 내용에 맞는 렌더링 동기화로 `SPR` 을 구현한다.
+
+`react-router-dom` 에서 제공하는 컴포넌트인 `NavLink` 를 이용해주자

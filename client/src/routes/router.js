@@ -1,9 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom';
+// Element import
+import Dashboard from '../Dashboard.jsx';
+
+// Page import
 import ErrorPage from '../pages/ErrorPage/ErrorPage.jsx';
-import App from '../App.js';
+import AboutPage from '../pages/AboutPage/AboutPage.jsx';
 
 const router = createBrowserRouter([
-  { path: '/', element: <App />, errorElement: <ErrorPage /> },
+  {
+    path: '/',
+    element: <Dashboard />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <AboutPage />,
+      },
+    ],
+  },
 ]);
 
 export default router;

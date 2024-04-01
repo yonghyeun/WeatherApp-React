@@ -11,7 +11,7 @@ const ErrorPage = () => {
       <p>
         <i>errorStatus : {error.status}</i>
         <br />
-        <i>{error.data}</i>
+        <i>{error.data || error.message}</i>
       </p>
     </div>
   );
