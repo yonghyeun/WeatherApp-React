@@ -1,7 +1,7 @@
 /* TODO height 범위 결정하기 */
 .contentHeader {
-  height: 6.6vh;
+  height: 8%;
   /* TODO 삭제하기 */
-  border: 1px solid black;
+  /* border: 1px solid black; */
   background-color: blue;
 }
