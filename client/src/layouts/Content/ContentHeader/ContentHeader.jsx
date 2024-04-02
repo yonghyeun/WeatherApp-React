@@ -1,17 +1,20 @@
 import style from './ContentHeader.module.css';
 
-import Form from '../../../@components/UI/Form/Form';
-import Input from '../../../@components/UI/Input/Input';
-import Button from '../../../@components/UI/Button/Button';
-
+import SearchForm from '../../../@components/Composite/SearchForm/SearchForm';
+import ThemeButton from '../../../@components/UI/ThemeButton/ThemeButton';
+import TempButton from '../../../@components/UI/TempButton/TempButton';
 // TODO 내부에 컴포넌트들 집어넣기
 const ContentHeader = () => {
   return (
     <header className={style.contentHeader}>
-      <Form>
-        <Input />
-        <Button item='click me !' />
-      </Form>
+      <SearchForm>
+        <SearchForm.Input />
+        <SearchForm.Button />
+      </SearchForm>
+      <section className={style.buttonWrapper}>
+        <ThemeButton />
+        <TempButton />
+      </section>
     </header>
   );
 };
