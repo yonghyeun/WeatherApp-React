@@ -12,8 +12,8 @@ const ContentHeader = () => {
         <SearchForm.Button />
       </SearchForm>
       <section className={style.buttonWrapper}>
-        <ThemeButton />
         <TempButton />
+        <ThemeButton />
       </section>
     </header>
   );
