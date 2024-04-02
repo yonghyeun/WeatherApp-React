@@ -11,6 +11,9 @@ const makeFlexchildren = (ratio, children) => {
   if (ratio && ratio.length !== children.length)
     throw new Error('ratio의 개수와 children 의 개수는 동일해야 합니다');
 
+  if (ratio && ratio.reduce((pre, cur) => pre + cur) !== 1)
+    throw new Error('ratio 의 합은 1이여야 합니다');
+
   const flexChildren = React.Children.map(children, (child, index) => {
     return React.cloneElement(child, {
       ...child.props,
