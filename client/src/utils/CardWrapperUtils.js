@@ -14,7 +14,7 @@ const makeFlexchildren = (ratio, children) => {
   if (ratio && ratio.reduce((pre, cur) => pre + cur) !== 1)
     throw new Error('ratio 의 합은 1이여야 합니다');
 
-  const flexChildren = React.Children.map(children, (child, index) => {
+  const flexChildrens = React.Children.map(children, (child, index) => {
     return React.cloneElement(child, {
       ...child.props,
       style: {
@@ -24,7 +24,7 @@ const makeFlexchildren = (ratio, children) => {
     });
   });
 
-  return flexChildren;
+  return flexChildrens;
 };
 
 export { makeFlexchildren };

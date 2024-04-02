@@ -31,6 +31,99 @@
 
 ---
 
+# `CardWrapper` 합성 컴포넌트 구성하기
+
+```jsx
+import Horizontal from './Horizontal';
+import Vertical from './Vertical';
+
+const CardWrapper = () => {
+  throw new Error('CardWrapper 는 Vertical , Horizontal 중에서 골라야 합니다.');
+};
+
+CardWrapper.Horizontal = Horizontal;
+CardWrapper.Vertical = Vertical;
+
+export default CardWrapper;
+```
+
+```jsx
+// import util function
+import { makeFlexchildren } from '../../../utils/CardWrapperUtils.js';
+// import style
+import style from './CardWrapper.module.css';
+
+const Horizontal = ({ ratio, children }) => {
+  const flexChildren = makeFlexchildren(ratio, children);
+
+  return (
+    <section style={{ flexDirection: 'row' }} className={style.cardWrapper}>
+      {flexChildren}
+    </section>
+  );
+};
+
+export default Horizontal;
+```
+
+```jsx
+// import util function
+import { makeFlexchildren } from '../../../utils/CardWrapperUtils.js';
+// import style
+import style from './CardWrapper.module.css';
+
+const Vertical = ({ ratio, children }) => {
+  const flexChildren = makeFlexchildren(ratio, children);
+
+  return (
+    <section style={{ flexDirection: 'column' }} className={style.cardWrapper}>
+      {flexChildren}
+    </section>
+  );
+};
+
+export default Vertical;
+```
+
+```jsx
+import React from 'react';
+
+/**
+ * 만일 ratio 에 적힌 원소의 수와 children 의 수가 맞지 않는다면 오류를 발생시키고
+ * ratio 를 적지 않은 경우엔 children 의 flex-grow 를 모두 1로 설정해주도록 함
+ * @param {Array<number>} ratio - ReactElement 들의 flexGrow 를 담은 배열
+ * @param {Array<React.ReactNode>} children - flexGrow 가 설정될 children elements
+ * @returns {Array<React.ReactElement>} - flexGrow 가 설정된 ReactElement를 담은 배열
+ */
+const makeFlexchildren = (ratio, children) => {
+  if (ratio && ratio.length !== children.length)
+    throw new Error('ratio의 개수와 children 의 개수는 동일해야 합니다');
+
+  if (ratio && ratio.reduce((pre, cur) => pre + cur) !== 1)
+    throw new Error('ratio 의 합은 1이여야 합니다');
+
+  const flexChildrens = React.Children.map(children, (child, index) => {
+    return React.cloneElement(child, {
+      ...child.props,
+      style: {
+        ...child.props.style,
+        flexGrow: ratio ? ratio[index] : 1,
+      },
+    });
+  });
+
+  return flexChildrens;
+};
+
+export { makeFlexchildren };
+```
+
+최대한 컴포넌트 들이 본인의 관심사의 일만 처리 할 수 있도록 모듈화 시켜주었다.
+
+`makeFlexchildren` 메소드는 `ratio ,  children` 이 적절하게 배정되었는지 , 적절하게 배정되었다면 `style` 에 `flex-grow` 속성이 설정 된 `React.Element` 를 반환한다.
+
+---
+
 ### `[BUG]` `CardWrapper` 가 기대하는 것처럼 작동하지 않는다.
 
 #### 백그라운드
