@@ -124,7 +124,7 @@ export { makeFlexchildren };
 
 ---
 
-### `[BUG]` `CardWrapper` 가 기대하는 것처럼 작동하지 않는다.
+### `[BUG]` `CardWrapper` 가 내부에서 중첩되어 사용될 때 `flexGrow` 가 적용되지 않음
 
 #### 백그라운드
 
@@ -338,3 +338,47 @@ export default Vertical;
 `props` 로 `style` 을 받을 수 있게 하고 `props.style` 로 받은 값을 반환되는 `section` 의 `style` 로 덮어씌우도록 하였다.
 
 이를 통해 `flexChildren` 으로 생성되는 `CardWrapper` 들은 상위 `CardWrapper` 에서 선언된 `ratio` 만큼의 크기를 가질 수 있게 되었다.
+
+### `[BUG]` `flexGrow` 는 적용되지만 실제 크기가 변경되지 아니함
+
+#### 문제 정의
+
+```jsx
+<CardWrapper.Horizontal ratio={[0.1, 0.2, 0.7]}>
+  <CardWrapper.Vertical ratio={[0.2, 0.8]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+  <CardWrapper.Vertical ratio={[0.4, 0.6]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+  <CardWrapper.Vertical ratio={[0.8, 0.2]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+</CardWrapper.Horizontal>
+```
+
+다음과 같이 `CardWrapper` 내에서 `CardWrapper` 들을 중첩적으로 사용해봤다. 이 때 중첩된 하위 랩퍼들은 모두 `0.1, 0.2, 0.7` 의 `width` 비율을 가지고 렌더링이 될 것이라 생각했다.
+
+![alt text](image-4.png)
+
+하지만 하위 `CardWrapper` 들의 `flexGrow` 속성이 적용되지 않고 모두 동일한 비율로 렌더링 되고 있었다.
+
+사실 문제는 이 뿐만이 아니였다.
+
+![alt text](image-5.png)
+
+기본적으로 `CardWrapper` 들의 `height` 를 30%로 명시해뒀더니 중첩되어 사용되는 카드 랩퍼의 `heigth` 는 부모 `CardWrapper` 의 30%의 높이를 갖기 때문에 기대하는 것과 다르게 매우 작은 컴포넌트가 생성되었다.
+
+- 문제 1. `flexGrow` 가 설정되어도 컴포넌트들의 `width` 가 변경되지 아니함
+- 문제 2. `height` 속성 간 중첩으로 인해 내부 컴포넌트의 크기가 기대와 다르게 작아짐 . (30%의 30% .. 이런식)
+
+#### 문제 진단
+
+> 문제 1. `flexGrow` 가 설정되어도 컴포넌트들의 `width` 가 변경되지 아니함
+
+해당 문제는 `flexGrow` 속성은 컴포넌트의 `width , height` 와 같은 크기 관련 속성이 명시되지 않았을 경우 작동한다.
+
+이에 `CardWrapper.Horizontal` 에서 중첩되어 사용되는 내부 컴포넌트들의 크기를 `width : 100%` 로 고정시켜뒀던 스타일 속성을 제거해주었다.
