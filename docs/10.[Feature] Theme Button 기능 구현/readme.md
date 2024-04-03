@@ -103,3 +103,117 @@ export default Theme;
 ```
 
 `asset/style` 폴더에서 테마와 관련된 색상 팔레트를 만들어주었다.
+
+### 전역 상태 관리 만들기
+
+`Redux` 를 사용해볼까 했다가 우선 먼저 구현부터 해보고 나중에 기능을 추가 할 때 해보도록 하자
+
+```jsx
+// TODO Redux 로 사용할까 ? 생각해보기
+// import library
+import { createContext } from 'react';
+// import customHooks\
+import useFirstTheme from '../hooks/useFirstTheme';
+
+const ThemeContext = createContext(null);
+
+const ThemeProvider = ({ children }) => {
+  const { theme, setTheme } = useFirstTheme();
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export { ThemeContext, ThemeProvider };
+```
+
+```jsx
+// import Context
+import { ThemeProvider } from './context/ThemeProvider';
+// import Component
+import DashboardWrapper from './@components/UI/DashboardWrapper/DashboardWrapper';
+// import Layout
+import Sidebar from './layouts/SideBar/Sidebar';
+import Content from './layouts/Content/Content';
+
+// Style import
+import './Dashboard.module.css';
+
+const Dashboard = () => {
+  return (
+    <ThemeProvider>
+      <DashboardWrapper>
+        <Sidebar />
+        <Content />
+      </DashboardWrapper>
+    </ThemeProvider>
+  );
+};
+
+export default Dashboard;
+```
+
+전역 컨텍스트인 `ThemeContext` 를 만들어주고 해당 컨텍스트를 내려주는 컴포넌트인 `ThemeProvider` 컴포넌트를 생성해주었다.
+
+이 때 `ThemeProvider` 는 `useFirstTheme` 이란 커스텀훅으로 `theme , setTheme` 값을 받은 후
+
+하위 컴포넌트들에게 컨텍스트로 전달한다.
+
+```jsx
+import { useState, useEffect } from 'react';
+
+import Theme from '../assets/style/Theme';
+
+/**
+ * useFirstTheme 은 첫 렌더링 시 ThemeProvider 에게 기본 테마 값을 지정해주는 커스텀 훅
+ * 만약 로컬 스토리지에 저장된 값이 없다면 로컬 스토리지에 값을 추가하고 light theme 로 설정
+ * @const {String} thmeStatus - light , dark 중 하나의 값을 의미
+ * @returns {Object} - themeStatus 에 따른 테마 팔레트를 반환
+ */
+const useFirstTheme = () => {
+  const [themeStatus, setTheme] = useState('light');
+  const theme = Theme[themeStatus];
+
+  useEffect(() => {
+    const prevTheme = window.localStorage.getItem('themeStatus');
+    setTheme(prevTheme || 'light');
+    if (!prevTheme) window.localStorage.setItem('themeStatus', 'light');
+  }, []);
+
+  return { theme, setTheme };
+};
+
+export default useFirstTheme;
+```
+
+`useFirstTheme` 은 말 그대로 단 한 번 실행되는 커스텀 훅으로 로컬 스토리지에 저장된 값에 따라 `themeStatus` 값을 정하고 경우에 따라 로컬스토리지를 조작한다.
+
+`useFirstTheme` 은 `ThemeProvider` 에게 로컬 스토리지의 값을 전달해주기 위한 커스텀 훅이다.
+
+> `themeStatus` 값을 전달하는게 아니라 색상 팔레트 객체인 `theme` 객체를 전달한다.
+
+### 커스텀 훅 만들기 : `useTheme`
+
+```jsx
+import { useContext } from 'react';
+import { ThemeContext } from '../context/ThemeProvider';
+
+/**
+ * useTheme 값은 ThemeContext 가 제공하는 Context 값을 받아 사용하는 커스텀 훅
+ * @returns
+ */
+const useTheme = () => {
+  const { theme, setTheme } = useContext(ThemeContext);
+
+  return { theme, setTheme };
+};
+
+export default useTheme;
+```
+
+`useTheme` 은 `ThemeProvider` 에서 내려주는 `value` 값을 가져오는 커스텀 훅이다.
+
+`useTheme` 커스텀 훅을 통해 매번 컴포넌트에서 `useContext(ThemeContext)` 하는 것보다 어떤 값을 가져오는지를 명확하게 해주었다.
