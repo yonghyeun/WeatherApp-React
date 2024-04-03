@@ -1,28 +1,60 @@
 import style from './MenuPage.module.css';
 
-import CardWrapper from '../../@components/Composite/CardWrapper/CardWrapper';
+import Wrapper from '../../@components/Composite/Wrapper/Wrapper';
 
 // TODO 내용 채우기
 const MenuPage = () => {
   return (
     <section className={style.menu}>
       <h1>Menu 에 대한 내용이 담긴 페이지</h1>
-      <div style={{ padding: '2%', width: '100%', height: '100%' }}>
-        <CardWrapper.Horizontal height='30%'>
-          <CardWrapper.Vertical ratio={[0.2, 0.8]}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '3%',
+          padding: '2%',
+          width: '100%',
+          height: '100%',
+          overflowY: 'scroll',
+        }}
+      >
+        <Wrapper.Parent ratio={[0.2, 0.4, 0.4]} height='30%'>
+          <Wrapper.Vertical ratio={[0.6, 0.4]}>
             <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
             <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
-          </CardWrapper.Vertical>
-          <CardWrapper.Horizontal ratio={[0.4, 0.6]}>
+          </Wrapper.Vertical>
+          <Wrapper.Horizontal ratio={[0.4, 0.6]}>
             <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
             <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
-          </CardWrapper.Horizontal>
+          </Wrapper.Horizontal>
           <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
-        </CardWrapper.Horizontal>
+        </Wrapper.Parent>
+
+        <Wrapper.Parent ratio={[0.4, 0.2, 0.4]} height='40%'>
+          <Wrapper.Horizontal ratio={[0.6, 0.4]}>
+            <div style={{ backgroundColor: 'blue', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
+          </Wrapper.Horizontal>
+          <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
+          <Wrapper.Vertical ratio={[0.4, 0.6]}>
+            <div style={{ backgroundColor: 'blue', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
+          </Wrapper.Vertical>
+        </Wrapper.Parent>
+
+        <Wrapper.Parent ratio={[0.3, 0.2, 0.2, 0.3]} height='60%'>
+          <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+          <Wrapper.Vertical ratio={[0.6, 0.4]}>
+            <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'yellow', display: 'flex' }}></div>
+          </Wrapper.Vertical>
+          <Wrapper.Horizontal ratio={[0.4, 0.6]}>
+            <div style={{ backgroundColor: 'yellow', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+          </Wrapper.Horizontal>
+          <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+        </Wrapper.Parent>
       </div>
-      <p>
-        <i>나중에 채웁시다</i>
-      </p>
     </section>
   );
 };

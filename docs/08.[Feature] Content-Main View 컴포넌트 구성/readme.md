@@ -513,3 +513,195 @@ export default Horizontal;
 ![alt text](image-9.png)
 
 구우우우웃 ~~!!
+
+# `CardWrapper` 리팩토링
+
+### 문제 정의
+
+```jsx
+<CardWrapper.Horizontal height='30%'>
+  <CardWrapper.Vertical ratio={[0.6, 0.4]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+  <CardWrapper.Horizontal ratio={[0.4, 0.6]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Horizontal>
+  <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+</CardWrapper.Horizontal>
+```
+
+코드를 보면 깔끔한 느낌이 드나 ?
+
+나는 매우 지저분하게 보인다.
+
+### 문제 진단
+
+내가 생각하는 지저분해보이는 이유는 다음과 같다.
+
+- 합성 컴포넌트 패턴으로 인해 네이밍 컨벤션을 맞추기 위해 `CardWrapper` 가 반복되는데 이로 인해 컴포넌트의 이름이 너무 길다.
+- 최상단 컴포넌트에선 `<CardWrapper.Horizontal height='30%'>` 와 같이 `height` 가 사용 가능한데 자식 랩퍼 컴포넌트에서는 `height props` 를 사용하면 안된다. 그렇다면 **정말 부모 컴포넌트에서 사용된 `CardWrapper.Horizontal` 하고 자식 랩퍼 컴포넌트인 `CardWrapper.Horizontal` 은 같은 컴포넌트라고 볼 수 있을까 ?**
+- `CardWrapper` 컴포넌트의 존재 이유는 `Card` 컴포넌트들을 담는 컨테이너 역할을 하기 위한 컴포넌트이다. 하지만 컴포넌트는 다른 곳에서 재사용이 가능 할 것이라 생각된다.
+
+### 해결 전략
+
+- `CardWrapper` 라는 네이밍 컨벤션을 버리자 . `Card` 컴포넌트 외에 다른 컴포넌트들도 담을 수 있는 네이밍 컨벤션을 이용하자 (`CardWrapper -> Wrapper`)
+- 최상단 랩퍼 컴포넌트로 이용 될 수 있는 (`height props` 가 사용 가능한) 컴포넌트를 새롭게 정의해주자
+  (`Wrapper.Parent` 컴포넌트 생성)
+
+### 해결 결과
+
+**Parent 컴포넌트 생성**
+
+```jsx
+// import util function
+import { makeFlexchildren } from '../../../utils/WrapperUtils.js';
+// import style
+import module from './Wrapper.module.css';
+
+const Parent = ({ ratio, children, style, height }) => {
+  const flexChildren = makeFlexchildren(ratio, children);
+
+  return (
+    <section
+      style={{ flexDirection: 'row', height: height, ...style }}
+      className={module.Wrapper}
+    >
+      {flexChildren}
+    </section>
+  );
+};
+
+export default Parent;
+```
+
+가장 최상단에서 사용 가능한 (`height props` 가 존재하는) `Parent` 컴포넌트를 생성해주었다.
+
+> `Horizontal` 에선 `height props` 를 제거해주었다.
+
+이를 통해 `Horizontal` 의 역할이 최상단 부모 컴포넌트로서 `height` 를 받는 컴포넌트와 자식 랩퍼 컴포넌트 두 가지 역할에서 자식 랩퍼 컴포넌트의 역할만 하도록 변경해주었다.
+
+**네이밍 컨벤션 변경**
+
+```jsx
+import Horizontal from './Horizontal';
+import Vertical from './Vertical';
+import Parent from './Parent';
+const Wrapper = () => {
+  throw new Error(
+    'Wrapper 는 Parent ,Vertical , Horizontal 중에서 골라야 합니다.',
+  );
+};
+
+Wrapper.Parent = Parent;
+Wrapper.Horizontal = Horizontal;
+Wrapper.Vertical = Vertical;
+
+export default Wrapper;
+```
+
+이후 `CardWrapper` 라는 네이밍 컨벤션에서 모두 `Wrapper` 라는 합성 컴포넌트 형태로 변경시켜주었다.
+
+이를 통해 다른 곳에서도 재사용이 가능 할 수 있기를 기대해보자
+
+### 해결 영향
+
+```jsx
+<Wrapper.Parent ratio={[0.2, 0.4, 0.4]} height='50%'>
+  <Wrapper.Vertical ratio={[0.6, 0.4]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </Wrapper.Vertical>
+  <Wrapper.Horizontal ratio={[0.4, 0.6]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </Wrapper.Horizontal>
+  <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+</Wrapper.Parent>
+```
+
+`Parent` 컴포넌트를 생성해줌으로서 `Vertical , Horizontal` 컴포넌트의 역할을 명확히 해줄 수 있었고
+
+너무 긴 네이밍 컨벤션에서 더 짧은 네이밍 컨벤션을 이용함으로서 간략해졌다.
+
+### 배운점
+
+컴포넌트의 관심사가 적을 수록 계층 구조가 명확해진다.
+
+---
+
+# `CardWrapper` 구성 결과
+
+```jsx
+import style from './MenuPage.module.css';
+
+import Wrapper from '../../@components/Composite/Wrapper/Wrapper';
+
+// TODO 내용 채우기
+const MenuPage = () => {
+  return (
+    <section className={style.menu}>
+      <h1>Menu 에 대한 내용이 담긴 페이지</h1>
+      // TODO 해당 Div 태그 컴포넌트로 구성하기
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '3%',
+          padding: '2%',
+          width: '100%',
+          height: '100%',
+          overflowY: 'scroll',
+        }}
+      >
+        <Wrapper.Parent ratio={[0.2, 0.4, 0.4]} height='30%'>
+          <Wrapper.Vertical ratio={[0.6, 0.4]}>
+            <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+          </Wrapper.Vertical>
+          <Wrapper.Horizontal ratio={[0.4, 0.6]}>
+            <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+          </Wrapper.Horizontal>
+          <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+        </Wrapper.Parent>
+
+        <Wrapper.Parent ratio={[0.4, 0.2, 0.4]} height='40%'>
+          <Wrapper.Horizontal ratio={[0.6, 0.4]}>
+            <div style={{ backgroundColor: 'blue', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
+          </Wrapper.Horizontal>
+          <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
+          <Wrapper.Vertical ratio={[0.4, 0.6]}>
+            <div style={{ backgroundColor: 'blue', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
+          </Wrapper.Vertical>
+        </Wrapper.Parent>
+
+        <Wrapper.Parent ratio={[0.3, 0.2, 0.2, 0.3]} height='60%'>
+          <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+          <Wrapper.Vertical ratio={[0.6, 0.4]}>
+            <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'yellow', display: 'flex' }}></div>
+          </Wrapper.Vertical>
+          <Wrapper.Horizontal ratio={[0.4, 0.6]}>
+            <div style={{ backgroundColor: 'yellow', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+          </Wrapper.Horizontal>
+          <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
+        </Wrapper.Parent>
+      </div>
+    </section>
+  );
+};
+export default MenuPage;
+```
+
+![alt text](image-10.png)
+
+구성한 `Wrapper` 들이 적절하게 원하는데로 카드들을 배치 시킬 수 있는지 확인하기 위해
+
+단순하게 `div` 태그들을 가지고 레이아웃을 해봤다.
+
+내가 처음 기대하던 그대로 잘 완성된 것 같다.

@@ -1,7 +1,7 @@
 // import util function
-import { makeFlexchildren } from '../../../utils/CardWrapperUtils.js';
+import { makeFlexchildren } from '../../../utils/WrapperUtils.js';
 // import style
-import module from './CardWrapper.module.css';
+import module from './Wrapper.module.css';
 
 const Vertical = ({ ratio, children, style }) => {
   const flexChildren = makeFlexchildren(ratio, children);
@@ -9,7 +9,7 @@ const Vertical = ({ ratio, children, style }) => {
   return (
     <section
       style={{ flexDirection: 'column', ...style }}
-      className={module.cardWrapper}
+      className={module.Wrapper}
     >
       {flexChildren}
     </section>

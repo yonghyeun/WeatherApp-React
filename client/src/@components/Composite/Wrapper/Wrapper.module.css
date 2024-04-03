@@ -1,5 +1,5 @@
 /* TODO Padding , gap 결정하기 */
-.cardWrapper {
+.Wrapper {
   display: flex;
   gap: 1%;
 }
