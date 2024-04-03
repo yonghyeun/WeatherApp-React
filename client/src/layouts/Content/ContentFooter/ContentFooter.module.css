@@ -1,7 +1,6 @@
 /* TODO height 범위 결정하기 */
 .contentFooter {
   height: 8%;
-
   align-items: center;
   overflow: hidden;
   /* TODO 삭제하기 */
@@ -11,7 +10,16 @@
 
 .information {
   width: 92%;
+  height: 100%;
   /* padding: 4%; */
   display: flex;
   justify-content: space-between;
+}
+
+.logoWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 20%;
 }

@@ -9,7 +9,7 @@ const ContentFooter = () => {
     <footer className={style.contentFooter}>
       <section className={style.information}>
         <Information />
-        <Wrapper.Parent>
+        <Wrapper.Parent className={style.logoWrapper}>
           <GithubLogo />
           <VelogLogo />
         </Wrapper.Parent>
