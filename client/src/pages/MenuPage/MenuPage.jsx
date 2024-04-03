@@ -6,18 +6,7 @@ import Wrapper from '../../@components/Composite/Wrapper/Wrapper';
 const MenuPage = () => {
   return (
     <section className={style.menu}>
-      <h1>Menu 에 대한 내용이 담긴 페이지</h1>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '3%',
-          padding: '2%',
-          width: '100%',
-          height: '100%',
-          overflowY: 'scroll',
-        }}
-      >
+      <section className={style.menuContent}>
         <Wrapper.Parent ratio={[0.2, 0.4, 0.4]} height='30%'>
           <Wrapper.Vertical ratio={[0.6, 0.4]}>
             <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
@@ -54,7 +43,7 @@ const MenuPage = () => {
           </Wrapper.Horizontal>
           <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
         </Wrapper.Parent>
-      </div>
+      </section>
     </section>
   );
 };

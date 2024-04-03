@@ -12,3 +12,14 @@
 .menu .active {
   font-size: 5rem;
 }
+
+/* TODO padding , gap 범위 결정하기 */
+.menuContent {
+  width: 92%;
+  height: 100%;
+  padding: 4%;
+  gap: 3%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
