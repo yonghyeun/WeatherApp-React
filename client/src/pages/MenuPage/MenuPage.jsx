@@ -9,17 +9,17 @@ const MenuPage = () => {
       <h1>Menu 에 대한 내용이 담긴 페이지</h1>
       <div style={{ padding: '2%', width: '100%', height: '100%' }}>
         <CardWrapper.Horizontal ratio={[0.1, 0.2, 0.7]}>
-          <CardWrapper.Vertical>
-            <div style={{ backgroundColor: 'red' }}></div>
-            <div style={{ backgroundColor: 'green' }}></div>
+          <CardWrapper.Vertical ratio={[0.2, 0.8]}>
+            <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
           </CardWrapper.Vertical>
-          <CardWrapper.Vertical>
-            <div style={{ backgroundColor: 'red' }}></div>
-            <div style={{ backgroundColor: 'green' }}></div>
+          <CardWrapper.Vertical ratio={[0.4, 0.6]}>
+            <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
           </CardWrapper.Vertical>
-          <CardWrapper.Vertical>
-            <div style={{ backgroundColor: 'red' }}></div>
-            <div style={{ backgroundColor: 'green' }}></div>
+          <CardWrapper.Vertical ratio={[0.8, 0.2]}>
+            <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
           </CardWrapper.Vertical>
         </CardWrapper.Horizontal>
       </div>

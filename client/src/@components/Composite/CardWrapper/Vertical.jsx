@@ -6,7 +6,6 @@ import module from './CardWrapper.module.css';
 const Vertical = ({ ratio, children, style }) => {
   const flexChildren = makeFlexchildren(ratio, children);
 
-  console.log(style);
   return (
     <section
       style={{ flexDirection: 'column', ...style }}

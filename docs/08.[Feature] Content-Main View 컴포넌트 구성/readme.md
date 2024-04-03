@@ -102,7 +102,7 @@ const makeFlexchildren = (ratio, children) => {
   if (ratio && ratio.reduce((pre, cur) => pre + cur) !== 1)
     throw new Error('ratio 의 합은 1이여야 합니다');
 
-  const flexChildrens = React.Children.map(children, (child, index) => {
+  const flexchildren = React.Children.map(children, (child, index) => {
     return React.cloneElement(child, {
       ...child.props,
       style: {
@@ -112,7 +112,7 @@ const makeFlexchildren = (ratio, children) => {
     });
   });
 
-  return flexChildrens;
+  return flexchildren;
 };
 
 export { makeFlexchildren };
@@ -241,3 +241,100 @@ export { makeFlexchildren };
 
 ![alt text](image-3.png)
 다음처럼 내부에서 랩퍼 컴포넌트 들의 `ratio` 가 인식되지 않고 중첩된 `CardWrapper...` 들의 속성인 `width 100%` 속성과 컨테이너 역할을 할 `CardWrapper` 의 플렉스 박스 + gap 에 의해 너비가 동일하게 나뉘는 모습을 볼 수 있다.
+
+#### 문제 진단
+
+```jsx
+import React from 'react';
+
+/**
+ * 만일 ratio 에 적힌 원소의 수와 children 의 수가 맞지 않는다면 오류를 발생시키고
+ * ratio 를 적지 않은 경우엔 children 의 flex-grow 를 모두 1로 설정해주도록 함
+ * @param {Array<number>} ratio - ReactElement 들의 flexGrow 를 담은 배열
+ * @param {Array<React.ReactNode>} children - flexGrow 가 설정될 children elements
+ * @returns {Array<React.ReactElement>} - flexGrow 가 설정된 ReactElement를 담은 배열
+ */
+const makeFlexchildren = (ratio, children) => {
+  if (ratio && ratio.length !== children.length)
+    throw new Error('ratio의 개수와 children 의 개수는 동일해야 합니다');
+
+  if (ratio && ratio.reduce((pre, cur) => pre + cur) !== 1)
+    throw new Error('ratio 의 합은 1이여야 합니다');
+
+  const flexchildren = React.Children.map(children, (child, index) => {
+    return React.cloneElement(child, {
+      ...child.props,
+      style: {
+        ...child.props.style,
+        flexGrow: ratio ? ratio[index] : 1,
+      },
+    });
+  });
+
+  return flexchildren;
+};
+
+export { makeFlexchildren };
+```
+
+문제는 여기였다. `flexchildren` 을 만드는 과정에서 `ratio` 의 값이 `React.Element` 의 `style` 에 값이 들어가고 있었다.
+
+이에 기본적인 `HTML element` 의 경우엔 `style` 에 값이 들어가고 있지만
+
+```jsx
+// import util function
+import { makeFlexchildren } from '../../../utils/CardWrapperUtils.js';
+// import style
+import style from './CardWrapper.module.css';
+
+// flexChildren 으로 props 가 설정된 CardWrapper.Vertical 컴포넌트의 props 인
+// props.style 은 렌더링 시 아무곳에도 적용되지 아니함
+const Vertical = ({ ratio, children }) => {
+  const flexChildren = makeFlexchildren(ratio, children);
+
+  return (
+    <section style={{ flexDirection: 'column' }} className={style.cardWrapper}>
+      {flexChildren}
+    </section>
+  );
+};
+
+export default Vertical;
+```
+
+`child` 가 `CardWrapper` 와 같은 리액트 컴포넌트 일 때는 `props.style` 에 지정한 값이
+
+렌더링 시 영향을 미치고 있지 않는다는 점이였다.
+
+`makeFlexChildren` 메소드에서 `props` 에 `ratio` 값을 `drilling` 해서 새로운 컴포넌트를 만들어줄 때
+
+새로 생성된 `props.style` 이 렌더링 시 적용되도록 컴포넌트를 수정해보자
+
+#### 문제 해결
+
+```jsx
+// import util function
+import { makeFlexchildren } from '../../../utils/CardWrapperUtils.js';
+// import style
+import module from './CardWrapper.module.css'; // 중복되지 않게 이름을 변경
+
+const Vertical = ({ ratio, children, style }) => {
+  // props 로 style 을 받아준다.
+  const flexChildren = makeFlexchildren(ratio, children);
+
+  return (
+    <section
+      style={{ flexDirection: 'column', ...style }} // 받은 style 을 인라인 스타일로 덮어씌워줌
+      className={module.cardWrapper}
+    >
+      {flexChildren}
+    </section>
+  );
+};
+
+export default Vertical;
+```
+
+`props` 로 `style` 을 받을 수 있게 하고 `props.style` 로 받은 값을 반환되는 `section` 의 `style` 로 덮어씌우도록 하였다.
+
+이를 통해 `flexChildren` 으로 생성되는 `CardWrapper` 들은 상위 `CardWrapper` 에서 선언된 `ratio` 만큼의 크기를 가질 수 있게 되었다.
