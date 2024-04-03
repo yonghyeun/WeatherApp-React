@@ -1,6 +1,6 @@
 import style from './ContentFooter.module.css';
 import Information from '../../../@components/UI/Information/Information';
-
+import Wrapper from '../../../@components/Composite/Wrapper/Wrapper';
 import { GithubLogo, VelogLogo } from '../../../@components/UI/Logo/Logo';
 
 // TODO 내부에 컴포넌트 집어넣기
@@ -9,7 +9,10 @@ const ContentFooter = () => {
     <footer className={style.contentFooter}>
       <section className={style.information}>
         <Information />
-        <GithubLogo />
+        <Wrapper.Parent>
+          <GithubLogo />
+          <VelogLogo />
+        </Wrapper.Parent>
       </section>
     </footer>
   );

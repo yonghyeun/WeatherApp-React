@@ -5,15 +5,26 @@ import style from './Logo.module.css';
 // TODO 선택된 테마별로 다른 로고 집어넣기
 const GithubLogo = () => {
   return (
-    <a href='https://github.com/yonghyeun/WeatherApp-React'>
-      <img src='./client/src/assets/images/github(white).png' alt='' />
+    <a
+      href='https://github.com/yonghyeun/WeatherApp-React'
+      className={style.logoWrapper}
+    >
+      <img
+        src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/github(white).png?raw=true'
+        alt=''
+        className={style.logoImg}
+      />
     </a>
   );
 };
 const VelogLogo = () => {
   return (
-    <a href='https://velog.io/@yonghyeun/posts'>
-      <img src='client/src/assets/images/velog.png' alt='' />
+    <a href='https://velog.io/@yonghyeun/posts' className={style.logoWrapper}>
+      <img
+        src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/velog.png?raw=true'
+        alt=''
+        className={style.logoImg}
+      />
     </a>
   );
 };
