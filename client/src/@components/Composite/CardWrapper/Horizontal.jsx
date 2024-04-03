@@ -3,12 +3,12 @@ import { makeFlexchildren } from '../../../utils/CardWrapperUtils.js';
 // import style
 import module from './CardWrapper.module.css';
 
-const Horizontal = ({ ratio, children, style }) => {
+const Horizontal = ({ ratio, children, style, height }) => {
   const flexChildren = makeFlexchildren(ratio, children);
 
   return (
     <section
-      style={{ flexDirection: 'row', ...style }}
+      style={{ flexDirection: 'row', height: height, ...style }}
       className={module.cardWrapper}
     >
       {flexChildren}

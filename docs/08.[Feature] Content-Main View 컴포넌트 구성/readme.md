@@ -382,3 +382,134 @@ export default Vertical;
 해당 문제는 `flexGrow` 속성은 컴포넌트의 `width , height` 와 같은 크기 관련 속성이 명시되지 않았을 경우 작동한다.
 
 이에 `CardWrapper.Horizontal` 에서 중첩되어 사용되는 내부 컴포넌트들의 크기를 `width : 100%` 로 고정시켜뒀던 스타일 속성을 제거해주었다.
+
+```css
+/* TODO Padding , gap 결정하기 */
+.cardWrapper {
+  /* width: 100%;   삭제 */
+  height: 30%;
+  display: flex;
+  gap: 1%;
+}
+```
+
+![alt text](image-6.png)
+
+이를 통해 `CardWrapper.Horizontal` 에서 `flexGrow` 속성이 `width` 속성으로 인해 가려지던 문제를 해결하였다.
+
+> 문제 2. `height` 속성 간 중첩으로 인해 내부 컴포넌트의 크기가 기대와 다르게 작아짐 . (30%의 30% .. 이런식)
+
+해당 문제는 모든 `CardWrapper.Horizontal , Vertical` 에서 동일한 `height` 스타일 속성이 적용됨에 따라
+
+`height` 가 30% 로 정의되어 있을 때
+
+전체 크기의 30% 인 부모 랩퍼 컴포넌트와 , 부모 랩퍼 컴포넌트의 30%인 자식 램퍼 컴포넌트가 존재함에 따라
+
+자식 랩퍼 컴포넌트 내부의 크기가 매우 작아지는 문제였다.
+
+문제의 원인을 제거해보자
+
+```css
+/* TODO Padding , gap 결정하기 */
+.cardWrapper {
+  /* height: 30%; 삭제 */
+  display: flex;
+  gap: 1%;
+}
+```
+
+부모 랩퍼 컴포넌트나 자식 랩퍼 컴포넌트에게 모두 동일하게 전달되던 `height` 속성을 제거해주었다.
+
+```jsx
+// import util function
+import { makeFlexchildren } from '../../../utils/CardWrapperUtils.js';
+// import style
+import module from './CardWrapper.module.css';
+
+const Horizontal = ({ ratio, children, style, height }) => {
+  // height props 추가
+  const flexChildren = makeFlexchildren(ratio, children);
+
+  return (
+    <section
+      style={{ flexDirection: 'row', height: height, ...style }} // height 적용
+      className={module.cardWrapper}
+    >
+      {flexChildren}
+    </section>
+  );
+};
+
+export default Horizontal;
+```
+
+이후 부모 랩퍼 컴포넌트로 사용 가능한 `CardWrapper.Horizontal` 컴포넌트에서 `height props` 를 추가해줌으로서
+
+부모 랩퍼 컴포넌트의 높이를 명시적으로 지정해주도록 하였다.
+
+#### 문제 해결 결과
+
+```jsx
+<CardWrapper.Horizontal ratio={[0.1, 0.2, 0.7]} height='30%'>
+  // 부모 랩퍼 컴포넌트의 크기를 명시적으로 지정
+  <CardWrapper.Vertical ratio={[0.2, 0.8]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+  <CardWrapper.Vertical ratio={[0.4, 0.6]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+  <CardWrapper.Vertical ratio={[0.8, 0.2]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+</CardWrapper.Horizontal>
+```
+
+![alt text](image-7.png)
+
+잘 작동한다.
+
+자식 랩퍼 컴포넌트에 `Vertical , Horizontal` 이 모두 섞여 사용될 때에는 ?
+
+```jsx
+<CardWrapper.Horizontal ratio={[0.1, 0.2, 0.7]} height='30%'>
+  <CardWrapper.Vertical ratio={[0.2, 0.8]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+  <CardWrapper.Horizontal ratio={[0.4, 0.6]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Horizontal>
+  <CardWrapper.Vertical ratio={[0.8, 0.2]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+</CardWrapper.Horizontal>
+```
+
+![alt text](image-8.png)
+
+잘 작동한다.
+
+그럼 마지막으로 `Vertical , Horizontal , Element` 가 섞여 사용될 때를 살펴보자
+
+```jsx
+<CardWrapper.Horizontal ratio={[0.1, 0.2, 0.7]} height='30%'>
+  <CardWrapper.Vertical ratio={[0.2, 0.8]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Vertical>
+  <CardWrapper.Horizontal ratio={[0.4, 0.6]}>
+    <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+    <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+  </CardWrapper.Horizontal>
+  <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+</CardWrapper.Horizontal>
+```
+
+![alt text](image-9.png)
+
+구우우우웃 ~~!!

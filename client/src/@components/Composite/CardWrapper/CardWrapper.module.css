@@ -1,6 +1,5 @@
 /* TODO Padding , gap 결정하기 */
 .cardWrapper {
-  height: 30%;
   display: flex;
   gap: 1%;
 }
