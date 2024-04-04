@@ -3,8 +3,8 @@ import { ThemeProvider } from './context/ThemeProvider';
 // import Component
 import DashboardWrapper from './@components/UI/DashboardWrapper/DashboardWrapper';
 // import Layout
-import SidebarLayout from './layouts/SideBar/SidebarLayout';
-import ContentLayout from './layouts/Content/ContentLayout';
+import SidebarLayout from './layouts/SideBarLayout/SidebarLayout';
+import ContentLayout from './layouts/ContentLayout/ContentLayout';
 
 // Style import
 import './Dashboard.module.css';
