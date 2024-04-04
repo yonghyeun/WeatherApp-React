@@ -3,7 +3,7 @@ import ContentHeader from './ContentHeader/ContentHeader';
 import ContentMain from './ContentMain/ContentMain';
 import ContentFooter from './ContentFooter/ContentFooter';
 
-const Content = () => {
+const ContentLayout = () => {
   return (
     <section className={style.Content}>
       <ContentHeader />
@@ -13,4 +13,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default ContentLayout;

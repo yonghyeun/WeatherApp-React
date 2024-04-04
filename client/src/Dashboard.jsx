@@ -3,8 +3,8 @@ import { ThemeProvider } from './context/ThemeProvider';
 // import Component
 import DashboardWrapper from './@components/UI/DashboardWrapper/DashboardWrapper';
 // import Layout
-import Sidebar from './layouts/SideBar/Sidebar';
-import Content from './layouts/Content/Content';
+import SidebarLayout from './layouts/SideBar/SidebarLayout';
+import ContentLayout from './layouts/Content/ContentLayout';
 
 // Style import
 import './Dashboard.module.css';
@@ -15,8 +15,8 @@ const Dashboard = () => {
   return (
     <ThemeProvider>
       <DashboardWrapper>
-        <Sidebar />
-        <Content />
+        <SidebarLayout />
+        <ContentLayout />
       </DashboardWrapper>
     </ThemeProvider>
   );
