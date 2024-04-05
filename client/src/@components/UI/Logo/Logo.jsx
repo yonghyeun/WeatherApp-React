@@ -1,13 +1,19 @@
 // import style
 import moduleCss from './Logo.module.css';
 
+// import CustomHooks
+
+import useTheme from '../../../hooks/useTheme';
+
 // TODO 각 로고 별로 svg 로 아이콘 집어넣기
 // TODO 선택된 테마별로 다른 로고 집어넣기
 const GithubLogo = () => {
+  const { themeStatus } = useTheme();
+
   return (
     <a href='https://github.com/yonghyeun/WeatherApp-React' target='_blink'>
       <img
-        src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/github(white).png?raw=true'
+        src={`https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/github(${themeStatus}).png?raw=true`}
         alt='github'
         className={moduleCss.logoImg}
       />
