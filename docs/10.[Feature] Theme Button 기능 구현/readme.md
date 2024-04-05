@@ -217,3 +217,106 @@ export default useTheme;
 `useTheme` 은 `ThemeProvider` 에서 내려주는 `value` 값을 가져오는 커스텀 훅이다.
 
 `useTheme` 커스텀 훅을 통해 매번 컴포넌트에서 `useContext(ThemeContext)` 하는 것보다 어떤 값을 가져오는지를 명확하게 해주었다.
+
+---
+
+# 좀 갈아엎자
+
+## 테마를 덮어 씌울 때 객체 오버라이딩으로 한 번에 덮어씌우자
+
+나는 이전에 어떤 식으로 테마를 적용시키려 했냐면
+
+```jsx
+const SomeComponent = () => {
+  const { theme } = useTheme(); // 테마를 불러와서
+  /**
+theme = {
+  Title1: '#010E26',
+  Title2: '#263973',
+  Title3: '#6B7FF2',
+  borderLine: '#aaa',
+  backgroundColor: '#FAFAFA',
+};
+*/
+
+  return (
+    <div // 테마 값을 직접 스타일 객체에 집어 넣을 생각
+      style={{ backgroundColor: theme.backgroundColor, color: theme.Title1 }}
+    >
+      ...
+    </div>
+  );
+};
+```
+
+이런식으로 불러와 적용시키려고 했다.
+
+이 코드는 조금 혼돈스러워보인다.
+
+그 이유는
+
+컴포넌트의 스타일 객체에서 다크모드 , 디폴트 모드일 때 글자 색을 다르게 하고 싶다고 해보자
+
+글자 색을 다르게 하기 위해선 스타일 객체에서 글자 색은 그저 `color` 프로퍼티 값에 한 가지 값만 할당해주면 된다.
+
+하지만 나는 색상 팔레트에서 글자 색상의 구성을 `Title1 , Title2 , Title3` 과 같이 글자 크기 별 색상으로 해뒀기 때문에
+
+컴포넌트 내에서 색상을 적용 시킬 때 `color : theme.Title1` 과 같이 혼돈스러운 코드가 나타났다.
+
+`color : theme.Title1` 처럼 **설정값이 직접적으로 드러남** 으로 인해 설정되는 테마 값이 무엇인지 한 눈에 파악하기 위해선
+
+**스타일 객체의 모든 설정들을 하나 하나 읽어봐야 하기 때문에 혼돈스럽다.**
+
+차라리 `style={ Theme.Global ,...Theme.Heading1 }` 처럼
+
+`{...모드 별 적용되는 공통적인 테마 색상 , ...해당 컴포넌트 특성에 맞는 테마 }` 처럼
+
+어떤 스타일이 적용되는지 캡슐화를 이용하여 한 눈에 알아 볼 수 있게 해보자
+
+### 테마 색상 팔레트 양식 변경하기
+
+```jsx
+const Theme = {
+  // TODO DarkMode 스타일 나중에 채우기
+  Dark: {
+    Default: {},
+    Title1: {},
+    Title2: {},
+    Title3: {},
+    Paragraph: {},
+    Card: {},
+  },
+  Light: {
+    Default: {
+      backgroundColor: '#FAFAFA',
+      color : 'black'
+      borderLine: '#aaa',
+    },
+    Title1: {
+      color: '#010E26',
+    },
+    Title2: {
+      color: '#263973',
+    },
+    Title3: {
+      color: '#6B7FF2',
+    },
+    Paragraph: {},
+    Card: {},
+  },
+};
+```
+
+아직 완벽하게는 아니지만 색상 팔레트에서 원시값들로 이뤄진 시멘틱 코드들을
+
+객체들로 이뤄진 시멘틱 코드로 변경하였다.
+
+- `Default` : 테마 별로 공통적으로 적용되어야 하는 값들을 담은 객체
+- `Others .. ` : 테마 별 & 컴포넌트 특성 별 적용되어야 하는 값들을 담은 객체, `Global` 이후에 오버라이딩 함으로서 `Default` 의 속성을 덮어 쓸 수 있다.
+
+이를 통해 `style` 객체에 테마의 값을 덮어씌울 때 원시값을 하나씩 맵핑해줘야 하던 과거와 다르게
+
+이제는 그저 객체를 오버라이딩 시키는 방식으로 깔끔하고 명확한 표현을 할 수 있게 되었다.
+
+- `before` : `style = {{color : theme.Title1 , backgroundColor : theme.backgroundColor}}`
+- `after` : `style = {{... theme.Defaeult , ...theme.Title1}}`
