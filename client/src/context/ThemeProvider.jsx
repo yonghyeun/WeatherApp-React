@@ -8,7 +8,6 @@ const ThemeContext = createContext(null);
 
 const ThemeProvider = ({ children }) => {
   const { theme, setTheme } = useFirstTheme();
-
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}

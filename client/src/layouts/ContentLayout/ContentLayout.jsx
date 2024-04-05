@@ -3,9 +3,12 @@ import ContentHeader from './ContentHeader/ContentHeader';
 import ContentMain from './ContentMain/ContentMain';
 import ContentFooter from './ContentFooter/ContentFooter';
 
+import useTheme from '../../hooks/useTheme';
+
 const ContentLayout = () => {
+  const { theme } = useTheme();
   return (
-    <section className={moduleCss.Content}>
+    <section style={{ ...theme.Default }} className={moduleCss.Content}>
       <ContentHeader />
       <ContentMain />
       <ContentFooter />

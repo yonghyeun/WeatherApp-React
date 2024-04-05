@@ -1,8 +1,17 @@
-const Title = ({ children, className, Tag = 'h1' }) => {
-  if (Tag.slice(Tag.length - 1) > 6)
-    throw new Error('Tag는 h1 ~ h6 까지만 가능합니다');
+import useTheme from '../../../hooks/useTheme';
 
-  return <Tag className={className}>{children}</Tag>;
+const Title = ({ children, className, Tag = 'h1' }) => {
+  const { theme } = useTheme();
+  const sizeOfHeading = Tag.slice(Tag.length - 1);
+
+  return (
+    <Tag
+      style={{ ...theme.Default, ...theme[`Title${sizeOfHeading}`] }}
+      className={className}
+    >
+      {children}
+    </Tag>
+  );
 };
 
 export default Title;

@@ -366,3 +366,39 @@ const ThemeButton = () => {
 다음처럼 불러오는 명을 모두 `moduleCss` 로 변경해주었다. 이를 통해 `props.style` 이란 이름과
 
 충돌하지 않도록 해줬다.
+
+## 스타일 적용하기
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+현재 아~주 퓨어하고 깔끔한 형태로 돌아왔다.
+
+이제 테마 별 인라인 스타일로 넣어주도록 하자
+
+```jsx
+import useTheme from '../../../hooks/useTheme';
+
+const Title = ({ children, className, Tag = 'h1' }) => {
+  const { theme } = useTheme();
+  const sizeOfHeading = Tag.slice(Tag.length - 1);
+
+  return (
+    <Tag
+      style={{ ...theme.Default, ...theme[`Title${sizeOfHeading}`] }}
+      className={className}
+    >
+      {children}
+    </Tag>
+  );
+};
+
+export default Title;
+```
+
+컴포넌트 별로 디폴트 테마값과 테마 별 다른 양식을 보여야 하는 경우 (예를 들어 `h1 ~ h3` 에 따라 다른 글자 색을 나타내야 하는 경우)엔
+
+테마에서 특별히 추가로 불러와 할당해주었다.
+
+## 테마 버튼이 작동하도록 이벤트 핸들러 부착해주기

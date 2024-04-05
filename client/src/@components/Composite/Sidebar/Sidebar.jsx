@@ -1,5 +1,3 @@
-// TODO 리팩토링 하자 합성 컴포넌트 패턴으로 가보자고
-
 import moduleCss from './Sidebar.module.css';
 
 import SidebarList from './SidebarList';

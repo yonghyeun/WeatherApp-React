@@ -1,13 +1,21 @@
 import { NavLink } from 'react-router-dom';
-import style from './Sidebar.module.css';
+import moduleCss from './Sidebar.module.css';
+
+import useTheme from '../../../hooks/useTheme';
 
 const SidebarList = ({ to, content, className }) => {
+  const { theme } = useTheme();
+
   return (
-    <li key={content} className={className || style.sidebarList}>
+    <li
+      style={{ ...theme.Default }}
+      key={content}
+      className={className || moduleCss.sidebarList}
+    >
       <NavLink
         to={to}
         className={({ isActive }) =>
-          isActive ? style.selected : style.notSelected
+          isActive ? moduleCss.selected : moduleCss.notSelected
         }
       >
         {content}

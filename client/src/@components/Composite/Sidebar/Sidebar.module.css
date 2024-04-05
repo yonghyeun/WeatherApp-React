@@ -30,7 +30,6 @@
   justify-content: center;
   width: 100%;
   height: 8vh;
-  border: 1px solid black;
 }
 
 .notSelected {
@@ -57,13 +56,4 @@
 }
 
 .sidebarUl {
-}
-
-/* TODO Global Style 로 빼기 */
-a {
-  text-decoration: none;
-}
-
-a:visited {
-  color: inherit;
 }

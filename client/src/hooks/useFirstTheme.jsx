@@ -19,7 +19,7 @@ const useFirstTheme = () => {
     if (!prevTheme) window.localStorage.setItem('themeStatus', 'Light');
   }, []);
 
-  return { theme, setTheme };
+  return { theme, setTheme, themeStatus };
 };
 
 export default useFirstTheme;

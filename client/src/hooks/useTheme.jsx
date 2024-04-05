@@ -7,7 +7,6 @@ import { ThemeContext } from '../context/ThemeProvider';
  */
 const useTheme = () => {
   const { theme, setTheme } = useContext(ThemeContext);
-
   return { theme, setTheme };
 };
 

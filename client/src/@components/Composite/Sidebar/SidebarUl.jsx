@@ -1,7 +1,16 @@
-import style from './Sidebar.module.css';
+import moduleCss from './Sidebar.module.css';
+import useTheme from '../../../hooks/useTheme';
 
 const SidebarUl = ({ children, className }) => {
-  return <ul className={className || style.sidebarUl}>{children}</ul>;
+  const { theme } = useTheme();
+  return (
+    <ul
+      style={{ ...theme.Default }}
+      className={className || moduleCss.sidebarUl}
+    >
+      {children}
+    </ul>
+  );
 };
 
 export default SidebarUl;

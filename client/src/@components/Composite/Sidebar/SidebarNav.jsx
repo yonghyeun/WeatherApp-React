@@ -1,7 +1,16 @@
-import style from './Sidebar.module.css';
-
+import moduleCss from './Sidebar.module.css';
+import useTheme from '../../../hooks/useTheme';
 const SidebarNav = ({ children, className }) => {
-  return <nav className={className || style.sidebarNav}>{children}</nav>;
+  const { theme } = useTheme();
+
+  return (
+    <nav
+      style={{ ...theme.Default }}
+      className={className || moduleCss.sidebarNav}
+    >
+      {children}
+    </nav>
+  );
 };
 
 export default SidebarNav;

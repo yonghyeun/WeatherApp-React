@@ -17,6 +17,7 @@ const SearchButton = () => {
 
 const SearchInput = () => {
   // TODO placeHolder , onChange , className 채우기
+
   return (
     <Input
       placeHolder='지역을 입력해주세요'
