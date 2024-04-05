@@ -49,6 +49,7 @@
   font-size: 1.5vw;
   padding: 3% 20%;
   border-radius: 10%;
+  background-color: blue;
 }
 
 .selected :visited {
