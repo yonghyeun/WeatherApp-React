@@ -1,9 +1,9 @@
-import style from './ContentMain.module.css';
+import moduleCss from './ContentMain.module.css';
 import { Outlet } from 'react-router-dom';
 
 const ContentMain = () => {
   return (
-    <main className={style.contentMain}>
+    <main className={moduleCss.contentMain}>
       <Outlet />
     </main>
   );

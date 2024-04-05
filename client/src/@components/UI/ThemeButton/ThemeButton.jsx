@@ -1,11 +1,11 @@
-// import style
-import style from './ThemeButton.module.css';
+// import moduleCss
+import moduleCss from './ThemeButton.module.css';
 // import Component
 import Button from '../Button/Button';
 
 const ThemeButton = () => {
   // TODO onCLick , item , className 채우기
-  return <Button item='theme button' className={style.themeButton} />;
+  return <Button item='theme button' className={moduleCss.themeButton} />;
 };
 
 export default ThemeButton;

@@ -1,5 +1,5 @@
 // import style
-import style from './Logo.module.css';
+import moduleCss from './Logo.module.css';
 
 // TODO 각 로고 별로 svg 로 아이콘 집어넣기
 // TODO 선택된 테마별로 다른 로고 집어넣기
@@ -9,7 +9,7 @@ const GithubLogo = () => {
       <img
         src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/github(white).png?raw=true'
         alt='github'
-        className={style.logoImg}
+        className={moduleCss.logoImg}
       />
     </a>
   );
@@ -20,7 +20,7 @@ const VelogLogo = () => {
       <img
         src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/velog.png?raw=true'
         alt='velog'
-        className={style.logoImg}
+        className={moduleCss.logoImg}
       />
     </a>
   );
@@ -32,7 +32,7 @@ const LicenseLogo = () => {
       <img
         src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/mitLicense.png?raw=true'
         alt='mit'
-        className={style.logoImg}
+        className={moduleCss.logoImg}
       />
     </a>
   );

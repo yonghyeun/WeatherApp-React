@@ -332,3 +332,37 @@ const Theme = {
 앞으로 테마와 관련된 인라인 스타일은 모두 `Painting` 에 관여하도록 하고, `Layout` 과 관련된 속성은 모두 외부 스타일에서 관리 하도록 나눠보자
 
 > 물론 외부 스타일에서도 백그라운드 컬러나 , 색상들을 정의해두더라도 인라인 스타일이 우선적으로 적용되기 때문에 외부 스타일에서 페인팅 관련 속성을 남겨둬도 상관은 없다.
+
+### 외부 스타일 불러 올 때 불러오는 명을 변경하기
+
+```jsx
+// import style
+import style from './ThemeButton.module.css';
+
+const ThemeButton = () => {
+  return <Button item='theme button' className={style.themeButton} />;
+};
+```
+
+현재 외부 스타일을 불러올 때 `style` 이라는 이름으로 불러온 후 `className` 에서
+
+외부 스타일의 클래스명을 불러와 사용하는 `module CSS` 방식을 사용하고 있다.
+
+다만 앞으로 나는 인라인 스타일로 테마와 관련된 스타일 객체를 추가 해줄것이기 때문에
+
+> `style = {{..theme.default }}` 과 같은 방식으로 말이다.
+
+외부 스타일 모듈의 이름이 중복되지 않도록 모두 변경시켜주도록 하자
+
+```jsx
+// import moduleCss
+import moduleCss from './ThemeButton.module.css';
+
+const ThemeButton = () => {
+  return <Button item='theme button' className={moduleCss.themeButton} />;
+};
+```
+
+다음처럼 불러오는 명을 모두 `moduleCss` 로 변경해주었다. 이를 통해 `props.style` 이란 이름과
+
+충돌하지 않도록 해줬다.

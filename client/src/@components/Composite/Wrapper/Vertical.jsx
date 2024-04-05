@@ -1,7 +1,7 @@
 // import util function
 import { makeFlexchildren } from '../../../utils/WrapperUtils.js';
 // import style
-import module from './Wrapper.module.css';
+import moduleCss from './Wrapper.module.css';
 
 const Vertical = ({ ratio, children, style, className }) => {
   const flexChildren = makeFlexchildren(ratio, children);
@@ -9,7 +9,7 @@ const Vertical = ({ ratio, children, style, className }) => {
   return (
     <section
       style={{ flexDirection: 'column', ...style }}
-      className={className || module.Wrapper}
+      className={className || moduleCss.Wrapper}
     >
       {flexChildren}
     </section>

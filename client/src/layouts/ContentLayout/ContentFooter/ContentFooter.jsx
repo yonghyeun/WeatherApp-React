@@ -1,4 +1,4 @@
-import style from './ContentFooter.module.css';
+import moduleCss from './ContentFooter.module.css';
 import Information from '../../../@components/UI/Information/Information';
 import Wrapper from '../../../@components/Composite/Wrapper/Wrapper';
 import {
@@ -9,10 +9,10 @@ import {
 
 const ContentFooter = () => {
   return (
-    <footer className={style.contentFooter}>
-      <section className={style.information}>
+    <footer className={moduleCss.contentFooter}>
+      <section className={moduleCss.information}>
         <Information />
-        <Wrapper.Parent className={style.logoWrapper}>
+        <Wrapper.Parent className={moduleCss.logoWrapper}>
           <LicenseLogo />
           <GithubLogo />
           <VelogLogo />

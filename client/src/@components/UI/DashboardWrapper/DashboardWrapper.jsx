@@ -1,7 +1,7 @@
-import style from './DashboardWrapper.module.css';
+import moduleCss from './DashboardWrapper.module.css';
 
 const DashboardWrapper = ({ children }) => {
-  return <section className={style.dashBoardWrapper}>{children}</section>;
+  return <section className={moduleCss.dashBoardWrapper}>{children}</section>;
 };
 
 export default DashboardWrapper;

@@ -1,4 +1,4 @@
-import style from './Input.module.css';
+import moduleCss from './Input.module.css';
 
 const Input = ({ placeHolder, onChange, className }) => {
   return (
@@ -6,7 +6,7 @@ const Input = ({ placeHolder, onChange, className }) => {
       type='text'
       placeholder={placeHolder}
       onChange={onChange}
-      className={className || style.input}
+      className={className || moduleCss.input}
     />
   );
 };

@@ -1,12 +1,12 @@
-import style from './MenuPage.module.css';
+import moduleCss from './MenuPage.module.css';
 
 import Wrapper from '../../@components/Composite/Wrapper/Wrapper';
 
 // TODO 내용 채우기
 const MenuPage = () => {
   return (
-    <section className={style.menu}>
-      <section className={style.menuContent}>
+    <section className={moduleCss.menu}>
+      <section className={moduleCss.menuContent}>
         <Wrapper.Parent ratio={[0.2, 0.4, 0.4]} height='30%'>
           <Wrapper.Vertical ratio={[0.6, 0.4]}>
             <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
