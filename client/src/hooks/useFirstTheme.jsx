@@ -10,16 +10,16 @@ import Theme from '../assets/style/Theme';
  * @returns {Object} - themeStatus 에 따른 테마 팔레트를 반환
  */
 const useFirstTheme = () => {
-  const [themeStatus, setTheme] = useState('Light');
+  const [themeStatus, setThemeStatus] = useState('Light');
   const theme = Theme[themeStatus];
 
   useEffect(() => {
     const prevTheme = window.localStorage.getItem('themeStatus');
-    setTheme(prevTheme || 'Light');
+    setThemeStatus(prevTheme || 'Light');
     if (!prevTheme) window.localStorage.setItem('themeStatus', 'Light');
   }, []);
 
-  return { theme, setTheme, themeStatus };
+  return { theme, setThemeStatus, themeStatus };
 };
 
 export default useFirstTheme;

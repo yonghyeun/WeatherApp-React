@@ -7,9 +7,9 @@ import useFirstTheme from '../hooks/useFirstTheme';
 const ThemeContext = createContext(null);
 
 const ThemeProvider = ({ children }) => {
-  const { theme, setTheme } = useFirstTheme();
+  const { theme, setThemeStatus, themeStatus } = useFirstTheme();
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setThemeStatus, themeStatus }}>
       {children}
     </ThemeContext.Provider>
   );

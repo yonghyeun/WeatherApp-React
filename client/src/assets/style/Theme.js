@@ -5,7 +5,7 @@ const Theme = {
       backgroundColor: '#1E1E1E',
       border: '1px solid #555',
       color: 'white',
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      boxShadow: '0px 4px 4px rgba(255, 255, 255, 0.25)',
     },
     Title1: {
       color: '#E8E6E3', // 밝은 그레이, 기본 텍스트보다 조금 더 밝게
