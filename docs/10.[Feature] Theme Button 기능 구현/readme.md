@@ -118,10 +118,9 @@ import useFirstTheme from '../hooks/useFirstTheme';
 const ThemeContext = createContext(null);
 
 const ThemeProvider = ({ children }) => {
-  const { theme, setTheme } = useFirstTheme();
-
+  const { theme, setThemeStatus, themeStatus } = useFirstTheme();
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setThemeStatus, themeStatus }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -169,21 +168,21 @@ import Theme from '../assets/style/Theme';
 
 /**
  * useFirstTheme 은 첫 렌더링 시 ThemeProvider 에게 기본 테마 값을 지정해주는 커스텀 훅
- * 만약 로컬 스토리지에 저장된 값이 없다면 로컬 스토리지에 값을 추가하고 light theme 로 설정
- * @const {String} thmeStatus - light , dark 중 하나의 값을 의미
+ * 만약 로컬 스토리지에 저장된 값이 없다면 로컬 스토리지에 값을 추가하고 Light theme 로 설정
+ * @const {String} thmeStatus - Light , Dark 중 하나의 값을 의미
  * @returns {Object} - themeStatus 에 따른 테마 팔레트를 반환
  */
 const useFirstTheme = () => {
-  const [themeStatus, setTheme] = useState('light');
+  const [themeStatus, setThemeStatus] = useState('Light');
   const theme = Theme[themeStatus];
 
   useEffect(() => {
     const prevTheme = window.localStorage.getItem('themeStatus');
-    setTheme(prevTheme || 'light');
-    if (!prevTheme) window.localStorage.setItem('themeStatus', 'light');
+    setThemeStatus(prevTheme || 'Light');
+    if (!prevTheme) window.localStorage.setItem('themeStatus', 'Light');
   }, []);
 
-  return { theme, setTheme };
+  return { theme, setThemeStatus, themeStatus };
 };
 
 export default useFirstTheme;
@@ -206,9 +205,9 @@ import { ThemeContext } from '../context/ThemeProvider';
  * @returns
  */
 const useTheme = () => {
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme, setThemeStatus, themeStatus } = useContext(ThemeContext);
 
-  return { theme, setTheme };
+  return { theme, setThemeStatus, themeStatus };
 };
 
 export default useTheme;
@@ -277,20 +276,41 @@ theme = {
 
 ```jsx
 const Theme = {
-  // TODO DarkMode 스타일 나중에 채우기
+  // TODO 스타일 나중에 더 채우기
   Dark: {
-    Default: {},
-    Title1: {},
-    Title2: {},
-    Title3: {},
-    Paragraph: {},
-    Card: {},
+    Default: {
+      backgroundColor: '#1E1E1E',
+      border: '1px solid #555',
+      color: 'white',
+      boxShadow: '0px 4px 4px rgba(255, 255, 255, 0.25)',
+    },
+    Title1: {
+      color: '#E8E6E3',
+    },
+    Title2: {
+      color: '#CAC4B0',
+    },
+    Title3: {
+      color: '#A9A9A9',
+    },
+    Paragraph: {
+      color: '#CCCCCC',
+    },
+    Card: {
+      backgroundColor: '#2A2A2A',
+      border: '1px solid #444',
+      color: 'white',
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    },
   },
+
   Light: {
     Default: {
       backgroundColor: '#FAFAFA',
-      color : 'black'
-      borderLine: '#aaa',
+      border: '1px solid #aaa',
+      color: 'black',
+      // TODO 추후에 지우기
+      boxShadow: '5px 5px 5px gray',
     },
     Title1: {
       color: '#010E26',
@@ -305,6 +325,8 @@ const Theme = {
     Card: {},
   },
 };
+
+export default Theme;
 ```
 
 아직 완벽하게는 아니지만 색상 팔레트에서 원시값들로 이뤄진 시멘틱 코드들을
@@ -402,3 +424,91 @@ export default Title;
 테마에서 특별히 추가로 불러와 할당해주었다.
 
 ## 테마 버튼이 작동하도록 이벤트 핸들러 부착해주기
+
+```jsx
+// import moduleCss
+import moduleCss from './ThemeButton.module.css';
+// import Component
+import Button from '../Button/Button';
+import useTheme from '../../../hooks/useTheme';
+const ThemeButton = () => {
+  const { themeStatus, setThemeStatus } = useTheme();
+
+  const handleClick = () => {
+    const nextTheme = themeStatus === 'Dark' ? 'Light' : 'Dark';
+    setThemeStatus(nextTheme);
+    window.localStorage.setItem('themeStatus', nextTheme);
+  };
+
+  return (
+    <Button
+      item='theme button'
+      className={moduleCss.themeButton}
+      onClick={handleClick}
+    />
+  );
+};
+
+export default ThemeButton;
+```
+
+우선 기능 구현부터 할 수 있도록 한 컴포넌트 내부에서 기능들을 구현해주었다.
+
+테마 버튼이 눌리면 현재의 테마 상태를 가져오고(`themeStatus`)
+
+다음 테마 상태를 설정한 후 `nextTheme`
+
+다음 테마 상태로 상태 변경과 로컬 스토리지에 저장된 값을 변경해주면 된다.
+
+테마 상태 (`themeStatus`) 가 변경되면 `ThemeProvider` 하위에 존재하는 모든 컴포넌트들이 `themeStatus` 값 변경에 따른 새로운 `theme` 스타일 객체를 받아 스타일이 변경될 것이다.
+
+### 컴포넌트 관심사 분리를 위해 핸들링 로직 커스텀 훅으로 변경하기
+
+```jsx
+import useTheme from './useTheme';
+
+const useThemeToggle = () => {
+  const { themeStatus, setThemeStatus } = useTheme();
+  const handleClick = () => {
+    const nextTheme = themeStatus === 'Dark' ? 'Light' : 'Dark';
+    setThemeStatus(nextTheme);
+    window.localStorage.setItem('themeStatus', nextTheme);
+  };
+  return handleClick;
+};
+
+export default useThemeToggle;
+```
+
+`useThemeToggle` 이란 커스텀 훅을 생성해준 후
+
+```jsx
+// import moduleCss
+import moduleCss from './ThemeButton.module.css';
+// import Component
+import Button from '../Button/Button';
+// import CustomHooks
+import useThemeToggle from '../../../hooks/useThemeTogle';
+
+const ThemeButton = () => {
+  const toggleTheme = useThemeToggle();
+  return (
+    <Button
+      item='theme button'
+      className={moduleCss.themeButton}
+      onClick={toggleTheme}
+    />
+  );
+};
+
+export default ThemeButton;
+```
+
+테마 버튼에선 단순하게 커스텀훅으로 불러와 전달만 해주도록 하자
+
+![alt text](image-5.png)
+![alt text](image-6.png)
+
+잘 작동한다.
+
+우선 `border , boxShadow` 와 같은 특성은 나중에 디자인을 모두 만질 때 변경해주도록 하자
