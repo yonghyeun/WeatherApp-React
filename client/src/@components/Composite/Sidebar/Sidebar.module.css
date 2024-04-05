@@ -9,7 +9,6 @@
   justify-content: center;
   align-items: center;
   font-size: 2vw;
-  border: 1px solid black;
 }
 
 .sideBarTitle svg {
@@ -20,6 +19,7 @@
   text-decoration: none;
 }
 
+/* ? visited 과 관련된 속성은 외부 스타일에 남겨둬야 할까? */
 .sideBarTitle :visited {
   color: black;
 }
@@ -50,8 +50,6 @@
   font-size: 1.5vw;
   padding: 3% 20%;
   border-radius: 10%;
-  background-color: green;
-  color: white;
 }
 
 .selected :visited {

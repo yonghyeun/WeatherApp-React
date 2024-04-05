@@ -3,9 +3,6 @@
   height: 8%;
   align-items: center;
   overflow: hidden;
-  /* TODO 삭제하기 */
-  /* border: 1px solid black; */
-  background-color: green;
 }
 
 .information {
