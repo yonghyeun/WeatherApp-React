@@ -2,7 +2,7 @@ import moduleCss from './Input.module.css';
 
 import useTheme from '../../../hooks/useTheme';
 
-const Input = ({ placeHolder, onChange, className }) => {
+const Input = ({ placeHolder, className }) => {
   const { theme } = useTheme();
 
   return (
@@ -10,7 +10,6 @@ const Input = ({ placeHolder, onChange, className }) => {
       style={{ ...theme.Default }}
       type='text'
       placeholder={placeHolder}
-      onChange={onChange}
       className={className || moduleCss.input}
     />
   );
