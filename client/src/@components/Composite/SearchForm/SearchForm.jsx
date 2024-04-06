@@ -9,14 +9,29 @@ import moduleCss from './SearchForm.module.css';
 // import customHooks
 import useSearchRef from '../../../hooks/useSearchRef';
 
+import { SearchRefProvider } from '../../../context/SearchRefProvider';
+
 const SearchForm = ({ children }) => {
-  return <Form className={moduleCss.searchForm}>{children}</Form>;
+  return (
+    <SearchRefProvider>
+      <Form className={moduleCss.searchForm}>{children}</Form>
+    </SearchRefProvider>
+  );
 };
 
 const SearchButton = () => {
   // TODO onClick , item , className 채우기
+  const inputRef = useSearchRef();
 
-  return <Button item='click me !' className={moduleCss.searchButton} />;
+  return (
+    <Button
+      item='click me !'
+      className={moduleCss.searchButton}
+      onClick={() => {
+        console.log(inputRef.current.value);
+      }}
+    />
+  );
 };
 
 const SearchInput = () => {

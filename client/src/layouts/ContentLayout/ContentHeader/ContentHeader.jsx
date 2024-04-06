@@ -1,7 +1,5 @@
 import moduleCss from './ContentHeader.module.css';
 
-import { SearchRefProvider } from '../../../context/SearchRefProvider';
-
 import SearchForm from '../../../@components/Composite/SearchForm/SearchForm';
 import ThemeButton from '../../../@components/UI/ThemeButton/ThemeButton';
 import TempButton from '../../../@components/UI/TempButton/TempButton';
@@ -13,12 +11,10 @@ const ContentHeader = () => {
   const { theme } = useTheme();
   return (
     <header style={{ ...theme.Default }} className={moduleCss.contentHeader}>
-      <SearchRefProvider>
-        <SearchForm>
-          <SearchForm.Input />
-          <SearchForm.Button />
-        </SearchForm>
-      </SearchRefProvider>
+      <SearchForm>
+        <SearchForm.Input />
+        <SearchForm.Button />
+      </SearchForm>
       <section style={{ ...theme.Default }} className={moduleCss.buttonWrapper}>
         <TempButton />
         <ThemeButton />
