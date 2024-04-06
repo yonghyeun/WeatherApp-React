@@ -6,7 +6,8 @@ import Button from '../../UI/Button/Button';
 // import moduleCss
 import moduleCss from './SearchForm.module.css';
 
-// import library
+// import customHooks
+import useSearchRef from '../../../hooks/useSearchRef';
 
 const SearchForm = ({ children }) => {
   return <Form className={moduleCss.searchForm}>{children}</Form>;
@@ -19,10 +20,12 @@ const SearchButton = () => {
 };
 
 const SearchInput = () => {
+  const inputRef = useSearchRef();
   // TODO placeHolder , onChange , className 채우기
 
   return (
     <Input
+      ref={inputRef}
       placeHolder='지역을 입력해주세요'
       className={moduleCss.searchInput}
     />
