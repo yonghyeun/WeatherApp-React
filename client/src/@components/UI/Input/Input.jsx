@@ -6,7 +6,7 @@ import { forwardRef } from 'react';
 
 const Input = forwardRef((props, ref) => {
   const { theme } = useTheme();
-  const { placeHolder, className } = props;
+  const { placeHolder, className, isReadOnly } = props;
   return (
     <input
       style={{ ...theme.Default }}
@@ -14,6 +14,7 @@ const Input = forwardRef((props, ref) => {
       type='text'
       placeholder={placeHolder}
       className={className || moduleCss.input}
+      readOnly={isReadOnly}
     />
   );
 });
