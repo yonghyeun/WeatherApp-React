@@ -555,7 +555,7 @@ export default ContentHeader;
 
 이를통해 `SearchForm` 컴포넌트 상위에서 `usetranslation` 훅을 이용하는 컴포넌트를 생성해줄 수 있게 되었다.
 
-### `SearchArea` 생성하기
+### `ConditionalSearchForm , SearchArea` 생성하기
 
 ```jsx
        {if (isLoading) <로딩과 관련된 컴포넌트>
@@ -577,7 +577,7 @@ import SearchForm from '../../Composite/SearchForm/SearchForm';
 // import CustomHooks
 import useTranslation from '../../../hooks/useTranslation';
 import useSearchRef from '../../../hooks/useSearchRef';
-const SearchArea = () => {
+const ConditionalSearchForm = () => {
   const inputRef = useSearchRef();
   // TODO LatLong 값 전역으로 빼기
   const { fetchLatLong, LatlLong, error, isLoading } = useTranslation();
@@ -587,29 +587,155 @@ const SearchArea = () => {
     if (locationString) fetchLatLong(locationString);
   };
 
+  if (isLoading) return <SearchForm.Loading />;
+  if (error) return <SearchForm.Error />;
+  return <SearchForm.Normal onClick={handleClick} />;
+};
+
+export default ConditionalSearchForm;
+```
+
+`ConditionalSearchForm` 는 `isLoading , error` 의 `state` 변화에 따라 `.Loading , Error , Normal` 컴포넌트를 조건에 따라 반환한다.
+
+이후 외부로 빼줬던 `SearchRefProvider` 컨텍스트와 `ConditionalSearchForm` 컴포넌트를 함께 캡슐화 한 `SearchArea` 컴포넌트를 생성해주자
+
+```jsx
+import ConditionalSearchForm from '../ConditionalSearchForm/ConditionalSearchForm';
+import { SearchRefProvider } from '../../../context/SearchRefProvider';
+
+const SearchArea = () => {
   return (
-    <SearchForm>
-      {isLoading && (
-        <>
-          <SearchForm.LoadingInput />
-          <SearchForm.LoadingButton />
-        </>
-      )}
-      {error && (
-        <>
-          {/* TODO error 시 컴포넌트 생성하기 */}
-          <p>다시 시도해주세요</p>
-        </>
-      )}
-      {!isLoading && !error && (
-        <>
-          <SearchForm.Input />
-          <SearchForm.Button onClick={handleClick} />
-        </>
-      )}
-    </SearchForm>
+    <SearchRefProvider>
+      <ConditionalSearchForm />
+    </SearchRefProvider>
   );
 };
 
 export default SearchArea;
 ```
+
+이후 생성한 `SearchArea` 를 `ContentHeader` 에 넣어주자
+
+```jsx
+import moduleCss from './ContentHeader.module.css';
+
+import SearchArea from '../../../@components/UI/SearchArea.jsx/SearchArea';
+import ThemeButton from '../../../@components/UI/ThemeButton/ThemeButton';
+import TempButton from '../../../@components/UI/TempButton/TempButton';
+
+import useTheme from '../../../hooks/useTheme';
+
+const ContentHeader = () => {
+  const { theme } = useTheme();
+  return (
+    <header style={{ ...theme.Default }} className={moduleCss.contentHeader}>
+      <SearchArea />
+      <section style={{ ...theme.Default }} className={moduleCss.buttonWrapper}>
+        <TempButton />
+        <ThemeButton />
+      </section>
+    </header>
+  );
+};
+
+export default ContentHeader;
+```
+
+![alt text](image-6.png)
+
+야호 ~
+
+### `SearchForm.jsx` 에 추가된 컴포넌트들
+
+```jsx
+// import Components
+import Form from '../../UI/Form/Form';
+import Input from '../../UI/Input/Input';
+import Button from '../../UI/Button/Button';
+import { SearchIcon, LoadingCircle } from '../../UI/Bootstraps/Bootstraps';
+
+// import moduleCss
+import moduleCss from './SearchForm.module.css';
+
+// import customHooks
+import useSearchRef from '../../../hooks/useSearchRef';
+
+const SearchForm = ({ children }) => {
+  return <Form className={moduleCss.searchForm}>{children}</Form>;
+};
+
+...
+
+const SearchLoadingInput = () => {
+  const inputRef = useSearchRef();
+  return (
+    <Input
+      ref={inputRef}
+      className={moduleCss.searchInput}
+      defaultValue={inputRef.current.value}
+      readOnly={true}
+    />
+  );
+};
+
+const SearchLoadingButton = ({ width, height }) => {
+  return (
+    <Button
+      item={<LoadingCircle width={width} height={height} />}
+      className={moduleCss.searchButton}
+    />
+  );
+};
+
+const SearchErrorButton = ({ width, height }) => {
+  // TODO 에러 발생 시 사용할 아이콘 찾기
+  return (
+    <Button
+      item={<LoadingCircle width={width} height={height} />}
+      className={moduleCss.searchButton}
+    />
+  );
+};
+
+const SearchNormal = ({ onClick }) => {
+  return (
+    <SearchForm>
+      <SearchInput />
+      <SearchButton onClick={onClick} />
+    </SearchForm>
+  );
+};
+
+const SearchLoading = ({ width, height }) => {
+  return (
+    <SearchForm>
+      <SearchLoadingInput />
+      <SearchLoadingButton width={(width, height)} />
+    </SearchForm>
+  );
+};
+
+const SearchError = ({ width, height }) => {
+  return (
+    <SearchForm>
+      <SearchLoadingInput />
+      <SearchErrorButton width={(width, height)} />
+    </SearchForm>
+  );
+};
+
+SearchForm.Button = SearchButton;
+SearchForm.Input = SearchInput;
+
+SearchForm.LoadingButton = SearchLoadingButton;
+SearchForm.LoadingInput = SearchLoadingInput;
+SearchForm.ErrorButton = SearchErrorButton;
+
+SearchForm.Normal = SearchNormal;
+SearchForm.Loading = SearchLoading;
+SearchForm.Error = SearchError;
+
+export default SearchForm;
+```
+
+슬슬 꾸미기를 시작해야 할 것 같아서 `Boostraps` 의 버튼들을 가져와 사용해줬다.

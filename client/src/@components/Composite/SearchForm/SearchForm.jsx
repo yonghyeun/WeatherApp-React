@@ -30,7 +30,7 @@ const SearchInput = () => {
   return (
     <Input
       ref={inputRef}
-      placeHolder='지역을 입력해주세요'
+      placeholder='지역을 입력해주세요'
       className={moduleCss.searchInput}
     />
   );
@@ -41,8 +41,8 @@ const SearchLoadingInput = () => {
   return (
     <Input
       ref={inputRef}
-      placeHolder='지역을 입력해주세요'
       className={moduleCss.searchInput}
+      defaultValue={inputRef.current.value}
       readOnly={true}
     />
   );

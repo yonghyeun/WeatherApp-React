@@ -3,7 +3,7 @@ import SearchForm from '../../Composite/SearchForm/SearchForm';
 // import CustomHooks
 import useTranslation from '../../../hooks/useTranslation';
 import useSearchRef from '../../../hooks/useSearchRef';
-const SearchArea = () => {
+const ConditionalSearchForm = () => {
   const inputRef = useSearchRef();
   // TODO LatLong 값 전역으로 빼기
   const { fetchLatLong, LatlLong, error, isLoading } = useTranslation();
@@ -18,4 +18,4 @@ const SearchArea = () => {
   return <SearchForm.Normal onClick={handleClick} />;
 };
 
-export default SearchArea;
+export default ConditionalSearchForm;
