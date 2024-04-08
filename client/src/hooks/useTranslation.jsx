@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { APIKEY, URI } from '../@constants/_API';
-import { AiOutlineConsoleSql } from 'react-icons/ai';
+import delay from '../utils/delay';
 
 /**
  * 주어진 주소를 사용하여 위도와 경도를 조회하는 훅
@@ -9,7 +9,6 @@ import { AiOutlineConsoleSql } from 'react-icons/ai';
  * @returns {Object} - 훅 내부 상태를 변경시키는 함수와 상태들을 담은 객체
  * @returns {Function} fetchingLatLong - 카카오 API 를 이용하여 위도 , 경도로 변경하는 함수
  */
-
 const useTranslation = () => {
   const [LatLong, setLatLong] = useState(null);
   const [error, setError] = useState(null);
@@ -21,6 +20,8 @@ const useTranslation = () => {
       const encodeQuery = encodeURIComponent(location);
       const ENDPOINT = `${URI}/?query=${encodeQuery}`;
       setIsLoading(true);
+      // ! loading 상태를 유지하기 위한 delay 함수
+      delay(2000);
       const response = await fetch(ENDPOINT, {
         headers: {
           Authorization: APIKEY,
