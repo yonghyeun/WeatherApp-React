@@ -2,6 +2,7 @@
 import Form from '../../UI/Form/Form';
 import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
+import { SearchIcon, LoadingCircle } from '../../UI/Bootstraps/Bootstraps';
 
 // import moduleCss
 import moduleCss from './SearchForm.module.css';
@@ -16,7 +17,7 @@ const SearchForm = ({ children }) => {
 const SearchButton = ({ onClick }) => {
   return (
     <Button
-      item='click me !'
+      item={<SearchIcon />}
       className={moduleCss.searchButton}
       onClick={onClick}
     />
@@ -47,26 +48,27 @@ const SearchLoadingInput = () => {
   );
 };
 
-const SearchLoadingButton = () => {
-  return <Button item='로딩중' className={moduleCss.SearchButton} />;
+const SearchLoadingButton = ({ width, height }) => {
+  return (
+    <Button
+      item={<LoadingCircle width={width} height={height} />}
+      className={moduleCss.searchButton}
+    />
+  );
 };
 
-// const SearchErrorInput = ({placeHolder}) => {
-//   const inputRef = useSearchRef();
-//   return (
-//     <Input
-//       ref={inputRef}
-//       placeHolder={inputRef.current.value}
-//       className={moduleCss.searchInput}
-//       readOnly={true}
-//     />
-//   );
-// };
+const SearchErrorButton = ({ width, height }) => {
+  return (
+    <Button
+      item={<LoadingCircle width={width} height={height} />}
+      className={moduleCss.searchButton}
+    />
+  );
+};
 
 SearchForm.Button = SearchButton;
 SearchForm.Input = SearchInput;
 SearchForm.LoadingButton = SearchLoadingButton;
 SearchForm.LoadingInput = SearchLoadingInput;
-// SearchForm.ErrorInput = SearchErrorInput;
 
 export default SearchForm;

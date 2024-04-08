@@ -21,7 +21,7 @@ const useTranslation = () => {
       const ENDPOINT = `${URI}?query=${encodeQuery}`;
       setIsLoading(true);
       // ! loading 상태를 유지하기 위한 delay 함수
-      delay(2000);
+      await delay(1000);
       const response = await fetch(ENDPOINT, {
         headers: {
           Authorization: APIKEY,
