@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 #secret constants
-/constants/_API.js
+/@constants/_API.js
