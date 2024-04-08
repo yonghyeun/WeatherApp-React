@@ -18,7 +18,7 @@ const useTranslation = () => {
   const fetchLatLong = async (location) => {
     try {
       const encodeQuery = encodeURIComponent(location);
-      const ENDPOINT = `${URI}/?query=${encodeQuery}`;
+      const ENDPOINT = `${URI}?query=${encodeQuery}`;
       setIsLoading(true);
       // ! loading 상태를 유지하기 위한 delay 함수
       delay(2000);
