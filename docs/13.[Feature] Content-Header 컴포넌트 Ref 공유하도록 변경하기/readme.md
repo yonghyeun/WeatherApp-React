@@ -10,20 +10,6 @@
 
 하는 기능을 구현해보려 한다.
 
-### 사용하고자 하는 `API`
-
-주소에 따른 위경도를 구해오는 `API` 는 구글 , 네이버 , 카카오 등 다양한 `API` 를 지원하는데
-
-난 그 중 카카오의 `API` 를 이용하기로 하였다.
-
-Ref : https://developers.kakao.com/
-
-여러가지 명세서를 읽어봤을 때 카카오의 응답 바디가 사용하기 더 깔끔하기도 했고
-
-요청을 보내는 방식이 간단했기 때문에 사용하기로 했다.
-
-> 그리고 결정적으로 네이버나 구글은 `API` 를 이용하기 위한 과정이 비교적 복잡해서 귀찮았다
-
 ## 지역명 검색이 가능하도록 컴포넌트에 기능 부착하기
 
 ```jsx
@@ -320,3 +306,59 @@ const ContentHeader = () => {
 
 export default ContentHeader;
 ```
+
+## 검색된 지역명 카카오 `API` 와 연결하여 위경도 불러오기
+
+### 사용하고자 하는 `API`
+
+주소에 따른 위경도를 구해오는 `API` 는 구글 , 네이버 , 카카오 등 다양한 `API` 를 지원하는데
+
+난 그 중 카카오의 `API` 를 이용하기로 하였다.
+
+Ref : https://developers.kakao.com/
+
+여러가지 명세서를 읽어봤을 때 카카오의 응답 바디가 사용하기 더 깔끔하기도 했고
+
+요청을 보내는 방식이 간단했기 때문에 사용하기로 했다.
+
+> 그리고 결정적으로 네이버나 구글은 `API` 를 이용하기 위한 과정이 비교적 복잡해서 귀찮았다
+
+### 카카오 `API` 사용법
+
+우선 `KaKaO Dev` 에서 사용할 애플리케이션을 우선 등록해준 후의 과정을 기술한다.
+
+1. `API endpoint`
+   > https://dapi.kakao.com/v2/local/search/address.${FORMAT}
+
+기본적인 엔드포인트는 다음과 같다.
+
+`${FORMAT}` 부분에는 `XML , JSON` 중 하나를 이용해 응답 받을 `body` 엔터티의 데이터 타입을 지정 할 수 있다.
+
+![alt text](image-3.png)
+
+요청을 보낼 때 `Header` 부분에는 `KaKao Dev` 에서 받은 `REST API Key` 를 보내주도록 한다.
+
+2. 쿼리 파라미터
+   ![alt text](image-4.png)
+
+쿼리 파라미터는 다음과 같다.
+
+다른 쿼리 파라미터는 건들 것이 없을 것 같고 `query` 부분에 `SearchForm.Input` 에 적힌 값을 넣어주면 될 것 같다.
+
+### `API` 정보를 저장하기 위한 파일 구조 생성
+
+![alt text](image-5.png)
+
+따로 상수들을 저장하는 폴더인 `@constants` 폴더를 만들고
+
+내부에서 `_API.js` 파일을 생성해주었다.
+
+```js
+const APIKEY = 'KakaoAK 발급받은 나의 API 키';
+const URI = 'https://dapi.kakao.com/v2/local/search/address.JSON';
+export { APIKEY, URI };
+```
+
+`API` 와 관련된 모든 상수들을 해당 폴더 내에서 관리하도록 하고
+
+해당 폴더는 깃허브에 업로드 되지 않도록 `gitignore` 에 해당 파일을 추가해주도록 하자
