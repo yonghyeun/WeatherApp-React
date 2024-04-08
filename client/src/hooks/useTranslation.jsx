@@ -8,16 +8,15 @@ import { APIKEY, URI } from '../@constants/_API';
  * @returns {Object} - 훅 내부 상태를 변경시키는 함수와 상태들을 담은 객체
  * @returns {Function} fetchingLatLong - 카카오 API 를 이용하여 위도 , 경도로 변경하는 함수
  */
-const useTranslation = (location) => {
-  const encodeQuery = encodeURIComponent(location);
-  const ENDPOINT = `${URI}/?query=${encodeQuery}`;
-
+const useTranslation = () => {
   const [LatLong, setLatLong] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchLatLong = async () => {
+  const fetchLatLong = async (location) => {
     try {
+      const encodeQuery = encodeURIComponent(location);
+      const ENDPOINT = `${URI}/?query=${encodeQuery}`;
       setIsLoading(true);
       const response = await fetch(ENDPOINT, {
         headers: {

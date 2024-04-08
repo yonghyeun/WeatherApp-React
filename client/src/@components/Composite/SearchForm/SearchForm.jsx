@@ -9,9 +9,9 @@ import moduleCss from './SearchForm.module.css';
 // import customHooks
 import useSearchRef from '../../../hooks/useSearchRef';
 import useTranslation from '../../../hooks/useTranslation';
+import { useEffect } from 'react';
 const SearchForm = ({ children }) => {
   const { error, isLoading } = useTranslation;
-  console.log(error, isLoading);
 
   return (
     <Form className={moduleCss.searchForm}>
@@ -24,8 +24,6 @@ const SearchForm = ({ children }) => {
 
 const SearchButton = () => {
   const inputRef = useSearchRef();
-  // fetchLatLong 함수는 locationString 을 기억하는 클로저 함수
-  const { fetchLatLong } = useTranslation(inputRef.current.value);
 
   return (
     <Button
