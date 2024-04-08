@@ -58,6 +58,7 @@ const SearchLoadingButton = ({ width, height }) => {
 };
 
 const SearchErrorButton = ({ width, height }) => {
+  // TODO 에러 발생 시 사용할 아이콘 찾기
   return (
     <Button
       item={<LoadingCircle width={width} height={height} />}
@@ -66,9 +67,42 @@ const SearchErrorButton = ({ width, height }) => {
   );
 };
 
+const SearchNormal = ({ onClick }) => {
+  return (
+    <SearchForm>
+      <SearchInput />
+      <SearchButton onClick={onClick} />
+    </SearchForm>
+  );
+};
+
+const SearchLoading = ({ width, height }) => {
+  return (
+    <SearchForm>
+      <SearchLoadingInput />
+      <SearchLoadingButton width={(width, height)} />
+    </SearchForm>
+  );
+};
+
+const SearchError = ({ width, height }) => {
+  return (
+    <SearchForm>
+      <SearchLoadingInput />
+      <SearchErrorButton width={(width, height)} />
+    </SearchForm>
+  );
+};
+
 SearchForm.Button = SearchButton;
 SearchForm.Input = SearchInput;
+
 SearchForm.LoadingButton = SearchLoadingButton;
 SearchForm.LoadingInput = SearchLoadingInput;
+SearchForm.ErrorButton = SearchErrorButton;
+
+SearchForm.Normal = SearchNormal;
+SearchForm.Loading = SearchLoading;
+SearchForm.Error = SearchError;
 
 export default SearchForm;

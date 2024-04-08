@@ -19,3 +19,7 @@ a {
 a:visited {
   color: inherit;
 }
+
+p {
+  margin: 0px;
+}

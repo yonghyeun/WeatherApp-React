@@ -345,7 +345,7 @@ Ref : https://developers.kakao.com/
 
 다른 쿼리 파라미터는 건들 것이 없을 것 같고 `query` 부분에 `SearchForm.Input` 에 적힌 값을 넣어주면 될 것 같다.
 
-### `API` 정보를 저장하기 위한 파일 구조 생성
+### `API` 정보를 저장하기 위한 파일 생성
 
 ![alt text](image-5.png)
 
@@ -362,3 +362,254 @@ export { APIKEY, URI };
 `API` 와 관련된 모든 상수들을 해당 폴더 내에서 관리하도록 하고
 
 해당 폴더는 깃허브에 업로드 되지 않도록 `gitignore` 에 해당 파일을 추가해주도록 하자
+
+```
+#secret constants
+@constants/_API.js
+```
+
+### `useTranslation` 커스텀 훅 생성하기
+
+```jsx
+import { useState } from 'react';
+import { APIKEY, URI } from '../@constants/_API';
+
+/**
+ * 주어진 주소를 사용하여 위도와 경도를 조회하는 훅
+ *
+ * @param {String} location - 도로명 , 번지수 주소로 적힌 주소
+ * @returns {Object} - 훅 내부 상태를 변경시키는 함수와 상태들을 담은 객체
+ * @returns {Function} fetchingLatLong - 카카오 API 를 이용하여 위도 , 경도로 변경하는 함수
+ */
+const useTranslation = (location) => {
+  const encodeQuery = encodeURIComponent(location);
+  const ENDPOINT = `${URI}/?query=${encodeQuery}`;
+
+  const [LatLong, setLatLong] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchLatLong = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(ENDPOINT, {
+        headers: {
+          Authorization: APIKEY,
+        },
+      });
+
+      if (!response.ok)
+        throw new Error('카카오 API 네트워크 상태가 불안정합니다');
+
+      const json = await response.json();
+      setLatLong(json);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    fetchLatLong,
+    LatLong,
+    error,
+    isLoading,
+  };
+};
+
+export default useTranslation;
+```
+
+다음과 같은 커스텀훅을 생성했다.
+
+`useTranslation` 커스텀훅은 다음과 같은 값들을 반환한다.
+
+- `fetchLocation` : 커스텀 훅 호출 시 인수로 받은 `location` (`주소에 대한 string`) 을 카카오 `API` 를 이용해 위경도가 담긴 데이터 객체로 가져오는 함수
+- `LatLong` : `fetchLocation` 의 실행 후 상태가 변경되는 `state` 로 `location` 에 대한 `KaKao API` 의 `response`
+- `error` : `fetchLocation` 실행 시 발생한 `error state`
+- `isLoading` : `boolean` 값으로 `fetchingLocation` 이 실행 중엔 `true` , 아닐 시엔 `false`
+
+`fetchLocation`을 이용하여 `SearchForm.Input` 의 `inputRef` 에 적힌 값을 이용해 `request` 를 보내고 `locate` 을 이용해 위경도 값으로 기상청 `API` 에 요청을 보내자
+
+또 `error , isLoading` 을 이용해 `request` 에 대한 에러 핸들링 및 로딩 상태에 따른 개별적인 렌더링 로직을 관리해주도록 하자
+
+### `useTranslation` 은 어느 컴포넌트에서 호출되어야 할까 ?
+
+```jsx
+const ContentHeader = () => {
+  const { theme } = useTheme();
+  return (
+    <header style={{ ...theme.Default }} className={moduleCss.contentHeader}>
+      <SearchForm>
+        <SearchForm.Input />
+        <SearchForm.Button />
+      </SearchForm>
+      <section style={{ ...theme.Default }} className={moduleCss.buttonWrapper}>
+        <TempButton />
+        <ThemeButton />
+      </section>
+    </header>
+  );
+};
+```
+
+`ContentHeader` 레이아웃의 레이아웃 구조는 다음과 같다.
+
+`useTranslation` 은 `SearchForm` 에서 전달하는 컨텍스트인 `inputRef` 에 적힌 `value` 값을 `location` 인수로 받아 사용하게 될 것이다.
+
+우선 그렇다면 `useTranlsation` 은 `SearchForm` 하위에서 호출되어야 할 것이다.
+
+또 `error , isLoading` 에 따라 `SearchForm` 하위의 컴포넌트들의 모습이 다르게 렌더링 되기를 기대하고 있다.
+
+예를 들어 `error` 상태가 `null` 인 경우에는 에러와 관련된 컴포넌트들이 렌더링 되기를 기대하고
+
+`isLoading` 상태가 `true` 일 땐 로딩중인 컴포넌트, `false` 일 땐 모든 작업이 완료된 컴포넌트가 렌더링 되기를 기대한다.
+
+```jsx
+<SearchForm>
+  이 내부에서 `useTranslation` 훅이 호출되어야 한다.
+  호출된 결과값에 따라
+  {if (isLoading) <로딩과 관련된 컴포넌트>
+   if (!isLoading) <로딩중이 아닌것과 관련된 컴포넌트>
+   if (error) <에러와 관련된 컴포넌트>}
+</SearchForm>
+```
+
+나는 이런 식의 모습을 기대하고 있다.
+
+```jsx
+const ContentHeader = () => {
+  const { theme } = useTheme();
+  const {...} = useTransLocation();
+  return (
+    <header style={{ ...theme.Default }} className={moduleCss.contentHeader}>
+      <SearchForm>
+        {if (isLoading) <로딩과 관련된 컴포넌트>
+         if (!isLoading) <로딩중이 아닌것과 관련된 컴포넌트>
+         if (error) <에러와 관련된 컴포넌트>}
+      </SearchForm>
+      ...
+    </header>
+  );
+};
+```
+
+하지만 현재 구조에서는 해당 로직이 불가능하다.
+
+우선적인 이유로 `ContentHeader` 에서 `useTranslocation` 훅을 호출하는 것이 불가능하다.
+
+`ContentHeader` 컴포넌트는 `SearchForm` 컴포넌트 상위에 존재하기 때문이다.
+
+`useTransLocation` 훅은 항상 `SearchForm` 컴포넌트 하위에 존재해야 한다.
+
+> ```jsx
+> const SearchForm = ({ children }) => {
+>   return (
+>     <SearchRefProvider>
+>       <Form className={moduleCss.searchForm}>{children}</Form>
+>     </SearchRefProvider>
+>   );
+> };
+> ```
+>
+> `SearchRefProvider Context` 는 `SearchForm` 컴포넌트 내부에 존재한다.
+
+### `SearchRefProvider` 를 외부로 이동시키자
+
+`useTranslation` 이 사용되기 위한 조건은 오로지 **`SearchRefProvider`** 보다 하위에만 존재하면 된다.
+
+`SearchRefProvider` 를 `SearchForm` 컴포넌트의 상위로 제거해주자
+
+```jsx
+const SearchForm = ({ children }) => {
+  return <Form className={moduleCss.searchForm}>{children}</Form>;
+};
+```
+
+`SearchForm` 컴포넌트의 `Provider` 를 제거해주었다.
+
+```jsx
+const ContentHeader = () => {
+  const { theme } = useTheme();
+  return (
+    <header style={{ ...theme.Default }} className={moduleCss.contentHeader}>
+      <SearchRefProvider>
+        <SearchForm>
+          <SearchForm.Input />
+          <SearchForm.Button />
+        </SearchForm>
+      </SearchRefProvider>
+      <section style={{ ...theme.Default }} className={moduleCss.buttonWrapper}>
+        <TempButton />
+        <ThemeButton />
+      </section>
+    </header>
+  );
+};
+
+export default ContentHeader;
+```
+
+`ContentHeader` 내부에서 `SearchRefProvider` 를 선언해주자
+
+이를통해 `SearchForm` 컴포넌트 상위에서 `usetranslation` 훅을 이용하는 컴포넌트를 생성해줄 수 있게 되었다.
+
+### `SearchArea` 생성하기
+
+```jsx
+       {if (isLoading) <로딩과 관련된 컴포넌트>
+         if (!isLoading) <로딩중이 아닌것과 관련된 컴포넌트>
+         if (error) <에러와 관련된 컴포넌트>}
+```
+
+위 세 개의 컴포넌트를 모두 하나의 거대한 컴포넌트로 만들고
+
+`isLoading , error` 값을 `props` 로 받아 `isLoading , error` 값에 따라 다르게 렌더링 하는 방식도 가능하겠지만
+
+예전 어떤 아티클에서 `props` 로 `boolean` 값을 받아 `boolean` 값에 따라 다른 값이 렌더링 되는 경우는 해당 컴포넌트의 동작 방식을 추적하기 어렵다고 한 글을 보았다.
+
+이에 `props` 로 `isLoading , error` 값을 처리하기 보다 직접적으로 사용하려고 한다.
+
+```jsx
+// import Components
+import SearchForm from '../../Composite/SearchForm/SearchForm';
+// import CustomHooks
+import useTranslation from '../../../hooks/useTranslation';
+import useSearchRef from '../../../hooks/useSearchRef';
+const SearchArea = () => {
+  const inputRef = useSearchRef();
+  // TODO LatLong 값 전역으로 빼기
+  const { fetchLatLong, LatlLong, error, isLoading } = useTranslation();
+
+  const handleClick = () => {
+    const locationString = inputRef.current?.value;
+    if (locationString) fetchLatLong(locationString);
+  };
+
+  return (
+    <SearchForm>
+      {isLoading && (
+        <>
+          <SearchForm.LoadingInput />
+          <SearchForm.LoadingButton />
+        </>
+      )}
+      {error && (
+        <>
+          {/* TODO error 시 컴포넌트 생성하기 */}
+          <p>다시 시도해주세요</p>
+        </>
+      )}
+      {!isLoading && !error && (
+        <>
+          <SearchForm.Input />
+          <SearchForm.Button onClick={handleClick} />
+        </>
+      )}
+    </SearchForm>
+  );
+};
+
+export default SearchArea;
+```

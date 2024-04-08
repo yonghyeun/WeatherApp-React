@@ -13,28 +13,9 @@ const SearchArea = () => {
     if (locationString) fetchLatLong(locationString);
   };
 
-  return (
-    <SearchForm>
-      {isLoading && (
-        <>
-          <SearchForm.LoadingInput />
-          <SearchForm.LoadingButton />
-        </>
-      )}
-      {error && (
-        <>
-          {/* TODO error 시 컴포넌트 생성하기 */}
-          <p>다시 시도해주세요</p>
-        </>
-      )}
-      {!isLoading && !error && (
-        <>
-          <SearchForm.Input />
-          <SearchForm.Button onClick={handleClick} />
-        </>
-      )}
-    </SearchForm>
-  );
+  if (isLoading) return <SearchForm.Loading />;
+  if (error) return <SearchForm.Error />;
+  return <SearchForm.Normal onClick={handleClick} />;
 };
 
 export default SearchArea;
