@@ -6,14 +6,18 @@ import TempButton from '../../../@components/UI/TempButton/TempButton';
 
 import useTheme from '../../../hooks/useTheme';
 
+import { SearchRefProvider } from '../../../context/SearchRefProvider';
+
 const ContentHeader = () => {
   const { theme } = useTheme();
   return (
     <header style={{ ...theme.Default }} className={moduleCss.contentHeader}>
-      <SearchForm>
-        <SearchForm.Input />
-        <SearchForm.Button />
-      </SearchForm>
+      <SearchRefProvider>
+        <SearchForm>
+          <SearchForm.Input />
+          <SearchForm.Button />
+        </SearchForm>
+      </SearchRefProvider>
       <section style={{ ...theme.Default }} className={moduleCss.buttonWrapper}>
         <TempButton />
         <ThemeButton />

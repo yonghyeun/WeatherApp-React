@@ -9,14 +9,8 @@ import moduleCss from './SearchForm.module.css';
 // import customHooks
 import useSearchRef from '../../../hooks/useSearchRef';
 
-import { SearchRefProvider } from '../../../context/SearchRefProvider';
-
 const SearchForm = ({ children }) => {
-  return (
-    <SearchRefProvider>
-      <Form className={moduleCss.searchForm}>{children}</Form>
-    </SearchRefProvider>
-  );
+  return <Form className={moduleCss.searchForm}>{children}</Form>;
 };
 
 const SearchButton = () => {
