@@ -51,11 +51,10 @@ const fetchForecastFromLocation = async (locationObject) => {
   try {
     console.log(locationObject);
     const { APIKEY, URI } = weatherForecastAPI;
-    // TODO nx , ny , baseDate , baseTime 오류 해결하기
+    console.log(locationObject);
     const { nx, ny } = getNxNyFromLatLong(locationObject);
-    const { baseDate, baseTime } = getCurrentTime();
-    // TODO stupid CORS 문제 해결하기
-    const ENDPOINT = `${URI}$searviceKey=${APIKEY}&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${nx}&ny=${ny}`;
+    const { baseDate } = getCurrentTime();
+    const ENDPOINT = `${URI}&base_date=${baseDate}&nx=${nx}&ny=${ny}&serviceKey=${APIKEY}`;
     const response = await fetch(ENDPOINT);
 
     if (!response.ok)

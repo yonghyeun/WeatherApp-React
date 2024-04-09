@@ -6,6 +6,6 @@ const KaKaoAPI = {
 const weatherForecastAPI = {
   APIKEY:
     'Jwxgv8BQexpONepfrXnbs1PdxJ35yKLwEEW0bTK4QpCwdpecz%2F5tqkdCYp5rjomx8BzXWmSJLwvpuYYk1msbmw%3D%3D',
-  URI: '	http://apis.data.go.kr/1360000/getVilageFcstInfoService_2.0/',
+  URI: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?base_time=0500&pageNo=1&numOfRows=1000&dataType=JSON',
 };
 export { KaKaoAPI, weatherForecastAPI };
