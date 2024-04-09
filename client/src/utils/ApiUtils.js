@@ -1,10 +1,14 @@
-import { APIKEY, URI } from '../@constants/_API';
+import { KaKaoAPI, weatherForecastAPI } from '../@constants/_API';
+import { getNxNyFromLatLong } from './CoordinateUtils';
+import { getCurrentTime } from './DateUtils';
+
 /**
  * 함수는 문자열로 이뤄진 문자열을 받아 카카오 API를 이용해 위치 정보가 담긴 객체를 반환하는 함수
  * @param {String} locationString - 위치를 의미하는 문자열
  * @returns {Object} - KaKao API 에서 제공하는 위치 정보가 담긴 객체
  */
 const fetchLocationFromString = async (locationString) => {
+  const { APIKEY, URI } = KaKaoAPI;
   try {
     const encodeQuery = encodeURIComponent(locationString);
     const ENDPOINT = `${URI}?query=${encodeQuery}`;
@@ -28,8 +32,31 @@ const fetchLocationFromString = async (locationString) => {
     }
 
     return json;
-  } catch (error) {
-    if (error instanceof Error) {
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new Error(`${e.message} Status: ${e.status || 'Unknown'}`);
+    } else {
+      throw new Error('알 수 없는 네트워크 오류가 발생했습니다');
+    }
+  }
+};
+
+const fetchForecastFromLocation = async (locationObject) => {
+  try {
+    const { APIKEY, URI } = weatherForecastAPI;
+    const { nx, ny } = getNxNyFromLatLong(locationObject);
+    const { baseDate, baseTime } = getCurrentTime();
+
+    const ENDPOINT = `${URI}$searviceKey=${APIKEY}&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${nx}&ny=${ny}`;
+    const response = await fetch(ENDPOINT);
+
+    if (!response.ok)
+      throw new Error('기상청 API 네트워크가 불안정합니다. 다시 시도해주세요');
+
+    const json = await response.json();
+    return json;
+  } catch (e) {
+    if (e instanceof Error) {
       throw new Error(`${error.message} Status: ${error.status || 'Unknown'}`);
     } else {
       throw new Error('알 수 없는 네트워크 오류가 발생했습니다');
@@ -37,4 +64,4 @@ const fetchLocationFromString = async (locationString) => {
   }
 };
 
-export { fetchLocationFromString };
+export { fetchLocationFromString, fetchForecastFromLocation };

@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { fetchLocationFromString } from '../utils/ApiUtils';
-import { getNxNyFromLatLong } from '../utils/CoordinateUtils';
+import {
+  fetchForecastFromLocation,
+  fetchLocationFromString,
+} from '../utils/ApiUtils';
 import delay from '../utils/delay';
-const delayTime = 1000;
+const DELAYTIME = 1000;
 
 const useWeather = (locationString) => {
-  const [weawther, setWeather] = useState(null);
+  const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -13,9 +15,10 @@ const useWeather = (locationString) => {
     try {
       setLoading(true);
       // ! loading 상태를 보여주기 위한 delay 함수
-      delay(delayTime);
+      delay(DELAYTIME);
       const locationObject = await fetchLocationFromString(locationString);
-      const { nx, ny } = getNxNyFromLatLong(locationObject);
+      const forecastWeater = await fetchForecastFromLocation(locationObject);
+      setWeather(forecastWeater);
     } catch (e) {
       setError(e);
     } finally {
@@ -23,7 +26,11 @@ const useWeather = (locationString) => {
       if (error)
         setTimeout(() => {
           setError(null);
-        }, delayTime);
+        }, DELAYTIME);
     }
   };
+
+  return { fetchWeather, weather, error, loading };
 };
+
+export default useWeather;

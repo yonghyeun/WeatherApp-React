@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { APIKEY, URI } from '../@constants/_API';
+import { KaKaoAPI } from '../@constants/_API';
 import delay from '../utils/delay';
 
 /**
@@ -9,6 +9,9 @@ import delay from '../utils/delay';
  * @returns {Object} - 훅 내부 상태를 변경시키는 함수와 상태들을 담은 객체
  * @returns {Function} fetchingLatLong - 카카오 API 를 이용하여 위도 , 경도로 변경하는 함수
  */
+
+const { APIKEY, URI } = KaKaoAPI;
+
 const useTranslation = () => {
   const [LatLong, setLatLong] = useState(null);
   const [error, setError] = useState(null);
