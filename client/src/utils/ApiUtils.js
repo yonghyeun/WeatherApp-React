@@ -41,6 +41,12 @@ const fetchLocationFromString = async (locationString) => {
   }
 };
 
+/**
+ * 이 함수는 카카오 API 를 통해 얻은 locationObject 를 인수로 받아 기상청 API로 요청을 보내 날씨 정보를 가져온다.
+ * 함수 내에선 locationObject 내부에 존재하는 위경도 좌표를 nx,ny 좌표로 변경한 후 사용한다.
+ * @param {Object} locationObject - location 에 대한 정보가 담긴 객체, 주로 카카오API에서 제공하는 location 객체
+ * @returns {Object} - 날씨와 관련된 JSON 데이터로 기상청 API 단기예보를 사용하였음
+ */
 const fetchForecastFromLocation = async (locationObject) => {
   try {
     const { APIKEY, URI } = weatherForecastAPI;
@@ -57,7 +63,7 @@ const fetchForecastFromLocation = async (locationObject) => {
     return json;
   } catch (e) {
     if (e instanceof Error) {
-      throw new Error(`${error.message} Status: ${error.status || 'Unknown'}`);
+      throw new Error(`${e.message} Status: ${e.status || 'Unknown'}`);
     } else {
       throw new Error('알 수 없는 네트워크 오류가 발생했습니다');
     }
