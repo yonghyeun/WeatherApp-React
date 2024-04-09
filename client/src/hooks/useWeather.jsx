@@ -6,12 +6,12 @@ import {
 import delay from '../utils/delay';
 const DELAYTIME = 1000;
 
-const useWeather = (locationString) => {
+const useWeather = () => {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchWeather = async () => {
+  const fetchWeather = async (locationString) => {
     try {
       setLoading(true);
       // ! loading 상태를 보여주기 위한 delay 함수

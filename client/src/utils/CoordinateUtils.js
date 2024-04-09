@@ -1,14 +1,4 @@
-var RE = 6371.00877; // 지구 반경(km)
-var GRID = 5.0; // 격자 간격(km)
-var SLAT1 = 30.0; // 투영 위도1(degree)
-var SLAT2 = 60.0; // 투영 위도2(degree)
-var OLON = 126.0; // 기준점 경도(degree)
-var OLAT = 38.0; // 기준점 위도(degree)
-var XO = 43; // 기준점 X좌표(GRID)
-var YO = 136; // 기1준점 Y좌표(GRID)
-//
-// LCC DFS 좌표변환 ( code : "toXY"(위경도->좌표, v1:위도, v2:경도), "toLL"(좌표->위경도,v1:x, v2:y) )
-//
+import { RiContactsBookLine } from 'react-icons/ri';
 
 // 출처 : https://gist.github.com/fronteer-kr/14d7f779d52a21ac2f16
 var RE = 6371.00877; // 지구 반경(km)
@@ -23,7 +13,7 @@ var YO = 136; // 기1준점 Y좌표(GRID)
 // LCC DFS 좌표변환 ( code : "toXY"(위경도->좌표, v1:위도, v2:경도), "toLL"(좌표->위경도,v1:x, v2:y) )
 //
 
-const translateCoord = (code, v1, v2) => {
+const translateCoord = (v1, v2, code = 'toXY') => {
   var DEGRAD = Math.PI / 180.0;
   var RADDEG = 180.0 / Math.PI;
 
@@ -42,7 +32,7 @@ const translateCoord = (code, v1, v2) => {
   var ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
   ro = (re * sf) / Math.pow(ro, sn);
   var rs = {};
-  if (code == 'toXY') {
+  if (code === 'toXY') {
     rs['lat'] = v1;
     rs['lng'] = v2;
     var ra = Math.tan(Math.PI * 0.25 + v1 * DEGRAD * 0.5);
@@ -59,7 +49,7 @@ const translateCoord = (code, v1, v2) => {
     var xn = v1 - XO;
     var yn = ro - v2 + YO;
     ra = Math.sqrt(xn * xn + yn * yn);
-    if (sn < 0.0) -ra;
+    if (sn < 0.0) ra *= -1;
     var alat = Math.pow((re * sf) / ra, 1.0 / sn);
     alat = 2.0 * Math.atan(alat) - Math.PI * 0.5;
 
@@ -68,7 +58,7 @@ const translateCoord = (code, v1, v2) => {
     } else {
       if (Math.abs(yn) <= 0.0) {
         theta = Math.PI * 0.5;
-        if (xn < 0.0) -theta;
+        if (xn < 0.0) theta *= -1;
       } else theta = Math.atan2(xn, yn);
     }
     var alon = theta / sn + olon;
@@ -81,7 +71,7 @@ const translateCoord = (code, v1, v2) => {
 const getNxNyFromLatLong = ({ documents }) => {
   // 검색어가 모호하여 결과값이 많을 땐 가장 첫 데이터가 포괄적인 정보를 담고 있음
   const address = documents[0];
-  const { x: latitude, y: longitutd } = address;
+  const { x: longitutd, y: latitude } = address;
   const { nx, ny } = translateCoord(latitude, longitutd);
   return { nx, ny };
 };

@@ -1,16 +1,16 @@
 // import Components
 import SearchForm from '../../Composite/SearchForm/SearchForm';
 // import CustomHooks
-import useTranslation from '../../../hooks/useTranslation';
+import useWeather from '../../../hooks/useWeather';
 import useSearchRef from '../../../hooks/useSearchRef';
 const ConditionalSearchForm = () => {
   const inputRef = useSearchRef();
   // TODO LatLong 값 전역으로 빼기
-  const { fetchLatLong, LatlLong, error, isLoading } = useTranslation();
+  const { fetchWeather, weather, error, isLoading } = useWeather();
 
   const handleClick = () => {
     const locationString = inputRef.current?.value;
-    if (locationString) fetchLatLong(locationString);
+    if (locationString) fetchWeather(locationString);
   };
 
   if (isLoading) return <SearchForm.Loading />;
