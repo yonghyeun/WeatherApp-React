@@ -49,12 +49,21 @@ const fetchLocationFromString = async (locationString) => {
  */
 const fetchForecastFromLocation = async (locationObject) => {
   try {
-    console.log(locationObject);
     const { APIKEY, URI } = weatherForecastAPI;
-    console.log(locationObject);
     const { nx, ny } = getNxNyFromLatLong(locationObject);
     const { baseDate } = getCurrentTime();
-    const ENDPOINT = `${URI}&base_date=${baseDate}&nx=${nx}&ny=${ny}&serviceKey=${APIKEY}`;
+    const searchParams = new URLSearchParams([
+      ['serviceKey', APIKEY],
+      ['base_date', baseDate],
+      ['nx', nx],
+      ['ny', ny],
+      ['base_time', '0500'],
+      ['pageNo', 1],
+      ['numOfRows', 1000],
+      ['dataType', 'JSON'],
+    ]);
+
+    const ENDPOINT = `${URI}?${searchParams.toString()}`;
     const response = await fetch(ENDPOINT);
 
     if (!response.ok)
