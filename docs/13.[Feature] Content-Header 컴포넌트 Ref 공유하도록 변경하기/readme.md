@@ -739,3 +739,55 @@ export default SearchForm;
 ```
 
 슬슬 꾸미기를 시작해야 할 것 같아서 `Boostraps` 의 버튼들을 가져와 사용해줬다.
+
+![alt text](image-7.png)
+
+현재까지의 진행 사항 ..
+
+### 그래서 작동은 하니 ?
+
+서울특별시 도봉구 도봉1동으로 검색하면
+
+```json
+{
+  "documents": [
+    {
+      "address": {
+        "address_name": "서울 도봉구 도봉1동",
+        "b_code": "",
+        "h_code": "1132052100",
+        "main_address_no": "",
+        "mountain_yn": "N",
+        "region_1depth_name": "서울",
+        "region_2depth_name": "도봉구",
+        "region_3depth_h_name": "도봉1동",
+        "region_3depth_name": "",
+        "sub_address_no": "",
+        "x": "127.043421525468",
+        "y": "37.6786793222899"
+      },
+      "address_name": "서울 도봉구 도봉1동",
+      "address_type": "REGION",
+      "road_address": null,
+      "x": "127.043421525468",
+      "y": "37.6786793222899"
+    }
+  ],
+  "meta": {
+    "is_end": true,
+    "pageable_count": 1,
+    "total_count": 1
+  }
+}
+```
+
+다음과 같이 `document , meta` 프로퍼티를 가지는 `JSON` 객체를 반환해준다.
+
+만약 정보 검색에 실패하면 에러가 발생하는 것이 아니라 다음과 같이 뜬다.
+
+```json
+{
+  "documents": [],
+  "meta": { "is_end": true, "pageable_count": 0, "total_count": 0 }
+}
+```

@@ -20,7 +20,7 @@ const useTranslation = () => {
       const encodeQuery = encodeURIComponent(location);
       const ENDPOINT = `${URI}?query=${encodeQuery}`;
       setIsLoading(true);
-      // ! loading 상태를 유지하기 위한 delay 함수
+      // ! loading 상태를 흉내내기 위한 delay 함수
       await delay(1000);
       const response = await fetch(ENDPOINT, {
         headers: {
