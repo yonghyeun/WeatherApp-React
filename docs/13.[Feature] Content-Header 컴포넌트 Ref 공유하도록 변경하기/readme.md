@@ -791,3 +791,174 @@ export default SearchForm;
   "meta": { "is_end": true, "pageable_count": 0, "total_count": 0 }
 }
 ```
+
+---
+
+# `useTranslation` 훅을 변경하자
+
+현재 `useTranslation` 훅은 검색되는 지역명을 카카오 API 에 요청을 보내 위경도 값을 가져오는 훅이다.
+
+본래 해당 훅을 만들 때는 모듈화를 위해
+
+`useTranslation` 으로 위경도 가져오고 ~ 뭐 `useTransation2` 훅으로 위경도 값을 기상청 API 인 `nx , ny` 좌표로 계산하고 ~ `useWeather` 훅을 만들어서 `nx , ny` 값으로 기상 정보를 가져와야지 ~
+
+이렇게 단순하게 생각했었다.
+
+하지만 생각해보니 커스텀훅이 한 컴포넌트에서 연속적으로 사용 되는 것이 코드의 흐름을 파악하기 더 어려울 것 같았다.
+
+또 , 3가지 커스텀훅이 존재한다는 것은 3가지 커스텀훅들의 `isLoading ,error` 와 같은 상태 값들이 3가지가 존재한다는 것으로
+
+동일한 의미를 가진 상태가 중복적으로 3개나 존재 할 필요가 없을 것 같았다.
+
+> 의미론적으로 각 커스텀 훅 내부에 존재하는 `isLoading , error` 상태값은 같은 의미를 갖는다.
+
+그 ! 래 ! 서 !
+
+`useTranslation` 훅의 전체 흐름은 유지하되 , 지역명 단어 위경도로 변환 -> 위경도를 기상청에서 사용하는 nx,ny 좌표계로 변환 -> nx , ny 좌표계를 이용해 기상청으로 API 요청
+
+3가지 단계를 유틸 함수들의 조합으로 이뤄진 하나의 커스텀훅으로 만들기로 하였다.
+
+# `useWeather` 커스텀 훅 생성하기
+
+```jsx
+import { useState } from 'react';
+import {
+  fetchForecastFromLocation,
+  fetchLocationFromString,
+} from '../utils/ApiUtils';
+import delay from '../utils/delay';
+
+const DELAYTIME = 1000;
+
+const useWeather = () => {
+  const [weather, setWeather] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
+
+  const fetchWeather = async (locationString) => {
+    try {
+      setisLoading(true);
+      // ! isLoading 상태를 보여주기 위한 delay 함수
+      delay(DELAYTIME);
+      const locationObject = await fetchLocationFromString(locationString);
+      const forecastWeater = await fetchForecastFromLocation(locationObject);
+      setWeather(forecastWeater);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setisLoading(false);
+      if (error)
+        setTimeout(() => {
+          setError(null);
+        }, DELAYTIME);
+    }
+  };
+
+  return { fetchWeather, weather, error, isLoading };
+};
+
+export default useWeather;
+```
+
+`useWeather` 커스텀훅은 내부에서 `fetchLocationFromString` , `fetchForecastFromLocation` 메소드 호출을 통해
+
+`SearchForm.Input` 에 적혀서 제출된 문자열을 통해 `fetchLocationFromString` 함수로
+
+위치정보가 담긴 `locationObject` 를 반환한다.
+
+`fetch...` 메소드들은 모두 따로 `utls/APIUtils.js` 라는 새로운 파일에 정의해주었다.
+
+`fetchLocationFromString` 은 카카오 `API` 를 이용하여 위경도를 가져오는 메소드이다.
+
+이후 `locationObject` 내부에 존재하는 위경도 값을 가지고 날씨 데이터를 기상청에서 `fetching` 해오도록 하자
+
+`fetchForecastFromLocation` 함수가 실행되고 나면 `JSON` 형태의 날씨 값이 담긴 객체 결과값을 가져오는 커스텀 훅이다.
+
+이 때 패칭 과정에 따라 `loading , error` 상태가 지속적으로 변경된다.
+
+# `ConditionalSearchForm` 훅내에서 커스텀 훅 이용하기
+
+```jsx
+import moduleCss from './ContentHeader.module.css';
+
+import SearchArea from '../../../@components/UI/SearchArea.jsx/SearchArea';
+import ThemeButton from '../../../@components/UI/ThemeButton/ThemeButton';
+import TempButton from '../../../@components/UI/TempButton/TempButton';
+
+import useTheme from '../../../hooks/useTheme';
+
+const ContentHeader = () => {
+  const { theme } = useTheme();
+  return (
+    <header style={{ ...theme.Default }} className={moduleCss.contentHeader}>
+      <SearchArea />
+      <section style={{ ...theme.Default }} className={moduleCss.buttonWrapper}>
+        <TempButton />
+        <ThemeButton />
+      </section>
+    </header>
+  );
+};
+
+export default ContentHeader;
+```
+
+```jsx
+// import Components
+import SearchForm from '../../Composite/SearchForm/SearchForm';
+// import CustomHooks
+import useWeather from '../../../hooks/useWeather';
+import useSearchRef from '../../../hooks/useSearchRef';
+const ConditionalSearchForm = () => {
+  const inputRef = useSearchRef();
+  // TODO LatLong 값 전역으로 빼기
+  const { fetchWeather, weather, error, isLoading } = useWeather();
+
+  const handleClick = () => {
+    const locationString = inputRef.current?.value;
+    if (locationString) fetchWeather(locationString);
+  };
+
+  if (isLoading) return <SearchForm.Loading />;
+  if (error) return <SearchForm.Error error={error.message} />;
+  return <SearchForm.Normal onClick={handleClick} />;
+};
+
+export default ConditionalSearchForm;
+```
+
+`ContentHeader` 레이아웃 내부에 존재하는 `ConditionalSearchForm` 컴포넌트는 `SearchForm.Normal` 의`Button`이 눌릴 때 마다 `isLoading , error` 상태에 따라 렌더링이 변하는 컴포넌트이다.
+
+![alt text](image-8.png)
+
+버튼이 눌려 패칭을 시작 할 때 `useWeather` 훅이 실행되면서 `2000ms` 간 로딩 상태가 되어 로딩 중인 컴포넌트로 변경되고
+
+![alt text](image-9.png)
+
+만약 패칭 도중 에러가 발생하면 다음과 같이 에러 메시지가 뜨며 `2000ms` 간 에러 메시지를 띄운다.
+
+올바른 지역명을 검색하여 날씨정보를 올바르게 가져오게 된다면 다음과 같은 정보를 가져온다.
+
+```
+{
+    "response": {
+        "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL_SERVICE"
+        },
+        "body": {
+            "dataType": "JSON",
+            "items": {
+                "item": [
+                    {
+                        "baseDate": "20240410",
+                        "baseTime": "0500",
+                        "category": "TMP",
+                        "fcstDate": "20240410",
+                        "fcstTime": "0600",
+                        "fcstValue": "8",
+                        "nx": 61,
+                        "ny": 129
+                    },
+...
+```

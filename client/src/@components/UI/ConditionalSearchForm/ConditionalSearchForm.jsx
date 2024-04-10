@@ -14,7 +14,7 @@ const ConditionalSearchForm = () => {
   };
 
   if (isLoading) return <SearchForm.Loading />;
-  if (error) return <SearchForm.Error />;
+  if (error) return <SearchForm.Error error={error.message} />;
   return <SearchForm.Normal onClick={handleClick} />;
 };
 

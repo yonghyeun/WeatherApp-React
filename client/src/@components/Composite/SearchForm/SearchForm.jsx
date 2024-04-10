@@ -61,8 +61,21 @@ const SearchErrorButton = ({ width, height }) => {
   // TODO 에러 발생 시 사용할 아이콘 찾기
   return (
     <Button
-      item={<LoadingCircle width={width} height={height} />}
+      item={<SearchIcon width={width} height={height} />}
       className={moduleCss.searchButton}
+    />
+  );
+};
+
+const SearchErrorInput = ({ error }) => {
+  const inputRef = useSearchRef();
+
+  return (
+    <Input
+      ref={inputRef}
+      className={moduleCss.searchInput}
+      defaultValue={error}
+      readOnly={true}
     />
   );
 };
@@ -85,10 +98,10 @@ const SearchLoading = ({ width, height }) => {
   );
 };
 
-const SearchError = ({ width, height }) => {
+const SearchError = ({ width, height, error }) => {
   return (
     <SearchForm>
-      <SearchLoadingInput />
+      <SearchErrorInput error={error} />
       <SearchErrorButton width={(width, height)} />
     </SearchForm>
   );
@@ -99,6 +112,7 @@ SearchForm.Input = SearchInput;
 
 SearchForm.LoadingButton = SearchLoadingButton;
 SearchForm.LoadingInput = SearchLoadingInput;
+SearchForm.ErrorInput = SearchErrorInput;
 SearchForm.ErrorButton = SearchErrorButton;
 
 SearchForm.Normal = SearchNormal;

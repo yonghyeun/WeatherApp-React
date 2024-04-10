@@ -9,11 +9,11 @@ const getCurrentTime = () => {
     .toLocaleDateString()
     .split('.')
     .slice(0, 3)
-    .map((str) => str.replace(' ', 0))
+    .map((str) => str.trim().padStart(2, 0))
     .join('');
 
   const hours = new Date().getHours();
-  const baseTime = hours < 10 ? `0${hours}00` : `${hours}00`;
+  const baseTime = hours < 18 ? `${hours}00` : `${hours}00`;
 
   return {
     year: currentTime[0],

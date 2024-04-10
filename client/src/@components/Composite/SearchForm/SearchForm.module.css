@@ -1,15 +1,21 @@
 .searchForm {
   display: flex;
   justify-content: center;
-  padding: 1rem;
   align-items: center;
+  padding: 1rem;
+  width: 30rem;
 }
 
 .searchInput {
   padding: 0.5rem;
   text-align: center;
+  width: 100%;
 }
 
 .searchButton {
   padding: 0.5rem;
+}
+
+.searchAlert {
+  color: red;
 }

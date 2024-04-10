@@ -9,28 +9,28 @@ const DELAYTIME = 1000;
 const useWeather = () => {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const fetchWeather = async (locationString) => {
     try {
-      setLoading(true);
-      // ! loading 상태를 보여주기 위한 delay 함수
-      delay(DELAYTIME);
+      setisLoading(true);
+      // ! isLoading 상태를 보여주기 위한 delay 함수
+      await delay(DELAYTIME);
       const locationObject = await fetchLocationFromString(locationString);
       const forecastWeater = await fetchForecastFromLocation(locationObject);
       setWeather(forecastWeater);
     } catch (e) {
+      console.error(e);
       setError(e);
+      setTimeout(() => {
+        setError(null);
+      }, DELAYTIME);
     } finally {
-      setLoading(false);
-      if (error)
-        setTimeout(() => {
-          setError(null);
-        }, DELAYTIME);
+      setisLoading(false);
     }
   };
 
-  return { fetchWeather, weather, error, loading };
+  return { fetchWeather, weather, error, isLoading };
 };
 
 export default useWeather;

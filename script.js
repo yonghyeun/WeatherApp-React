@@ -1,8 +1,8 @@
-const searchParams = new URLSearchParams([
-  ['base_time', '0500'],
-  ['pageNo', 1],
-  ['numOfRows', 1000],
-  ['dataType', 'JSON'],
-]);
-
-console.log(searchParams.toString());
+console.log(
+  new Date()
+    .toLocaleDateString()
+    .split('.')
+    .slice(0, 3)
+    .map((str) => str.trim().padStart(2, 0))
+    .join(''),
+);
