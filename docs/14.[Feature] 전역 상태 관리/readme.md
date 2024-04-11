@@ -212,4 +212,18 @@ Ref : https://egghead.io/lessons/react-redux-the-single-immutable-state-tree
 
 ### `Descripbing State Changes with Actions`
 
-![alt text](image-1.png)
+<img src = 'https://ko.redux.js.org/assets/images/one-way-data-flow-04fe46332c1ccb3497ecb04b94e55b97.png' >
+
+기본적으로 `Redux` 에서는 다음과 같이 `View , State , Action` 의 흐름으로 진행된다 이야기 했었다.
+
+![alt text](image-2.png)
+
+앱이 복잡해짐에 따라 `state` 의 변화를 한 번에 하는 것이 아닌 , `type`과 `payload` 가 적힌 `action` 객체를 이용하는 것이 상태 변화를 추적하기 더 쉽게 만들어주었다.
+
+### `Redux : The Reducer Function`
+
+The Reducer function in Redux , given previous state and action object having type , payloaded properties
+
+Reducer makes new state without changes previous state , thats why we called reducerr is pure function.
+
+### `createStore Polyfill`

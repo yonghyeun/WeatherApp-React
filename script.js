@@ -1,8 +1,19 @@
-console.log(
-  new Date()
-    .toLocaleDateString()
-    .split('.')
-    .slice(0, 3)
-    .map((str) => str.trim().padStart(2, 0))
-    .join(''),
-);
+const createStore = (reducer) => {
+  let state;
+  let listners = [];
+
+  const getState = () => state;
+
+  const dispatch = (action) => {
+    state = reducer(state, action);
+    listners.forEach((listner) => listner());
+  };
+
+  const subscribe = (listenr) => {
+    listners.push(listners);
+
+    return () => {
+      listners.filter((l) => l !== listenr);
+    };
+  };
+};

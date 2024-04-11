@@ -47,7 +47,7 @@ const fetchForecastFromLocation = async (locationObject) => {
     ['base_date', baseDate],
     ['nx', nx],
     ['ny', ny],
-    ['base_time', '0500'],
+    ['base_time', '0500'], // ! 기상청의 baseTime 은 항상 해당 일 0500 으로 고정
     ['pageNo', 1],
     ['numOfRows', 1000],
     ['dataType', 'JSON'],
