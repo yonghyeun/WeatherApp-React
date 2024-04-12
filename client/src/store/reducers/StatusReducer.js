@@ -1,6 +1,6 @@
 import { API_STATUS } from '../actions/actionTypes';
 
-const initalState = {};
+const initalState = { status: 'OK' };
 const statusReducer = (state = initalState, action) => {
   switch (action.type) {
     case API_STATUS:

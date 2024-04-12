@@ -6,8 +6,7 @@ import DashboardWrapper from './@components/UI/DashboardWrapper/DashboardWrapper
 // import Layout
 import SidebarLayout from './layouts/SideBarLayout/SidebarLayout';
 import ContentLayout from './layouts/ContentLayout/ContentLayout';
-// import style
-import './index.css';
+
 // import store
 import store from './store/store';
 

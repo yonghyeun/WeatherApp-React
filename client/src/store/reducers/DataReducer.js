@@ -1,4 +1,5 @@
 import { SEARCH_DATA, FETCHING_DATA } from '../actions/actionTypes';
+// TODO inital State localStorage 에서 가져오기
 
 const dataReducer = (state = {}, action) => {
   switch (action.type) {
