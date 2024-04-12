@@ -3,9 +3,9 @@ import moduleCss from './ThemeButton.module.css';
 // import Component
 import Button from '../Button/Button';
 // import CustomHooks
-import useThemeToggle from '../../../hooks/useThemeToggle';
+import useDispatchTheme from '../../../hooks/useDispatchTheme';
 const ThemeButton = () => {
-  const handleTheme = useThemeToggle();
+  const handleTheme = useDispatchTheme();
   return (
     <Button
       item='theme button'

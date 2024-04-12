@@ -279,27 +279,27 @@ export default DashboardWrapper;
 
 그럼 이제 `ThemeButton` 의 `onClick` 이벤트에 테마를 변경시키는 이벤트 핸들러를 부착해줘야 한다.
 
-### `useThemeToggle`
+### `useDispatchTheme`
 
 ```jsx
-import { useSelector, useDispatch } from 'react-redux';
 import { TOGGLE_THEME } from '../store/actions/actionTypes';
-const useThemeToggle = () => {
-  const dispatch = useDispatch();
+import { useDispatch, useSelector } from 'react-redux';
+
+const useDispatchTheme = () => {
   const { theme } = useSelector((state) => state.theme);
-  const nextTheme = theme === 'dark' ? 'light' : 'dark';
+  const newTheme = theme === 'dark' ? 'light' : 'dark';
+  const dispatch = useDispatch();
+  const themeAction = { type: TOGGLE_THEME, payload: newTheme };
 
-  const handleTheme = () => {
-    dispatch({ type: TOGGLE_THEME, payload: nextTheme });
+  return () => {
+    dispatch(themeAction);
   };
-
-  return handleTheme;
 };
 
-export default useThemeToggle;
+export default useDispatchTheme;
 ```
 
-`useThemeToggle` 은 `useSelector` 훅을 이용하여 `store` 에 저장되어 있는 `state` 중 `theme state` 를 가져오고
+`useDispatchTheme` 은 `useSelector` 훅을 이용하여 `store` 에 저장되어 있는 `state` 중 `theme state` 를 가져오고
 
 가져온 `theme state` 를 이용해 다음 변경 예정인 `nextTheme` 을 지정하고
 
@@ -313,9 +313,9 @@ import moduleCss from './ThemeButton.module.css';
 // import Component
 import Button from '../Button/Button';
 // import CustomHooks
-import useThemeToggle from '../../../hooks/useThemeToggle';
+import useDispatchTheme from '../../../hooks/useDispatchTheme';
 const ThemeButton = () => {
-  const handleTheme = useThemeToggle();
+  const handleTheme = useDispatchTheme();
   return (
     <Button
       item='theme button'
