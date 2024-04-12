@@ -9,7 +9,8 @@ import moduleCss from './SearchForm.module.css';
 
 // import customHooks
 import useSearchRef from '../../../hooks/useSearchRef';
-
+import useFetching from '../../../hooks/useFetching';
+import useAPIStatus from '../../../hooks/useAPIStatus';
 const SearchForm = ({ children }) => {
   return <Form className={moduleCss.searchForm}>{children}</Form>;
 };
@@ -67,24 +68,26 @@ const SearchErrorButton = ({ width, height }) => {
   );
 };
 
-const SearchErrorInput = ({ error }) => {
+const SearchErrorInput = () => {
   const inputRef = useSearchRef();
-
+  const message = useAPIStatus();
   return (
     <Input
       ref={inputRef}
       className={moduleCss.searchInput}
-      defaultValue={error}
+      defaultValue={message}
       readOnly={true}
     />
   );
 };
 
-const SearchNormal = ({ onClick }) => {
+const SearchNormal = () => {
+  const handleFetching = useFetching();
+
   return (
     <SearchForm>
       <SearchInput />
-      <SearchButton onClick={onClick} />
+      <SearchButton onClick={handleFetching} />
     </SearchForm>
   );
 };
@@ -98,7 +101,8 @@ const SearchLoading = ({ width, height }) => {
   );
 };
 
-const SearchError = ({ width, height, error }) => {
+const SearchError = ({ width, height }) => {
+  const error = useAPIStatus();
   return (
     <SearchForm>
       <SearchErrorInput error={error} />

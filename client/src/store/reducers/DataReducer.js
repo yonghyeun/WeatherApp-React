@@ -1,11 +1,11 @@
-import { SEARCH_DATA, FETCHING_DATA } from '../actions/actionTypes';
+import { FETCHING_LOCATION, FETCHING_WEATHER } from '../actions/actionTypes';
 // TODO inital State localStorage 에서 가져오기
 
 const dataReducer = (state = {}, action) => {
   switch (action.type) {
-    case SEARCH_DATA:
+    case FETCHING_LOCATION:
       return { ...state, fethedLocation: action.payload };
-    case FETCHING_DATA:
+    case FETCHING_WEATHER:
       return { ...state, fetchedWeather: action.payload };
     default:
       return state;

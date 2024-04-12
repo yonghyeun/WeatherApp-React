@@ -76,4 +76,9 @@ const getNxNyFromLatLong = ({ documents }) => {
   return { nx, ny };
 };
 
-export { translateCoord, getNxNyFromLatLong };
+const getAddressName = ({ document }) => {
+  const address = document[0];
+  return address.address_name;
+};
+
+export { translateCoord, getNxNyFromLatLong, getAddressName };
