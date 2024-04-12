@@ -7,13 +7,10 @@ import {
   LicenseLogo,
 } from '../../../@components/UI/Logo/Logo';
 
-import useTheme from '../../../hooks/useTheme';
-
 const ContentFooter = () => {
-  const { theme } = useTheme();
   return (
-    <footer style={{ ...theme.Default }} className={moduleCss.contentFooter}>
-      <section style={{ ...theme.Default }} className={moduleCss.information}>
+    <footer className={moduleCss.contentFooter}>
+      <section className={moduleCss.information}>
         <Information />
         <Wrapper.Parent className={moduleCss.logoWrapper}>
           <LicenseLogo />
