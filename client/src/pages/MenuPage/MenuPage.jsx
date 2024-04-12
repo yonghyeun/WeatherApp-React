@@ -1,13 +1,11 @@
 import moduleCss from './MenuPage.module.css';
 
 import Wrapper from '../../@components/Composite/Wrapper/Wrapper';
-import useTheme from '../../hooks/useTheme';
 // TODO 내용 채우기
 const MenuPage = () => {
-  const { theme } = useTheme();
   return (
-    <section style={{ ...theme.Default }} className={moduleCss.menu}>
-      <section style={{ ...theme.Default }} className={moduleCss.menuContent}>
+    <section className={moduleCss.menu}>
+      <section className={moduleCss.menuContent}>
         <Wrapper.Parent ratio={[0.6, 0.4]} height='150%'>
           <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
           <Wrapper.Vertical ratio={[0.5, 0.5]}>

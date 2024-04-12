@@ -1,6 +1,6 @@
 import { SEARCH_LOCATION, FETCHING_DATA } from '../actions/actionTypes';
 
-const dataReducer = (state, action) => {
+const dataReducer = (state = {}, action) => {
   switch (action.type) {
     case SEARCH_LOCATION:
       return { ...state, location: action.payload };

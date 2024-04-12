@@ -227,3 +227,5 @@ The Reducer function in Redux , given previous state and action object having ty
 Reducer makes new state without changes previous state , thats why we called reducerr is pure function.
 
 ### `createStore Polyfill`
+
+그냥 여기까지만 하고 튜토리얼 보고 진행하기로 했다.
