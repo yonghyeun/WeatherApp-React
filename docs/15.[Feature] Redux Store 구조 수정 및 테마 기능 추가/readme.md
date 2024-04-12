@@ -54,7 +54,8 @@ export default dataReducer;
 ```jsx
 import { API_STATUS } from '../actions/actionTypes';
 
-const statusReducer = (state, action) => {
+const initalState = { status: 'OK' };
+const statusReducer = (state = initalState, action) => {
   switch (action.type) {
     case API_STATUS:
       return { ...state, status: action.payload };
@@ -121,16 +122,6 @@ export default rootReducer;
 
 `rootReducer` 는 3가지의 리듀서를 하나로 `combine` 시킨 리듀서이다.
 
-해당 리듀서를 이용하는 `store` 는 다음과 같이 생긴 `state` 를 갖게 된다.
-
-```jsx
-state = {
-  status: ...
-  data: {fetchLocation : .. , fetchWeather : ..},
-  theme: ...
-};
-```
-
 ## `Store`
 
 ### `store/store`
@@ -145,6 +136,10 @@ export default store;
 ```
 
 여러 리듀서가 컴바인 된 `rootReducer` 를 이용해 `store` 를 생성해준다.
+
+해당 리듀서를 이용하는 `store` 는 다음과 같이 생긴 `state` 를 갖게 된다.
+
+![alt text](image-1.png)
 
 ## `Provider`
 
@@ -181,3 +176,158 @@ export default Dashboard;
 ```
 
 이를 통해 전역에 존재하는 컴포넌트들이 `store` 에 저장된 `state` 에 접근하고 수정하는 것이 가능하게 되었다.
+
+# 전체 컴포넌트에 테마 상태 주입하기
+
+```jsx
+import { useSelector } from 'react-redux';
+
+const useTheme = () => {
+  const { theme } = useSelector((state) => state.theme);
+  return theme;
+};
+
+export default useTheme;
+```
+
+이전 사용하던 `useTheme` 는 `Context` 에서 값을 가져왔다면
+
+이번 수정된 `useTheme` 는 `store` 에 저장되어 있는 `state` 중 `theme` 값을 가져와
+
+반환하도록 수정되었다.
+
+또한 추가로 추가된 점은 이전엔 `theme` 와 관련된 스타일을 객체로 받아 모두 인라인으로 주입했으나
+
+인라인 스타일은 성능에 악영향을 미치기 때문에 클래스 명을 반환하는 형태로 변경하였다.
+
+**`src/theme.css`**
+
+```css
+.dark {
+  background-color: #1e1e1e;
+  border: 1px solid #555;
+  color: white;
+  box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
+}
+
+.light {
+  background-color: #fafafa;
+  border: 1px solid black;
+  color: black;
+  box-shadow: 5px 5px 5px gray;
+}
+
+/* TODO .dark-title 이나 light-title 과 같은 세부적인 스타일링 정하기  */
+```
+
+루트 폴더에 `theme.css` 를 추가해주고 엔트리파일인 `index.js` 에서 해당 스타일 시트를 가져오는 것으로 변경하였다.
+
+### 잘 되나 확인하기
+
+```jsx
+// import Context
+import { Provider } from 'react-redux';
+
+// import Component
+import DashboardWrapper from './@components/UI/DashboardWrapper/DashboardWrapper';
+// import Layout
+import SidebarLayout from './layouts/SideBarLayout/SidebarLayout';
+import ContentLayout from './layouts/ContentLayout/ContentLayout';
+
+// import store
+import store from './store/store';
+
+const Dashboard = () => {
+  return (
+    <Provider store={store}>
+      <DashboardWrapper>
+        <SidebarLayout />
+        <ContentLayout />
+      </DashboardWrapper>
+    </Provider>
+  );
+};
+
+export default Dashboard;
+```
+
+해당 전체 페이지 구조에서 `DashboardWrapper` 에서 클래스 명을 추가해주도록 하자
+
+```jsx
+import useTheme from '../../../hooks/useTheme';
+import moduleCss from './DashboardWrapper.module.css';
+
+const DashboardWrapper = ({ children }) => {
+  const theme = useTheme();
+  return (
+    <section className={`${moduleCss.dashBoardWrapper} ${theme}`}>
+      {children}
+    </section>
+  );
+};
+
+export default DashboardWrapper;
+```
+
+다음처럼 `useTheme` 를 이용해 테마를 가져오 클래스명에 테마를 추가해주니 잘 작동한다.
+
+> 추후 모든 컴포넌트에 테마 별 클래스명을 생성해두고 붙여주도록 하자
+
+![alt text](image-2.png)
+
+# 테마 버튼에 이벤트 핸들러 부착하기
+
+그럼 이제 `ThemeButton` 의 `onClick` 이벤트에 테마를 변경시키는 이벤트 핸들러를 부착해줘야 한다.
+
+### `useThemeToggle`
+
+```jsx
+import { useSelector, useDispatch } from 'react-redux';
+import { TOGGLE_THEME } from '../store/actions/actionTypes';
+const useThemeToggle = () => {
+  const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
+  const nextTheme = theme === 'dark' ? 'light' : 'dark';
+
+  const handleTheme = () => {
+    dispatch({ type: TOGGLE_THEME, payload: nextTheme });
+  };
+
+  return handleTheme;
+};
+
+export default useThemeToggle;
+```
+
+`useThemeToggle` 은 `useSelector` 훅을 이용하여 `store` 에 저장되어 있는 `state` 중 `theme state` 를 가져오고
+
+가져온 `theme state` 를 이용해 다음 변경 예정인 `nextTheme` 을 지정하고
+
+`useDispatch` 를 이용하여 다음으로 변경 될 `nextTheme` 을 기억하는 클로저 함수인 `handleTheme` 를 반환한다.
+
+### 변경된 `ThemeButton`
+
+```jsx
+// import moduleCss
+import moduleCss from './ThemeButton.module.css';
+// import Component
+import Button from '../Button/Button';
+// import CustomHooks
+import useThemeToggle from '../../../hooks/useThemeToggle';
+const ThemeButton = () => {
+  const handleTheme = useThemeToggle();
+  return (
+    <Button
+      item='theme button'
+      className={moduleCss.themeButton}
+      onClick={handleTheme}
+    />
+  );
+};
+
+export default ThemeButton;
+```
+
+`ThemeButton`의 `onClick` 이벤트 핸들러로 `handleTheme` 를 부착시켜주면
+
+버튼을 누를 때 마다 `dispatch` 가 담긴 메소드가 재정의 , 호출되면서 테마가 잘 변경되는 모습을 볼 수 있다.
