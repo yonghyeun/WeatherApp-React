@@ -76,8 +76,8 @@ const getNxNyFromLatLong = ({ documents }) => {
   return { nx, ny };
 };
 
-const getAddressName = ({ document }) => {
-  const address = document[0];
+const getAddressName = ({ documents }) => {
+  const address = documents[0];
   return address.address_name;
 };
 
