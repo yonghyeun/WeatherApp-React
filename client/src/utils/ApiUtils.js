@@ -60,9 +60,10 @@ const fetchForecastFromLocation = async (locationObject) => {
     throw new Error('기상청 API 네트워크가 불안정합니다. 다시 시도해주세요');
 
   const json = await response.json();
+  const weatherData = json.response.body.items.item;
   // TODO 세션 스토리지에 캐싱하는 로직 추가하기
 
-  return json;
+  return weatherData;
 };
 
 export { fetchLocationFromString, fetchForecastFromLocation };
