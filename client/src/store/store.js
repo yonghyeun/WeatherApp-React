@@ -1,6 +1,8 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './rootReducer';
 
 const store = createStore(rootReducer);
-console.log(store.getState((state) => state));
+store.subscribe(() => {
+  console.log(store.getState());
+});
 export default store;
