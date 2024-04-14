@@ -1,4 +1,8 @@
-import { KaKaoAPI, weatherForecastAPI } from '../@constants/_API';
+import {
+  KaKaoAPI,
+  weatherForecastAPI,
+  weatherTextAPI,
+} from '../@constants/_API';
 import { getNxNyFromLatLong } from './CoordinateUtils';
 import { getCurrentTime } from './DateUtils';
 
@@ -66,4 +70,35 @@ const fetchForecastFromLocation = async (locationObject) => {
   return weatherData;
 };
 
-export { fetchLocationFromString, fetchForecastFromLocation };
+const fetchForecastText = async () => {
+  const { APIKEY, URI } = weatherTextAPI;
+  const { baseDate } = getCurrentTime();
+  const searchParams = new URLSearchParams([
+    ['ServiceKey', APIKEY],
+    ['fromTmFc', baseDate],
+    ['toTmFc', baseDate],
+    ['dataType', 'JSON'],
+    ['stnId', '108'],
+    ['numOfRows', '10'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+
+  if (!response.ok)
+    throw new Error('기상청 API 네트워크가 불안정합니다.다시 시도해주세요');
+
+  const json = await response.json();
+  const weatherRowText = json.response.body.items.item[0]['t1'];
+  const weatherParsingText = weatherRowText
+    .split('\n\n')[0]
+    .split('(현황)')[1]
+    .replace('-', '\n')
+    .trim();
+  return weatherParsingText;
+};
+
+export {
+  fetchLocationFromString,
+  fetchForecastFromLocation,
+  fetchForecastText,
+};

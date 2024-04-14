@@ -1,4 +1,8 @@
-import { FETCHING_LOCATION, FETCHING_WEATHER } from '../actions/actionTypes';
+import {
+  FETCHING_LOCATION,
+  FETCHING_WEATHER,
+  FETCHING_WEATHERTEXT,
+} from '../actions/actionTypes';
 // TODO inital State localStorage 에서 가져오기
 
 const dataReducer = (state = {}, action) => {
@@ -7,6 +11,8 @@ const dataReducer = (state = {}, action) => {
       return { ...state, fethedLocation: action.payload };
     case FETCHING_WEATHER:
       return { ...state, fetchedWeather: action.payload };
+    case FETCHING_WEATHERTEXT:
+      return { ...state, fetchedWeatherText: action.payload };
     default:
       return state;
   }

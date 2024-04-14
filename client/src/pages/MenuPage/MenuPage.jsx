@@ -9,26 +9,22 @@ const MenuPage = () => {
         <Wrapper.Parent ratio={[0.6, 0.4]} height='150%'>
           <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
           <Wrapper.Vertical ratio={[0.5, 0.5]}>
-            <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+            <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
             <Wrapper.Horizontal>
-              <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
-              <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
+              <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+              <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
             </Wrapper.Horizontal>
           </Wrapper.Vertical>
         </Wrapper.Parent>
         <Wrapper.Parent height='40%'>
           <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
         </Wrapper.Parent>
-        <Wrapper.Parent ratio={[0.3, 0.2, 0.2, 0.3]} height='60%'>
+        <Wrapper.Parent ratio={[0.3, 0.3, 0.4]} height='60%'>
           <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
           <Wrapper.Vertical ratio={[0.6, 0.4]}>
             <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
-            <div style={{ backgroundColor: 'yellow', display: 'flex' }}></div>
-          </Wrapper.Vertical>
-          <Wrapper.Horizontal ratio={[0.4, 0.6]}>
-            <div style={{ backgroundColor: 'yellow', display: 'flex' }}></div>
             <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
-          </Wrapper.Horizontal>
+          </Wrapper.Vertical>
           <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
         </Wrapper.Parent>
       </section>

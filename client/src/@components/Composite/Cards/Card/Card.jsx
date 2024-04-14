@@ -11,5 +11,4 @@ Card.Text = ({ text, fontSize }) => (
 Card.TextStrong = ({ text, fontSize, fontWeight = 500 }) => (
   <p style={{ fontSize: { fontSize }, fontWeight: { fontWeight } }}>{text}</p>
 );
-
 Card.Icon = ({ src, alt, width }) => <img src={src} alt={alt} width={width} />;

@@ -9,4 +9,11 @@ const weatherForecastAPI = {
     'Jwxgv8BQexpONepfrXnbs1PdxJ35yKLwEEW0bTK4QpCwdpecz/5tqkdCYp5rjomx8BzXWmSJLwvpuYYk1msbmw==',
   URI: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst',
 };
-export { KaKaoAPI, weatherForecastAPI };
+
+const weatherTextAPI = {
+  APIKEY:
+    'Jwxgv8BQexpONepfrXnbs1PdxJ35yKLwEEW0bTK4QpCwdpecz/5tqkdCYp5rjomx8BzXWmSJLwvpuYYk1msbmw==',
+  URI: 'http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrInfo',
+};
+
+export { KaKaoAPI, weatherForecastAPI, weatherTextAPI };

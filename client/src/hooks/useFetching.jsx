@@ -1,18 +1,21 @@
 import useDIspatchLocation from './useDispatchLocation';
 import useDispatchWeather from './useDIspatchWeather';
 import useDispatchStatus from './useDisptachStatus';
+import useDispatchWeatherText from './useDispatchWeatherText';
 import useSearchRef from './useSearchRef';
 
 import delay from '../utils/delay';
 import {
   fetchForecastFromLocation,
   fetchLocationFromString,
+  fetchForecastText,
 } from '../utils/ApiUtils';
 import { getAddressName } from '../utils/CoordinateUtils';
 const DELAYTIME = 1000;
 
 const useFetching = () => {
   const dispatchWeather = useDispatchWeather();
+  const dispatchWeatherText = useDispatchWeatherText();
   const disptachLocation = useDIspatchLocation();
   const disptachStatus = useDispatchStatus();
   const inputRef = useSearchRef();
@@ -27,9 +30,11 @@ const useFetching = () => {
       const locationObject = await fetchLocationFromString(locationString);
       const addressName = getAddressName(locationObject);
       const forecastWeather = await fetchForecastFromLocation(locationObject);
+      const forecastText = await fetchForecastText();
       // TODO foreacastWeather 데이터 전처리 로직 추가하기
       disptachLocation(addressName);
       dispatchWeather(forecastWeather);
+      dispatchWeatherText(forecastText);
     } catch (e) {
       console.error(e);
       disptachStatus(e.message); // 에러시에는 에러 메시지를 status에 저장
