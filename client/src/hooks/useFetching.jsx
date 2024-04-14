@@ -26,12 +26,14 @@ const useFetching = () => {
       const locationString = inputRef.current.value;
       const locationObject = await fetchLocationFromString(locationString);
       const addressName = getAddressName(locationObject);
-      const forecastWeater = await fetchForecastFromLocation(locationObject);
+      const forecastWeather = await fetchForecastFromLocation(locationObject);
+      // TODO foreacastWeather 데이터 전처리 로직 추가하기
       disptachLocation(addressName);
-      dispatchWeather(forecastWeater);
+      dispatchWeather(forecastWeather);
     } catch (e) {
       console.error(e);
       disptachStatus(e.message); // 에러시에는 에러 메시지를 status에 저장
+      // TODO 에러 타입 별 에러 메시지 정리하기
       await delay(DELAYTIME);
     } finally {
       disptachStatus('OK');
