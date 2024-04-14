@@ -31,7 +31,7 @@ const useFetching = () => {
       const addressName = getAddressName(locationObject);
       const forecastWeather = await fetchForecastFromLocation(locationObject);
       const forecastText = await fetchForecastText();
-      // TODO foreacastWeather 데이터 전처리 로직 추가하기
+      // TODO dispatch Promise All 로 변경하기
       disptachLocation(addressName);
       dispatchWeather(forecastWeather);
       dispatchWeatherText(forecastText);
