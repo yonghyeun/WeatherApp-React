@@ -67,10 +67,7 @@ const fetchForecastFromLocation = async (locationObject) => {
     throw new Error('기상청 API 네트워크가 불안정합니다. 다시 시도해주세요');
 
   const json = await response.json();
-  const weatherData = json.response.body.items.item;
-  // TODO 세션 스토리지에 캐싱하는 로직 추가하기
-
-  return weatherData;
+  return json;
 };
 
 const fetchForecastText = async () => {
@@ -91,13 +88,7 @@ const fetchForecastText = async () => {
     throw new Error('기상청 API 네트워크가 불안정합니다.다시 시도해주세요');
 
   const json = await response.json();
-  const weatherRowText = json.response.body.items.item[0]['t1'];
-  const weatherParsingText = weatherRowText
-    .split('\n\n')[0]
-    .split('(현황)')[1]
-    .replace('-', '\n')
-    .trim();
-  return weatherParsingText;
+  return json;
 };
 
 const fetchNearstStationName = async (locationObject) => {
@@ -113,11 +104,12 @@ const fetchNearstStationName = async (locationObject) => {
   const ENDPOINT = `${URI}?${searchParams.toString()}`;
   const response = await fetch(ENDPOINT);
   const json = await response.json();
-  return json.response.body.items[0].stationName;
+  return json;
 };
 
-const fetchAirData = async (stationName) => {
+const fetchAirData = async (stationResponse) => {
   const { APIKEY, URI } = airAPI;
+  const { stationName } = stationResponse.response.body.items[0];
   const searchParams = new URLSearchParams([
     ['serviceKey', APIKEY],
     ['returnType', 'JSON'],
@@ -131,7 +123,7 @@ const fetchAirData = async (stationName) => {
   if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
 
   const json = await response.json();
-  return json.response.body.items[0];
+  return json;
 };
 
 const fetchAirTextPM = async () => {
@@ -148,7 +140,7 @@ const fetchAirTextPM = async () => {
   const response = await fetch(ENDPOINT);
   if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
   const json = await response.json();
-  return json.response.body.items[0];
+  return json;
 };
 const fetchAirTextO3 = async () => {
   const { APIKEY, URI } = airTextAPI;
@@ -164,7 +156,7 @@ const fetchAirTextO3 = async () => {
   const response = await fetch(ENDPOINT);
   if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
   const json = await response.json();
-  return json.response.body.items[0];
+  return json;
 };
 
 export {

@@ -37,14 +37,15 @@ const useFetching = () => {
       const locationString = inputRef.current.value;
       const locationObject = await fetchLocationFromString(locationString);
       const addressName = getAddressName(locationObject);
-      const nearstStationName = await fetchNearstStationName(locationObject);
+      const stationResponse = await fetchNearstStationName(locationObject);
       const forecastWeather = await fetchForecastFromLocation(locationObject);
       const forecastWeatherText = await fetchForecastText();
-      const forecastAir = await fetchAirData(nearstStationName);
+      const forecastAir = await fetchAirData(stationResponse);
       const airPMText = await fetchAirTextPM();
       const airO3Text = await fetchAirTextO3();
 
       // TODO dispatch  All 로 변경하기
+      // !도로명 주소 검색 시 미세먼지가 잘 패칭 되는지 확인하기
       disptachLocation(addressName);
       dispatchWeather(forecastWeather);
       dispatchWeatherText(forecastWeatherText);

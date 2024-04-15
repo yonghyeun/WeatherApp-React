@@ -7,19 +7,31 @@ import {
 } from '../actions/actionTypes';
 // TODO inital State localStorage 에서 가져오기
 
+import {
+  getWeatherData,
+  getAirData,
+  getParsingWeatherText,
+  getParsingAirText,
+} from './utils';
+
 const dataReducer = (state = {}, action) => {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case FETCHING_LOCATION:
-      return { ...state, fethedLocation: action.payload };
+      const fethedLocation = payload;
+      return { ...state, fethedLocation };
     case FETCHING_WEATHER:
-      return { ...state, fetchedWeather: action.payload };
+      const fetchedWeather = getWeatherData(payload);
+      return { ...state, fetchedWeather };
     case FETCHING_WEATHERTEXT:
-      return { ...state, fetchedWeatherText: action.payload };
+      const fetchedWeatherText = getParsingWeatherText(payload);
+      return { ...state, fetchedWeatherText };
     case FETCHING_AIR:
-      return { ...state, fetchedAir: action.payload };
+      const fetchedAir = getAirData(payload);
+      return { ...state, fetchedAir };
     case FETCHING_AIRTEXT:
-      // TODO 데이터 파싱 추가하기
-      return { ...state, fetchedAirText: action.payload };
+      const fetchedAirText = getParsingAirText(payload);
+      return { ...state, fetchedAirText };
     default:
       return state;
   }
