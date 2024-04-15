@@ -128,6 +128,8 @@ const fetchAirData = async (stationName) => {
   ]);
   const ENDPOINT = `${URI}?${searchParams.toString()}`;
   const response = await fetch(ENDPOINT);
+  if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
+
   const json = await response.json();
   return json.response.body.items[0];
 };

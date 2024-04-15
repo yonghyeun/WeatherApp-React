@@ -2,7 +2,7 @@
 const FETCHING_LOCATION = 'FETCHING_LOCATION'; // KaKaO API 에서 가져온 정제된 양식의 텍스트
 const FETCHING_WEATHER = 'FETCHING_WEATHER'; // 기상청 API 에서 가져온 날씨 데이터
 const FETCHING_WEATHERTEXT = 'FETCHING_WEATHERTEXT'; // 기상청 API 에서 가져온 날씨 정보 텍스트;
-
+const FETCHING_AIR = 'FETCHING_AIR'; // 에어코리아에서 제공하는 미세먼지 실시간 측정 정보
 // 테마 버튼을 위한 action Types
 const TOGGLE_THEME = 'TOGGLE_THEME';
 // fetching status 와 관련된 action Types
@@ -14,4 +14,5 @@ export {
   FETCHING_WEATHERTEXT,
   TOGGLE_THEME,
   API_STATUS,
+  FETCHING_AIR,
 };

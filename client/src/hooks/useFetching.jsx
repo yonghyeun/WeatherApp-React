@@ -13,6 +13,7 @@ import {
   fetchAirData,
 } from '../utils/ApiUtils';
 import { getAddressName } from '../utils/CoordinateUtils';
+import useDispatchAir from './useDispatchAir';
 const DELAYTIME = 1000;
 
 const useFetching = () => {
@@ -20,6 +21,7 @@ const useFetching = () => {
   const dispatchWeatherText = useDispatchWeatherText();
   const disptachLocation = useDIspatchLocation();
   const disptachStatus = useDispatchStatus();
+  const dispatchAir = useDispatchAir();
   const inputRef = useSearchRef();
 
   const fetchingWeather = async () => {
@@ -35,11 +37,11 @@ const useFetching = () => {
       const forecastWeather = await fetchForecastFromLocation(locationObject);
       const forecastText = await fetchForecastText();
       const forecastAir = await fetchAirData(nearstStationName);
-      console.log(forecastAir);
       // TODO dispatch Promise All 로 변경하기
       disptachLocation(addressName);
       dispatchWeather(forecastWeather);
       dispatchWeatherText(forecastText);
+      dispatchAir(forecastAir);
     } catch (e) {
       console.error(e);
       disptachStatus(e.message); // 에러시에는 에러 메시지를 status에 저장

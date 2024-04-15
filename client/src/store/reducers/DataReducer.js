@@ -1,4 +1,5 @@
 import {
+  FETCHING_AIR,
   FETCHING_LOCATION,
   FETCHING_WEATHER,
   FETCHING_WEATHERTEXT,
@@ -13,6 +14,8 @@ const dataReducer = (state = {}, action) => {
       return { ...state, fetchedWeather: action.payload };
     case FETCHING_WEATHERTEXT:
       return { ...state, fetchedWeatherText: action.payload };
+    case FETCHING_AIR:
+      return { ...state, fetchedAir: action.payload };
     default:
       return state;
   }

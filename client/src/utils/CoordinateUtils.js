@@ -70,7 +70,7 @@ const translateCoord = (v1, v2, code = 'toXY') => {
 
 const getNxNyFromLatLong = ({ documents }) => {
   // 검색어가 모호하여 결과값이 많을 땐 가장 첫 데이터가 포괄적인 정보를 담고 있음
-  const address = documents[0].address ?? document[0].road_address;
+  const address = documents[0].address ?? documents[0].road_address;
   const { x: longitutd, y: latitude } = address;
   const { x: nx, y: ny } = translateCoord(latitude, longitutd);
   return { nx, ny };
