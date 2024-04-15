@@ -16,4 +16,16 @@ const weatherTextAPI = {
   URI: 'http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrInfo',
 };
 
-export { KaKaoAPI, weatherForecastAPI, weatherTextAPI };
+const tmCoordAPI = {
+  APIKEY:
+    'Jwxgv8BQexpONepfrXnbs1PdxJ35yKLwEEW0bTK4QpCwdpecz/5tqkdCYp5rjomx8BzXWmSJLwvpuYYk1msbmw==',
+  URI: 'http://apis.data.go.kr/B552584/MsrstnInfoInqireSvc/getNearbyMsrstnList',
+};
+
+const airAPI = {
+  APIKEY:
+    'Jwxgv8BQexpONepfrXnbs1PdxJ35yKLwEEW0bTK4QpCwdpecz/5tqkdCYp5rjomx8BzXWmSJLwvpuYYk1msbmw==',
+  URI: 'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty',
+};
+
+export { KaKaoAPI, weatherForecastAPI, weatherTextAPI, tmCoordAPI, airAPI };

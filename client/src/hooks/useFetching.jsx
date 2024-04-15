@@ -9,6 +9,8 @@ import {
   fetchForecastFromLocation,
   fetchLocationFromString,
   fetchForecastText,
+  fetchNearstStationName,
+  fetchAirData,
 } from '../utils/ApiUtils';
 import { getAddressName } from '../utils/CoordinateUtils';
 const DELAYTIME = 1000;
@@ -29,8 +31,11 @@ const useFetching = () => {
       const locationString = inputRef.current.value;
       const locationObject = await fetchLocationFromString(locationString);
       const addressName = getAddressName(locationObject);
+      const nearstStationName = await fetchNearstStationName(locationObject);
       const forecastWeather = await fetchForecastFromLocation(locationObject);
       const forecastText = await fetchForecastText();
+      const forecastAir = await fetchAirData(nearstStationName);
+      console.log(forecastAir);
       // TODO dispatch Promise All 로 변경하기
       disptachLocation(addressName);
       dispatchWeather(forecastWeather);

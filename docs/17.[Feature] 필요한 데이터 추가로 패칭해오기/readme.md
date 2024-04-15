@@ -60,13 +60,13 @@ Ref : https://www.data.go.kr/iim/api/selectAPIAcountView.do
 
 # 영역 별 필요한 데이터 추가로 패칭해오기
 
-### 기상청 생활 기수 조회 서비스
+## 기상청 생활 기수 조회 서비스
 
 아 .. 기상청은 3시간 단위로만 조회가 가능하다.
 
 자외선은 우선 나중에 하도록 하자
 
-### 기상 정보문 조회
+## 기상 정보문 조회
 
 기상 정보문 조회는 기상과 관련된 정보를 텍스트 형태로 받아올 수 있다.
 
@@ -215,3 +215,110 @@ const useFetching = () => {
 
 export default useFetching;
 ```
+
+## 미세먼지 관런 졍보 조회
+
+### 가장 가까운 측정소 명 찾기
+
+Ref: https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15073877
+
+TM 기준 좌표 조회 (TM기준 좌표계 -> 가장 가까운 측정소 (`stationName`)) API 를 이용하여 위경도 좌표계를 TM 좌표계로 변환하고 가장 가까운 측정소를 불러오도록 하자
+
+```jsx
+const getTMCoord = ({ documents }) => {
+  // 변수 명칭을 적절하게 변경하고, 숫자로 변환
+  const { x: lon, y: lat } = documents[0].address;
+  // lat = 37.588 lon = 127.006
+  const wgs84 = 'EPSG:4326'; // WGS 84
+  // 중부원점 설정을 한국 중부로 가정했을 경우 (경도 127도, 위도 38도를 사용)
+  const tmProj =
+    '+proj=tmerc +lat_0=38 +lon_0=127 +k=0.9996 +x_0=200000 +y_0=500000 +datum=WGS84 +units=m +no_defs';
+  // 순서를 [경도, 위도]로 수정
+  const [tmX, tmY] = proj4(wgs84, tmProj, [parseFloat(lon), parseFloat(lat)]);
+  return [tmX, tmY];
+};
+```
+
+우선 위경도로 표시 된 `locationObject` 객체를 받아 위경도 좌표를 `proj4` 라이브러리를 이용해
+
+`tmX,tmY` 좌표계로 변환해준다.
+
+```jsx
+const fetchNearstStationName = async (locationObject) => {
+  const { APIKEY, URI } = tmCoordAPI;
+  const [tmX, tmY] = getTMCoord(locationObject);
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    ['tmX', tmX],
+    ['tmY', tmY],
+    ['ver', '1.1'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  const json = await response.json();
+  // TODO json 타입 정보 정리하기
+  return json.response.body.items[0].stationName;
+};
+```
+
+이후 변환된 `tmX,tmY` 좌표계를 이용해 해당 좌표계에서 제일 가까운
+
+미세먼지 측정소(`stationName`) 을 패칭해오는 `fetchNearstStationName` 메소드를 생성해주었다.
+
+### 측정소 명을 이용해 실시간 미세먼지 정보 가져오기
+
+![alt text](image-2.png)
+
+이제 위에서 가져온 `stationName` 값을 이용해 해당 측정소의 시간대 별 미세면지 관련 정보를 가져오도록 하자
+
+```jsx
+const fetchAirData = async (stationName) => {
+  const { APIKEY, URI } = airAPI;
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    // 실시간 정보이기 때문에 가장 최근에 데이터만 가져오도록 설정
+    ['numOfRows', '1'],
+    ['stationName', stationName],
+    ['dataTerm', 'DAILY'],
+    ['ver', '1.0'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  const json = await response.json();
+  return json;
+};
+```
+
+다음처럼 측정소 이름을 인수로 받아 실시간 측정 정보를 받아오는 메소드를 생성해주고 `useFetching` 내부에서 호출해주었다.
+
+```jsx
+const useFetching = () => {
+  const dispatchWeather = useDispatchWeather();
+  const dispatchWeatherText = useDispatchWeatherText();
+  const disptachLocation = useDIspatchLocation();
+  const disptachStatus = useDispatchStatus();
+  const inputRef = useSearchRef();
+
+  const fetchingWeather = async () => {
+    if (!inputRef.current.value) return null;
+
+    try {
+      ...
+      const forecastAir = await fetchAirData(nearstStationName); // 추가
+      ...
+    }
+    catch (e) {
+      ...
+    } finally {
+      ...
+    }
+  };
+  return fetchingWeather;
+};
+```
+
+이 때 파싱되는 데이터는 모두 실시간 측정정보이기 떄문에
+
+현재 시각을 기준으로 하여 과거의 데이터들이 파싱된다.

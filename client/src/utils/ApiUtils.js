@@ -2,8 +2,10 @@ import {
   KaKaoAPI,
   weatherForecastAPI,
   weatherTextAPI,
+  tmCoordAPI,
+  airAPI,
 } from '../@constants/_API';
-import { getNxNyFromLatLong } from './CoordinateUtils';
+import { getNxNyFromLatLong, getTMCoord } from './CoordinateUtils';
 import { getCurrentTime } from './DateUtils';
 
 /**
@@ -97,8 +99,42 @@ const fetchForecastText = async () => {
   return weatherParsingText;
 };
 
+const fetchNearstStationName = async (locationObject) => {
+  const { APIKEY, URI } = tmCoordAPI;
+  const [tmX, tmY] = getTMCoord(locationObject);
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    ['tmX', tmX],
+    ['tmY', tmY],
+    ['ver', '1.1'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  const json = await response.json();
+  // TODO json 타입 정보 정리하기
+  return json.response.body.items[0].stationName;
+};
+
+const fetchAirData = async (stationName) => {
+  const { APIKEY, URI } = airAPI;
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    ['numOfRows', '1'],
+    ['stationName', stationName],
+    ['dataTerm', 'DAILY'],
+    ['ver', '1.0'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  const json = await response.json();
+  return json.response.body.items[0];
+};
 export {
   fetchLocationFromString,
   fetchForecastFromLocation,
   fetchForecastText,
+  fetchNearstStationName,
+  fetchAirData,
 };
