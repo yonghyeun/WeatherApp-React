@@ -15,6 +15,13 @@ const getCurrentTime = () => {
   const hours = new Date().getHours();
   const baseTime = hours < 18 ? `${hours}00` : `${hours}00`;
 
+  const searchDate = time
+    .toLocaleDateString()
+    .split('.')
+    .slice(0, 3)
+    .map((str) => str.trim().padStart(2, 0))
+    .join('-');
+
   return {
     year: currentTime[0],
     month: currentTime[1],
@@ -22,6 +29,7 @@ const getCurrentTime = () => {
     time: currentTime[3],
     baseDate, // ex : 20240403
     baseTime, // ex: 12 or 09
+    searchDate, // ex: 2024-04-03
   };
 };
 

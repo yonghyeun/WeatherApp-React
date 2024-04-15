@@ -1,5 +1,6 @@
 import {
   FETCHING_AIR,
+  FETCHING_AIRTEXT,
   FETCHING_LOCATION,
   FETCHING_WEATHER,
   FETCHING_WEATHERTEXT,
@@ -16,6 +17,9 @@ const dataReducer = (state = {}, action) => {
       return { ...state, fetchedWeatherText: action.payload };
     case FETCHING_AIR:
       return { ...state, fetchedAir: action.payload };
+    case FETCHING_AIRTEXT:
+      // TODO 데이터 파싱 추가하기
+      return { ...state, fetchedAirText: action.payload };
     default:
       return state;
   }

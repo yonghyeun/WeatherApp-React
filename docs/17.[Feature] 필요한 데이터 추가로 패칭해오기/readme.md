@@ -322,3 +322,82 @@ const useFetching = () => {
 이 때 파싱되는 데이터는 모두 실시간 측정정보이기 떄문에
 
 현재 시각을 기준으로 하여 과거의 데이터들이 파싱된다.
+
+이후 전역 상태로 저장히기 위해 위해서 해줬던 것들과 같이 `actionTypes , DataReducer` 에 `FETCHING_AIR` 과 관련된 액션 타입과 리듀서의 메소드를 추가해주고
+
+`useDispatchAir` 라는 훅을 이용해 데이터가 패칭되면 전역 상태로 관리해주도록 하자
+
+![alt text](image-3.png)
+
+이후 패칭된 데이터를 전역 상태로 업로드하면 다음과 같다.
+
+### 미세먼지 예보 조회 정보 패칭해오기
+
+![alt text](image-4.png)
+
+다음과 같은 페이지에서 대기질 예보 통보를 조회해오도록 하자
+
+해당 리퀘스트 파라미터 중 `informCode` 부분에서
+
+`PM10 , PM2.5` 는 `Particulate Matter` (입자상 물질) 을 의미하는 것으로
+
+직경을 기준으로 하여 10 마이크로 미터 , 2.5 마이크로 미터를 의미한다.
+
+`O3` 의 경우엔 오존을 의미하며 스모그의 주요 구성 요소를 의미한다.
+
+산업 시설, 전력 설비, 자동차 배기가스, 희발유 증기 및 화학 용제가 포함된다고 한다.
+
+`PM2.5` 가 초미세먼지이기 때문에 더 큰 건강의 위협을 초래 할 수 있다고 하니
+
+패칭 해올 떄는 `PM2.5 , O3` 를 패칭해오도록 하자
+
+```jsx
+const fetchAirTextPM = async () => {
+  const { APIKEY, URI } = airTextAPI;
+  const { searchDate } = getCurrentTime();
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    ['numOfRows', '100'],
+    ['searchDate', searchDate], // ex : 2024-04-15
+    ['informCode', 'PM25'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
+  const json = await response.json();
+  return json.response.body.items[0];
+};
+const fetchAirTextO3 = async () => {
+  const { APIKEY, URI } = airTextAPI;
+  const { searchDate } = getCurrentTime();
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    ['numOfRows', '100'],
+    ['searchDate', searchDate], // ex : 2024-04-15
+    ['informCode', 'O3'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
+  const json = await response.json();
+  return json.response.body.items[0];
+};
+
+export {
+  fetchLocationFromString,
+  fetchForecastFromLocation,
+  fetchForecastText,
+  fetchNearstStationName,
+  fetchAirData,
+  fetchAirTextPM,
+  fetchAirTextO3,
+};
+```
+
+동일하게 해당 엔드포인트로 패칭을 하는 메소드를 생성해주고 `useFetching` 부분에서 호출해준다.
+
+![alt text](image-5.png)
+
+그렇게 되면 다음과 같은 `body` 객체가 파싱되게 된다.

@@ -1,11 +1,11 @@
 import { useDispatch } from 'react-redux';
-import { FETCHING_LOCATION } from '../store/actions/actionTypes';
+import { FETCHING_AIR } from '../store/actions/actionTypes';
 
 const useDispatchAir = () => {
   const dispatch = useDispatch();
 
   return (airData) => {
-    dispatch({ type: FETCHING_LOCATION, payload: airData });
+    dispatch({ type: FETCHING_AIR, payload: airData });
   };
 };
 

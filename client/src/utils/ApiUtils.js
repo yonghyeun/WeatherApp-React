@@ -4,6 +4,7 @@ import {
   weatherTextAPI,
   tmCoordAPI,
   airAPI,
+  airTextAPI,
 } from '../@constants/_API';
 import { getNxNyFromLatLong, getTMCoord } from './CoordinateUtils';
 import { getCurrentTime } from './DateUtils';
@@ -112,7 +113,6 @@ const fetchNearstStationName = async (locationObject) => {
   const ENDPOINT = `${URI}?${searchParams.toString()}`;
   const response = await fetch(ENDPOINT);
   const json = await response.json();
-  // TODO json 타입 정보 정리하기
   return json.response.body.items[0].stationName;
 };
 
@@ -133,10 +133,46 @@ const fetchAirData = async (stationName) => {
   const json = await response.json();
   return json.response.body.items[0];
 };
+
+const fetchAirTextPM = async () => {
+  const { APIKEY, URI } = airTextAPI;
+  const { searchDate } = getCurrentTime();
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    ['numOfRows', '100'],
+    ['searchDate', searchDate], // ex : 2024-04-15
+    ['informCode', 'PM25'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
+  const json = await response.json();
+  return json.response.body.items[0];
+};
+const fetchAirTextO3 = async () => {
+  const { APIKEY, URI } = airTextAPI;
+  const { searchDate } = getCurrentTime();
+  const searchParams = new URLSearchParams([
+    ['serviceKey', APIKEY],
+    ['returnType', 'JSON'],
+    ['numOfRows', '100'],
+    ['searchDate', searchDate], // ex : 2024-04-15
+    ['informCode', 'O3'],
+  ]);
+  const ENDPOINT = `${URI}?${searchParams.toString()}`;
+  const response = await fetch(ENDPOINT);
+  if (!response.ok) throw new Error('에어코리아 API 네트워크가 불안정합니다');
+  const json = await response.json();
+  return json.response.body.items[0];
+};
+
 export {
   fetchLocationFromString,
   fetchForecastFromLocation,
   fetchForecastText,
   fetchNearstStationName,
   fetchAirData,
+  fetchAirTextPM,
+  fetchAirTextO3,
 };
