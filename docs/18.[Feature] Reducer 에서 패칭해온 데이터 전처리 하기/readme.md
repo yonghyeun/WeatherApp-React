@@ -386,3 +386,105 @@ const getWeatherData = (json) => {
 ![alt text](image-3.png)
 
 ![alt text](image-4.png)
+
+```jsx
+const weatherKeyMap = Object.freeze({
+  POP: 'precipitationProbability',
+  PTY: 'precipitationType',
+  PCP: 'oneHourPrecipitation',
+  REH: 'humidity',
+  SKY: 'skyConditions',
+  TMP: 'temperature',
+  WSD: 'windSpeed',
+  SNO: 'snowAmount',
+  TMN: 'minTemperature',
+  TMX: 'maxTemperature',
+});
+
+const weatherValueMap = Object.freeze({
+  precipitationType: {
+    0: 'sunny',
+    1: 'rainy',
+    2: 'rainy/snow',
+    3: 'snow',
+    5: 'rainy',
+    6: 'raniy',
+    7: 'snow',
+  },
+  skyConditions: {
+    1: 'sunny',
+    3: 'sunny/cloudy',
+    4: 'cloudy',
+  },
+});
+
+export { weatherKeyMap, weatherValueMap };
+```
+
+다음처럼 기상청에서 제공하는 데이터의 프로퍼티 키 들을 명확하게 수정하고
+
+코드 값으로 응답이 오는 경우도, 의미가 명확 할 수 있도록 수정해주었다.
+
+```jsx
+import { weatherKeyMap, weatherValueMap } from '../../@constants/Codemap';
+
+const getWeatherData = (json) => {
+  const rawData = json.response.body.items.item;
+  const result = {};
+
+  rawData.forEach(({ fcstDate, fcstTime, category, fcstValue }) => {
+    if (!result[fcstDate]) {
+      result[fcstDate] = {};
+    }
+    if (!result[fcstDate][fcstTime]) {
+      result[fcstDate][fcstTime] = {};
+    }
+
+    if (!result[fcstDate]['minTemperature']) {
+      result[fcstDate]['minTemperature'] = fcstValue;
+    }
+
+    if (!result[fcstDate]['maxTemperature']) {
+      result[fcstDate]['maxTemperature'] = fcstValue;
+    }
+
+    const newCategory = weatherKeyMap[category];
+
+    if (newCategory) {
+      switch (newCategory) {
+        case 'precipitationType':
+          result[fcstDate][fcstTime][newCategory] =
+            weatherValueMap[newCategory][fcstValue];
+          break;
+        case 'skyConditions':
+          result[fcstDate][fcstTime][newCategory] =
+            weatherValueMap[newCategory][fcstValue];
+          break;
+        case 'temperature':
+          const { minTemperature, maxTemperature } = result[fcstDate];
+          result[fcstDate]['minTemperature'] = Math.min(
+            fcstValue,
+            minTemperature,
+          );
+          result[fcstDate]['maxTemperature'] = Math.max(
+            fcstValue,
+            maxTemperature,
+          );
+          result[fcstDate][fcstTime][newCategory] = fcstValue;
+          break;
+        default:
+          result[fcstDate][fcstTime][newCategory] = fcstValue;
+      }
+    }
+  });
+  return result;
+};
+```
+
+이후 해당 맵핑 객체를 이용하여 전역 `store` 에 상태값을 저장 할 때 전처리 후 담기도록 해주자
+
+![alt text](image-5.png)
+
+전처리하여 저장된 전역 데이터의 모습은 다음과 같다.
+
+> 다만 현재의 코드에선 수정해야 할 부분이 존재한다.
