@@ -5,15 +5,15 @@ const getCurrentTime = () => {
     .split('.')
     .map((str) => str.trim());
   // currentTime 예시 [ '2024', '4', '3', '오후 2:58:40' ]
-  const baseDate = time
+  const previousDate = new Date(time.getTime() - 24 * 60 * 60 * 1000);
+  const baseDate = previousDate
     .toLocaleDateString()
     .split('.')
     .slice(0, 3)
     .map((str) => str.trim().padStart(2, 0))
     .join('');
 
-  const hours = new Date().getHours();
-  const baseTime = hours < 18 ? `${hours}00` : `${hours}00`;
+  const baseTime = '2300'; // baseTime 은 2300 으로 고정
 
   const searchDate = time
     .toLocaleDateString()

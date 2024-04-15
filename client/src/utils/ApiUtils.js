@@ -48,13 +48,13 @@ const fetchLocationFromString = async (locationString) => {
 const fetchForecastFromLocation = async (locationObject) => {
   const { APIKEY, URI } = weatherForecastAPI;
   const { nx, ny } = getNxNyFromLatLong(locationObject);
-  const { baseDate } = getCurrentTime();
+  const { baseDate, baseTime } = getCurrentTime();
   const searchParams = new URLSearchParams([
     ['serviceKey', APIKEY],
     ['base_date', baseDate],
     ['nx', nx],
     ['ny', ny],
-    ['base_time', '0500'], // ! 기상청의 baseTime 은 항상 해당 일 0500 으로 고정
+    ['base_time', baseTime], // ! 기상청의 baseTime 은 항상 해당 일 0500 으로 고정
     ['pageNo', 1],
     ['numOfRows', 1000],
     ['dataType', 'JSON'],

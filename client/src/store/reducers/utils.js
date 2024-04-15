@@ -13,11 +13,11 @@ const getWeatherData = (json) => {
     }
 
     if (!result[fcstDate]['minTemperature']) {
-      result[fcstDate]['minTemperature'] = fcstValue;
+      result[fcstDate]['minTemperature'] = {};
     }
 
     if (!result[fcstDate]['maxTemperature']) {
-      result[fcstDate]['maxTemperature'] = fcstValue;
+      result[fcstDate]['maxTemperature'] = {};
     }
 
     const newCategory = weatherKeyMap[category];
@@ -32,17 +32,11 @@ const getWeatherData = (json) => {
           result[fcstDate][fcstTime][newCategory] =
             weatherValueMap[newCategory][fcstValue];
           break;
-        case 'temperature':
-          const { minTemperature, maxTemperature } = result[fcstDate];
-          result[fcstDate]['minTemperature'] = Math.min(
-            fcstValue,
-            minTemperature,
-          );
-          result[fcstDate]['maxTemperature'] = Math.max(
-            fcstValue,
-            maxTemperature,
-          );
-          result[fcstDate][fcstTime][newCategory] = fcstValue;
+        case 'minTemperature':
+          result[fcstDate]['minTemperature'] = fcstValue;
+          break;
+        case 'maxTemperature':
+          result[fcstDate]['maxTemperature'] = fcstValue;
           break;
         default:
           result[fcstDate][fcstTime][newCategory] = fcstValue;
