@@ -1,5 +1,55 @@
+import { weatherKeyMap, weatherValueMap } from '../../@constants/Codemap';
+
 const getWeatherData = (json) => {
-  return json.response.body.items.item;
+  const rawData = json.response.body.items.item;
+  const result = {};
+
+  rawData.forEach(({ fcstDate, fcstTime, category, fcstValue }) => {
+    if (!result[fcstDate]) {
+      result[fcstDate] = {};
+    }
+    if (!result[fcstDate][fcstTime]) {
+      result[fcstDate][fcstTime] = {};
+    }
+
+    if (!result[fcstDate]['minTemperature']) {
+      result[fcstDate]['minTemperature'] = fcstValue;
+    }
+
+    if (!result[fcstDate]['maxTemperature']) {
+      result[fcstDate]['maxTemperature'] = fcstValue;
+    }
+
+    const newCategory = weatherKeyMap[category];
+
+    if (newCategory) {
+      switch (newCategory) {
+        case 'precipitationType':
+          result[fcstDate][fcstTime][newCategory] =
+            weatherValueMap[newCategory][fcstValue];
+          break;
+        case 'skyConditions':
+          result[fcstDate][fcstTime][newCategory] =
+            weatherValueMap[newCategory][fcstValue];
+          break;
+        case 'temperature':
+          const { minTemperature, maxTemperature } = result[fcstDate];
+          result[fcstDate]['minTemperature'] = Math.min(
+            fcstValue,
+            minTemperature,
+          );
+          result[fcstDate]['maxTemperature'] = Math.max(
+            fcstValue,
+            maxTemperature,
+          );
+          result[fcstDate][fcstTime][newCategory] = fcstValue;
+          break;
+        default:
+          result[fcstDate][fcstTime][newCategory] = fcstValue;
+      }
+    }
+  });
+  return result;
 };
 
 const getAirData = (json) => {
