@@ -1,9 +1,4 @@
-import useDIspatchLocation from './useDispatchLocation';
-import useDispatchWeather from './useDIspatchWeather';
-import useDispatchStatus from './useDisptachStatus';
-import useDispatchWeatherText from './useDIspatchWeatherText';
-import useDispatchAir from './useDispatchAir';
-import useDispatchAirText from './useDispatchAirText';
+import useEveryDispatcher from './useEveryDispatcher';
 import useSearchRef from './useSearchRef';
 
 import delay from '../utils/delay';
@@ -21,12 +16,15 @@ import { getAddressName } from '../utils/CoordinateUtils';
 const DELAYTIME = 1000;
 
 const useFetching = () => {
-  const dispatchWeather = useDispatchWeather();
-  const dispatchWeatherText = useDispatchWeatherText();
-  const disptachLocation = useDIspatchLocation();
-  const disptachStatus = useDispatchStatus();
-  const dispatchAir = useDispatchAir();
-  const dispatchAirText = useDispatchAirText();
+  const {
+    dispatchWeather,
+    dispatchWeatherText,
+    disptachLocation,
+    disptachStatus,
+    dispatchAir,
+    dispatchAirText,
+  } = useEveryDispatcher();
+
   const inputRef = useSearchRef();
 
   const fetchingWeather = async () => {
