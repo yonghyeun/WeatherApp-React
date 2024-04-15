@@ -401,3 +401,9 @@ export {
 ![alt text](image-5.png)
 
 그렇게 되면 다음과 같은 `body` 객체가 파싱되게 된다.
+
+이후 해당 부분들을 `DataReducer , actionTypes` 에서 추가해줘 전역 상태로 추가해주도록 하자
+
+![alt text](image-6.png)
+
+그렇게 되면 현재 전역 상태의 모습은 다음처럼 구성된다.
