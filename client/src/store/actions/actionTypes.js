@@ -8,6 +8,9 @@ const FETCHING_AIRTEXT = 'FETCHING_AIRTEXT'; // 에어코리아에서 제공하�
 const TOGGLE_THEME = 'TOGGLE_THEME';
 // fetching status 와 관련된 action Types
 const API_STATUS = 'API_STATUS';
+// 시간 , 날짜 변경과 관련된 action Types
+const CHANGE_DATE = 'CHANGE_DATE';
+const CHANGE_TIME = 'CHANGE_TIME';
 
 export {
   FETCHING_LOCATION,
@@ -17,4 +20,6 @@ export {
   API_STATUS,
   FETCHING_AIR,
   FETCHING_AIRTEXT,
+  CHANGE_DATE,
+  CHANGE_TIME,
 };

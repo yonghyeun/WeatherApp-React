@@ -14,12 +14,14 @@ import {
   getParsingAirText,
 } from './utils';
 
+// TODO initalState 추가하기
+
 const dataReducer = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
     case FETCHING_LOCATION:
-      const fethedLocation = payload;
-      return { ...state, fethedLocation };
+      const fetchedLocation = payload;
+      return { ...state, fetchedLocation };
     case FETCHING_WEATHER:
       const fetchedWeather = getWeatherData(payload);
       return { ...state, fetchedWeather };

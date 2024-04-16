@@ -1,13 +1,16 @@
 import moduleCss from './MenuPage.module.css';
 
 import Wrapper from '../../@components/Composite/Wrapper/Wrapper';
+
+import MainCard from '../../@components/Composite/Cards/MainCard';
+
 // TODO 내용 채우기
 const MenuPage = () => {
   return (
     <section className={moduleCss.menu}>
       <section className={moduleCss.menuContent}>
         <Wrapper.Parent ratio={[0.6, 0.4]} height='150%'>
-          <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
+          <MainCard />
           <Wrapper.Vertical ratio={[0.5, 0.5]}>
             <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
             <Wrapper.Horizontal>
