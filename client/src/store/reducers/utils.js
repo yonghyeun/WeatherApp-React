@@ -85,4 +85,14 @@ const getParsingAirText = (josnObject) => {
   };
 };
 
-export { getWeatherData, getAirData, getParsingWeatherText, getParsingAirText };
+const getTime = (timeString) => {
+  return `${timeString.padStart(2, 0)}00`;
+};
+
+export {
+  getWeatherData,
+  getAirData,
+  getParsingWeatherText,
+  getParsingAirText,
+  getTime,
+};

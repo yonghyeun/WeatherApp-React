@@ -2,6 +2,7 @@ import moduleTheme from './Card.module.css';
 
 import LocationTitle from './UI/Title/LocationTitle';
 import DateTitle from './UI/Title/DateTitle';
+import ChangeBar from './UI/ChangeBar/ChangeBar';
 
 const Card = ({ children }) => {
   // TODO 테마 넣어줘야 하나 ?
@@ -12,5 +13,6 @@ const Card = ({ children }) => {
 
 Card.LocationTitle = LocationTitle;
 Card.DateTitle = DateTitle;
+Card.ChangeBar = ChangeBar;
 
 export default Card;

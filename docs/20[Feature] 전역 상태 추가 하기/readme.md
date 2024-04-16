@@ -101,3 +101,46 @@ export default rootReducer;
 ```
 
 앞으로 관리 할 전역 상태는 `status , data , date ,theme` 로 4가지가 되었다.
+
+# `date.time` 유틸 함수 생성하기
+
+![alt text](image-1.png)
+
+다음 `docs` 에서 진행하고 있는 일이지만 우선 메인 카드 컴포넌트에서
+
+전역 상태인 `time` 을 변경 할 `input[range]` 를 만들었다.
+
+이 때 `input[range]` 에서의 값은 `0 ~ 23` 까지 값이 변경되기 때문에
+
+전역 상태에선 `@@00` 형태로 저장되도록 `/reducers/utils.js` 에서 유틸 함수를 추가해주자
+
+```jsx
+const getTime = (timeString) => {
+  return `${timeString.padStart(2, 0)}00`;
+};
+```
+
+이후 유틸 함수를 이전에 생성한 `dateReducer` 에서 호출해주도록 하자
+
+```jsx
+import { CHANGE_DATE, CHANGE_TIME } from '../actions/actionTypes';
+import { getTime } from './utils';
+const dateReducer = (state = {}, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case CHANGE_DATE:
+      return { ...state, date: payload };
+    case CHANGE_TIME:
+      const time = getTime(payload);
+      return { ...state, time };
+    default:
+      return state;
+  }
+};
+
+export default dateReducer;
+```
+
+![alt text](image-2.png)
+
+이후 값이 변경되면 다음처럼 전역 상태에 `@@00` 형태로 변경된다.

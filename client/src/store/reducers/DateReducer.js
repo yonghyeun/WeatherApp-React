@@ -1,15 +1,19 @@
 import { CHANGE_DATE, CHANGE_TIME } from '../actions/actionTypes';
+import { getTime } from './utils';
+import { getCurrentTime } from '../../utils/DateUtils';
 
-const dateReducer = (state = {}, action) => {
+const { fullDate, time } = getCurrentTime();
+
+const dateReducer = (state = { date: fullDate, time }, action) => {
   const { type, payload } = action;
-  // TODO payload 관련 메소드 추가하기
   switch (type) {
     case CHANGE_DATE:
       return { ...state, date: payload };
     case CHANGE_TIME:
-      return { ...state, time: payload };
+      const time = getTime(payload);
+      return { ...state, time };
     default:
-      break;
+      return state;
   }
 };
 

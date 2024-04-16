@@ -5,6 +5,7 @@ const MainCard = () => {
     <Card>
       <Card.LocationTitle />
       <Card.DateTitle />
+      <Card.ChangeBar />
     </Card>
   );
 };
