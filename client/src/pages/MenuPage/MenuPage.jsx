@@ -1,36 +1,30 @@
 import moduleCss from './MenuPage.module.css';
 
-import Wrapper from '../../@components/Composite/Wrapper/Wrapper';
-
+import { FlexColumn, FlexRow } from '../../@components/UI/Flex/Flex';
 import MainCard from '../../@components/Composite/Cards/MainCard';
 
 // TODO 내용 채우기
 const MenuPage = () => {
   return (
     <section className={moduleCss.menu}>
-      <section className={moduleCss.menuContent}>
-        <Wrapper.Parent ratio={[0.6, 0.4]} height='150%'>
-          <MainCard />
-          <Wrapper.Vertical ratio={[0.5, 0.5]}>
-            <div style={{ backgroundColor: 'green', display: 'flex' }}></div>
-            <Wrapper.Horizontal>
-              <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
-              <div style={{ backgroundColor: 'red', display: 'flex' }}></div>
-            </Wrapper.Horizontal>
-          </Wrapper.Vertical>
-        </Wrapper.Parent>
-        <Wrapper.Parent height='40%'>
-          <div style={{ backgroundColor: 'orange', display: 'flex' }}></div>
-        </Wrapper.Parent>
-        <Wrapper.Parent ratio={[0.3, 0.3, 0.4]} height='60%'>
-          <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
-          <Wrapper.Vertical ratio={[0.6, 0.4]}>
-            <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
-            <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
-          </Wrapper.Vertical>
-          <div style={{ backgroundColor: 'pink', display: 'flex' }}></div>
-        </Wrapper.Parent>
-      </section>
+      <FlexRow>
+        <div
+          style={{ backgroundColor: 'red', width: '200px', height: '200px' }}
+        ></div>
+        <div
+          style={{ backgroundColor: 'red', width: '400px', height: '200px' }}
+        ></div>
+
+        <FlexColumn>
+          {' '}
+          <div
+            style={{ backgroundColor: 'red', width: '400px', height: '200px' }}
+          ></div>
+          <div
+            style={{ backgroundColor: 'red', width: '400px', height: '200px' }}
+          ></div>
+        </FlexColumn>
+      </FlexRow>
     </section>
   );
 };

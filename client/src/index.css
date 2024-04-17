@@ -1,5 +1,7 @@
 /* TODO CSS 손보기 */
 
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@300&family=Noto+Sans+KR&display=swap');
+
 body {
   width: 100vw;
   height: 100vh;
@@ -10,6 +12,10 @@ body {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 a {

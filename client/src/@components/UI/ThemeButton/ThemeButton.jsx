@@ -1,17 +1,24 @@
 // import moduleCss
-import moduleCss from './ThemeButton.module.css';
 // import Component
-import Button from '../Button/Button';
 // import CustomHooks
 import useDispatchTheme from '../../../hooks/useDispatchTheme';
+import useTheme from '../../../hooks/useTheme';
+
 const ThemeButton = () => {
   const handleTheme = useDispatchTheme();
+  const theme = useTheme();
+
+  if (theme === 'dark') {
+    return (
+      <button type='button' class='btn btn-outline-light' onClick={handleTheme}>
+        Dark
+      </button>
+    );
+  }
   return (
-    <Button
-      item='theme button'
-      className={moduleCss.themeButton}
-      onClick={handleTheme}
-    />
+    <button type='button' class='btn btn-outline-dark' onClick={handleTheme}>
+      Light
+    </button>
   );
 };
 

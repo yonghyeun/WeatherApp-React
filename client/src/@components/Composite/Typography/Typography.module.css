@@ -1,0 +1,21 @@
+.mainTitle {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.subTitle {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.mainText {
+  font-size: 20px;
+}
+
+.subText {
+  font-size: 16px;
+}
+
+.label {
+  font-size: 14px;
+}

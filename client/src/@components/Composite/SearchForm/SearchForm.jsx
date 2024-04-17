@@ -1,9 +1,7 @@
 // import Components
 import Form from '../../UI/Form/Form';
-import Input from '../../UI/Input/Input';
-import Button from '../../UI/Button/Button';
 import { SearchIcon, LoadingCircle } from '../../UI/Bootstraps/Bootstraps';
-
+import { MdOutlineSmsFailed } from 'react-icons/md';
 // import moduleCss
 import moduleCss from './SearchForm.module.css';
 
@@ -17,11 +15,9 @@ const SearchForm = ({ children }) => {
 
 const SearchButton = ({ onClick }) => {
   return (
-    <Button
-      item={<SearchIcon />}
-      className={moduleCss.searchButton}
-      onClick={onClick}
-    />
+    <button type='button' class='btn btn-outline-secondary' onClick={onClick}>
+      <SearchIcon />
+    </button>
   );
 };
 
@@ -29,55 +25,60 @@ const SearchInput = () => {
   const inputRef = useSearchRef();
 
   return (
-    <Input
+    <input
+      className='form-control mr-sm-2'
+      type='search'
+      placeholder='지역명을 입력해주세요'
+      aria-label='Search'
       ref={inputRef}
-      placeholder='지역을 입력해주세요'
-      className={moduleCss.searchInput}
-    />
+    ></input>
   );
 };
 
 const SearchLoadingInput = () => {
   const inputRef = useSearchRef();
+
   return (
-    <Input
-      ref={inputRef}
-      className={moduleCss.searchInput}
-      defaultValue={inputRef.current.value}
+    <input
+      className='form-control mr-sm-2'
+      type='search'
       readOnly={true}
-    />
+      defaultValue={inputRef.current.value}
+      aria-label='Search'
+      ref={inputRef}
+    ></input>
   );
 };
 
-const SearchLoadingButton = ({ width, height }) => {
+const SearchLoadingButton = () => {
   return (
-    <Button
-      item={<LoadingCircle width={width} height={height} />}
-      className={moduleCss.searchButton}
-    />
+    <button type='button' class='btn btn-outline-success'>
+      <LoadingCircle />
+    </button>
   );
 };
 
-const SearchErrorButton = ({ width, height }) => {
-  // TODO 에러 발생 시 사용할 아이콘 찾기
+const SearchErrorButton = () => {
   return (
-    <Button
-      item={<SearchIcon width={width} height={height} />}
-      className={moduleCss.searchButton}
-    />
+    <button type='button' class='btn btn-outline-danger'>
+      <MdOutlineSmsFailed />
+    </button>
   );
 };
 
 const SearchErrorInput = () => {
   const inputRef = useSearchRef();
   const message = useAPIStatus();
+
   return (
-    <Input
-      ref={inputRef}
-      className={moduleCss.searchInput}
-      defaultValue={message}
+    <input
+      className='form-control mr-sm-2'
+      type='search'
       readOnly={true}
-    />
+      defaultValue={message}
+      aria-label='Search'
+      ref={inputRef}
+    ></input>
   );
 };
 
@@ -92,21 +93,21 @@ const SearchNormal = () => {
   );
 };
 
-const SearchLoading = ({ width, height }) => {
+const SearchLoading = () => {
   return (
     <SearchForm>
       <SearchLoadingInput />
-      <SearchLoadingButton width={(width, height)} />
+      <SearchLoadingButton />
     </SearchForm>
   );
 };
 
-const SearchError = ({ width, height }) => {
+const SearchError = () => {
   const error = useAPIStatus();
   return (
     <SearchForm>
       <SearchErrorInput error={error} />
-      <SearchErrorButton width={(width, height)} />
+      <SearchErrorButton />
     </SearchForm>
   );
 };
