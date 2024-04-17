@@ -72,13 +72,11 @@ const fetchForecastFromLocation = async (locationObject) => {
 
 const fetchForecastText = async () => {
   const { APIKEY, URI } = weatherTextAPI;
-  const { baseDate } = getCurrentTime();
   const searchParams = new URLSearchParams([
     ['ServiceKey', APIKEY],
-    ['fromTmFc', baseDate],
-    ['toTmFc', baseDate],
     ['dataType', 'JSON'],
-    ['stnId', '108'],
+    ['stnId', '108'], // stnId 는 지점코드로 108번은 전국을 의미한다.
+    // TODO stnId 맨허튼 거리를 이용해 검색 장소와 가장 가까운 지점코드 가져오도록 변
     ['numOfRows', '10'],
   ]);
   const ENDPOINT = `${URI}?${searchParams.toString()}`;

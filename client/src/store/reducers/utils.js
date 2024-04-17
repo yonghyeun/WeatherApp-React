@@ -54,7 +54,7 @@ const getParsingWeatherText = (json) => {
   const item = json.response.body.items.item[0];
   const weatherText = item.t1;
   const stringParsed = weatherText
-    .split('\n\n')[0]
+    .split('\n\n')[1]
     .split('(현황)')[1]
     .replace('-', '\n')
     .trim();
