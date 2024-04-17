@@ -10,13 +10,21 @@ const ThemeButton = () => {
 
   if (theme === 'dark') {
     return (
-      <button type='button' class='btn btn-outline-light' onClick={handleTheme}>
+      <button
+        type='button'
+        className='btn btn-outline-light'
+        onClick={handleTheme}
+      >
         Dark
       </button>
     );
   }
   return (
-    <button type='button' class='btn btn-outline-dark' onClick={handleTheme}>
+    <button
+      type='button'
+      className='btn btn-outline-dark'
+      onClick={handleTheme}
+    >
       Light
     </button>
   );

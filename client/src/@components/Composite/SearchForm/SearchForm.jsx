@@ -15,7 +15,11 @@ const SearchForm = ({ children }) => {
 
 const SearchButton = ({ onClick }) => {
   return (
-    <button type='button' class='btn btn-outline-secondary' onClick={onClick}>
+    <button
+      type='button'
+      className='btn btn-outline-secondary'
+      onClick={onClick}
+    >
       <SearchIcon />
     </button>
   );
@@ -52,7 +56,7 @@ const SearchLoadingInput = () => {
 
 const SearchLoadingButton = () => {
   return (
-    <button type='button' class='btn btn-outline-success'>
+    <button type='button' className='btn btn-outline-success'>
       <LoadingCircle />
     </button>
   );
@@ -60,7 +64,7 @@ const SearchLoadingButton = () => {
 
 const SearchErrorButton = () => {
   return (
-    <button type='button' class='btn btn-outline-danger'>
+    <button type='button' className='btn btn-outline-danger'>
       <MdOutlineSmsFailed />
     </button>
   );

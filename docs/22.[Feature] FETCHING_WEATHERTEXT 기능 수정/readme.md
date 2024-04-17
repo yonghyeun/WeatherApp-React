@@ -124,8 +124,55 @@ const response = await fetch(ENDPOINT);
 
 야호 ~~
 
-그럼 나는 그저 단순히 저 쿼리문을 이용하지 않으면 될 것이다.
+그럼 나는 그저 단순히 저 쿼리문을 이용하지 않도록 `searchParams` 자료구조에서 저 두 쿼리를 제거해주었다.
 
-### **Exprected Behavior**
+### 응답값 파싱하기
+
+![alt text](image-2.png)
+
+현재 파싱되는 응답값은 다음과 같이 생겼다.
+
+이전의 나는 해당 응답값 중 가장 최근 것인 첫 번째 원소만 이용하여 파싱해주었다.
+
+그 이유는 카드 컴포넌트 내에 해당 텍스트 뉴스를 모두 넣기에는 양이 너무 많다고 생각했기 때문이다.
+
+하지만 텍스트 뉴스만 담은 페이지를 따로 생성해주기로 하였기 때문에 모든 텍스트 뉴스를 파싱해오도록 해야겠다.
+
+`< .. >` 형태로 있는 부분은 텍스트 뉴스의 제목으로 , 나머지 부분들은 모두 본문으로 처리해야겠다.
+
+이 때 `< .. >` 같은 부분은 중복되는 경우가 존재한다. 예를 들어 위 이미지에선 안개 현항과 전망이 01시 기준 , 06시 기준으로 두 번 발표되었기 때문이다.
+
+나는 가장 동일한 타이틀 별로는 가장 최근의 정보만 담을 수 있도록 할 것이다.
+
+```jsx
+const getParsingWeatherText = (json) => {
+  // 0. make data structure to store weather text
+  const newsStore = {};
+  // 1. get Item array
+  const arr = json.response.body.items.item;
+  // 2. iterating  through an array ,parasing the text and stroing it
+  arr.forEach(({ t1 }) => {
+    let [title, content] = t1.split('○');
+    // 3. remove the < , >  in the title
+    title = title.replace('<', '').replace('>', '').trim();
+
+    // 3. store only the most recent news
+    if (!newsStore[title]) {
+      newsStore[title] = content;
+    }
+  });
+  return newsStore;
+};
+```
+
+파싱해온 데이터를 전체 `store` 에 저장 할 때 다음과 같은 `newsStore` 에서 객체 형태로 저장해주도록 하자
+
+> 최근 방향키가 고장나 `Vim extension` 을 사용하고 있는데 한글 주석을 달고나면 `vim` 을 사용하는데 있어 방해가 되어 주석을 영어로 치게 된다.
 
 ### **ScreenShot**
+
+![alt text](image-3.png)
+
+전역 스토어에 저장되는 형태는 다음과 같이 생겼다.
+
+해당 자료구조를 어떻게 파싱해서 쓸지는 나중에 불러올 때 생각해봐야겠다.

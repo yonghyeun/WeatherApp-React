@@ -51,14 +51,22 @@ const getAirData = (json) => {
 };
 
 const getParsingWeatherText = (json) => {
-  const item = json.response.body.items.item[0];
-  const weatherText = item.t1;
-  const stringParsed = weatherText
-    .split('\n\n')[1]
-    .split('(현황)')[1]
-    .replace('-', '\n')
-    .trim();
-  return stringParsed;
+  // 0. make data structure to store weather text
+  const newsStore = {};
+  // 1. get Item array
+  const arr = json.response.body.items.item;
+  // 2. iterating  through an array ,parasing the text and stroing it
+  arr.forEach(({ t1 }) => {
+    let [title, content] = t1.split('○');
+    // 3. remove the < , >  in the title
+    title = title.replace('<', '').replace('>', '').trim();
+
+    // 3. store only the most recent news
+    if (!newsStore[title]) {
+      newsStore[title] = content;
+    }
+  });
+  return newsStore;
 };
 
 const spliter = (string, baseword) => {

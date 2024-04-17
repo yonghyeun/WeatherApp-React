@@ -76,7 +76,7 @@ const fetchForecastText = async () => {
     ['ServiceKey', APIKEY],
     ['dataType', 'JSON'],
     ['stnId', '108'], // stnId 는 지점코드로 108번은 전국을 의미한다.
-    // TODO stnId 맨허튼 거리를 이용해 검색 장소와 가장 가까운 지점코드 가져오도록 변
+    // TODO stnId 맨허튼 거리를 이용해 검색 장소와 가장 가까운 지점코드 가져오도록 변경
     ['numOfRows', '10'],
   ]);
   const ENDPOINT = `${URI}?${searchParams.toString()}`;
