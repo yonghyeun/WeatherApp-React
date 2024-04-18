@@ -1,8 +1,8 @@
 import Card from './Card';
 
-const MainCard = () => {
+const MainCard = ({ flexGrow }) => {
   return (
-    <Card>
+    <Card flexGrow={flexGrow}>
       <Card.LocationTitle />
       <Card.DateTitle />
       <Card.ChangeBar />
