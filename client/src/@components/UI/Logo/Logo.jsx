@@ -9,7 +9,7 @@ const GithubLogo = () => {
   return (
     <a href='https://github.com/yonghyeun/WeatherApp-React' target='_blink'>
       <img
-        src={`https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/github_${theme}.png?raw=true`}
+        src={`https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/logo/github_${theme}.png?raw=true`}
         alt='github'
         className={moduleCss.logoImg}
       />
@@ -20,7 +20,7 @@ const VelogLogo = () => {
   return (
     <a href='https://velog.io/@yonghyeun/posts' target='_blink'>
       <img
-        src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/velog.png?raw=true'
+        src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/logo/velog.png?raw=true'
         alt='velog'
         className={moduleCss.logoImg}
       />
@@ -32,7 +32,7 @@ const LicenseLogo = () => {
   return (
     <a href='https://en.wikipedia.org/wiki/MIT_License' target='_blink'>
       <img
-        src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/images/mitLicense.png?raw=true'
+        src='https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/logo/mitLicense.png?raw=true'
         alt='mit'
         className={moduleCss.logoImg}
       />

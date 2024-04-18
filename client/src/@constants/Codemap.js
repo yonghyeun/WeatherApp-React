@@ -15,7 +15,7 @@ const weatherValueMap = Object.freeze({
   precipitationType: {
     0: 'sunny',
     1: 'rainy',
-    2: 'rainy/snow',
+    2: 'rainy_snow',
     3: 'snow',
     5: 'rainy',
     6: 'raniy',

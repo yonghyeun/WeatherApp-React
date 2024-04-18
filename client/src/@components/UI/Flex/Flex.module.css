@@ -1,11 +1,9 @@
 .flexRow {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
 }
 
 .flexColumn {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
 }
