@@ -3,7 +3,7 @@ import moduleTheme from './Card.module.css';
 import LocationTitle from './UI/Title/LocationTitle';
 import DateTitle from './UI/Title/DateTitle';
 import ChangeBar from './UI/ChangeBar/ChangeBar';
-
+import WeatherIcon from './UI/WeatherIcon/WeatherIcon';
 const Card = ({ children, flexGrow }) => {
   // TODO 테마 넣어줘야 하나 ?
   if (!children)
@@ -18,5 +18,5 @@ const Card = ({ children, flexGrow }) => {
 Card.LocationTitle = LocationTitle;
 Card.DateTitle = DateTitle;
 Card.ChangeBar = ChangeBar;
-
+Card.WeatherIcon = WeatherIcon;
 export default Card;

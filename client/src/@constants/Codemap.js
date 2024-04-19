@@ -23,7 +23,7 @@ const weatherValueMap = Object.freeze({
   },
   skyConditions: {
     1: 'sunny',
-    3: 'sunny/cloudy',
+    3: 'sunny_cloudy',
     4: 'cloudy',
   },
 });

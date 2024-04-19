@@ -1,8 +1,10 @@
 import { useSelector } from 'react-redux';
 
-const useWeatherData = () => {
-  const { status } = useSelector((state) => state.data);
-  return status;
+const useWeatherState = (date, time) => {
+  const { fetchedWeather } = useSelector((state) => state.data);
+  if (date && !time) return fetchedWeather[date];
+  if (date && time) return fetchedWeather[date][time];
+  return fetchedWeather;
 };
 
-export default useWeatherData;
+export default useWeatherState;

@@ -6,6 +6,7 @@ const MainCard = ({ flexGrow }) => {
       <Card.LocationTitle />
       <Card.DateTitle />
       <Card.ChangeBar />
+      <Card.WeatherIcon />
     </Card>
   );
 };

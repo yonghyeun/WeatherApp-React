@@ -48,7 +48,8 @@ const useFetching = () => {
       // !도로명 주소 검색 시 미세먼지가 잘 패칭 되는지 확인하기
       disptachLocation(addressName);
       dispatchWeather(forecastWeather);
-      dispatchWeatherText(forecastWeatherText);
+      // ! 20240419 현재 네트워크 작업으로 인해 weatherText 정보 수집 안
+      // dispatchWeatherText(forecastWeatherText);
       dispatchAir(forecastAir);
       dispatchAirText({ PM: airPMText, O3: airO3Text });
     } catch (e) {
