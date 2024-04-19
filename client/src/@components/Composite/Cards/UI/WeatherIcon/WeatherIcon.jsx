@@ -9,7 +9,7 @@ const WeatherIcon = () => {
   // 2. am/pm 결정 , 날씨 상태 결정
   const nTime = Number(time.substring(0, 2));
   console.log(nTime, skyConditions, precipitationType);
-  const timePeriod = nTime >= 6 && nTime <= 18 ? 'am' : 'pm';
+  const timePeriod = nTime >= 6 && nTime <= 18 ? 'day' : 'night';
   if (precipitationType === 'sunny') {
     src = `${IconUrl}/${timePeriod}_${skyConditions}.png?raw=true`;
   } else {
