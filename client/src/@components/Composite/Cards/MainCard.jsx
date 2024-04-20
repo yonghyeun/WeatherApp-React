@@ -7,7 +7,7 @@ const MainCard = ({ flexGrow }) => {
     <Card flexGrow={flexGrow}>
       <FlexRow flexRatio={[0.8, 0.2]}>
         <FlexColumn flexRatio={[0.5, 0.5]}>
-          <FlexRow flexRatio={[0.9, 0.1]}>
+          <FlexRow flexRatio={[0.9, 0.3]}>
             <FlexColumn>
               <FlexColumn justifyContent='center' flexRatio={[0.5, 0.5]}>
                 <Card.LocationTitle />
@@ -18,17 +18,17 @@ const MainCard = ({ flexGrow }) => {
             <Card.WeatherIcon date={date} time={time} />
           </FlexRow>
           <FlexRow flexRatio={[0.25, 0.25, 0.25, 0.25]}>
-            <div style={{ width: '100px', backgroundColor: 'white' }}></div>
-            <div style={{ width: '100px', backgroundColor: 'white' }}></div>
-            <div style={{ width: '100px', backgroundColor: 'white' }}></div>
-            <div style={{ width: '100px', backgroundColor: 'white' }}></div>
+            <div style={{ height: '100px', backgroundColor: 'green' }}>1</div>
+            <div style={{ height: '100px', backgroundColor: 'green' }}>2</div>
+            <div style={{ height: '100px', backgroundColor: 'green' }}>3</div>
+            <div style={{ height: '100px', backgroundColor: 'green' }}>4</div>
           </FlexRow>
         </FlexColumn>
         <FlexColumn flexRatio={[0.3, 0.3, 0.3]}>
           {/* TODO subCard 로 채우기 */}
-          <div style={{ width: '100%', backgroundColor: 'white' }}>1</div>
-          <div style={{ width: '100%', backgroundColor: 'white' }}>2</div>
-          <div style={{ width: '100%', backgroundColor: 'white' }}>3</div>
+          <div style={{ backgroundColor: 'green' }}>1</div>
+          <div style={{ backgroundColor: 'green' }}>2</div>
+          <div style={{ backgroundColor: 'green' }}>3</div>
         </FlexColumn>
       </FlexRow>
     </Card>
