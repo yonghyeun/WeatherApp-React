@@ -6,14 +6,7 @@ import MainCard from '../../@components/Composite/Cards/MainCard';
 const MenuPage = () => {
   return (
     <section className={moduleCss.menu}>
-      <FlexRow flexRatio={[0.5, 0.5]}>
-        <MainCard />
-        <FlexColumn>
-          <MainCard />
-          <MainCard />
-          <MainCard />
-        </FlexColumn>
-      </FlexRow>
+      <MainCard />
     </section>
   );
 };

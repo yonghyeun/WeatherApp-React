@@ -1,11 +1,19 @@
 .flexRow {
   display: flex;
   flex-direction: row;
+  position: relative;
+  padding: 8px;
   gap: 16px;
+  /* TODO border 지우기 */
+  border: 1px solid white;
 }
 
 .flexColumn {
   display: flex;
   flex-direction: column;
+  position: relative;
+  padding: 8px;
   gap: 16px;
+  /* TODO border 지우기 */
+  border: 1px solid white;
 }

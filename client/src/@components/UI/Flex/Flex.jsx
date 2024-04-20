@@ -5,7 +5,9 @@ const FlexColumn = ({ children, flexRatio = [1], ...props }) => {
   return (
     <section style={{ ...props }} className={moduleStyle.flexColumn}>
       {React.Children.map(children, (child, index) => {
-        return React.cloneElement(child, { flexGrow: flexRatio[index] });
+        return React.cloneElement(child, {
+          flexBasis: `${flexRatio[index] * 100}%`,
+        });
       })}
     </section>
   );
@@ -15,7 +17,9 @@ const FlexRow = ({ children, flexRatio = [1], ...props }) => {
   return (
     <section style={{ ...props }} className={moduleStyle.flexRow}>
       {React.Children.map(children, (child, index) => {
-        return React.cloneElement(child, { flexGrow: flexRatio[index] });
+        return React.cloneElement(child, {
+          flexBasis: `${flexRatio[index] * 100}%`,
+        });
       })}
     </section>
   );

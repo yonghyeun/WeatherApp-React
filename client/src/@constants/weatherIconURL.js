@@ -1,3 +1,3 @@
-const IconUrl =
-  '  https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/weatherIcon';
-export default IconUrl;
+const IconPath =
+  'https://github.com/yonghyeun/WeatherApp-React/blob/main/client/src/assets/weatherIcon';
+export default IconPath;
