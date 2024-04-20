@@ -1,7 +1,7 @@
 import { FaTemperatureHigh } from 'react-icons/fa'; // temp
 import { IoIosRainy } from 'react-icons/io'; // precipitaion
 import { TiWeatherWindyCloudy } from 'react-icons/ti'; // wind spped
-import { WiHumidity } from 'react-icons/wi'; // humidity
+import { FaHandHoldingWater } from 'react-icons/fa';
 import { RiWaterPercentFill } from 'react-icons/ri'; // probability
 
 const useWeatherIcon = (key) => {
@@ -15,7 +15,7 @@ const useWeatherIcon = (key) => {
     case '풍속':
       return <TiWeatherWindyCloudy />;
     case '습도':
-      return <WiHumidity />;
+      return <FaHandHoldingWater />;
     default:
       // throw new Error('해당 icon이 존재하지다않습니다');
       return 'good';
