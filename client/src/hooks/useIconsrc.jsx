@@ -1,4 +1,4 @@
-import useWeatherState from './useWeatherData';
+import useWeatherState from './useWeatherState';
 import IconPath from '../@constants/weatherIconURL';
 const useIconSrc = (date, time) => {
   const { skyConditions, precipitationType } = useWeatherState(date, time);
