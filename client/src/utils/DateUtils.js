@@ -29,6 +29,13 @@ const getCurrentTime = () => {
     0,
   )}${currentTime[2].padStart(2, 0)}`;
 
+  const stringDate = `${currentTime[0]}년 ${currentTime[1].padStart(
+    2,
+    0,
+  )}월 ${currentTime[2].padStart(2, 0)}일`;
+
+  const stringTime = `${String(time.getHours()).padStart(2, 0)}시`;
+
   return {
     year: currentTime[0],
     month: currentTime[1],
@@ -38,6 +45,8 @@ const getCurrentTime = () => {
     baseDate, // ex : 20240403
     baseTime, // ex: 12 or 09
     searchDate, // ex: 2024-04-03
+    stringDate,
+    stringTime,
   };
 };
 

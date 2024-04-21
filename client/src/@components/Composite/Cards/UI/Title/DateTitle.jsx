@@ -1,5 +1,3 @@
-import moduleTheme from './Title.module.css';
-
 import useTime from '../../../../../hooks/useTime';
 import Typography from '../../../Typography/Typography';
 const DateTitle = ({ extraText }) => {

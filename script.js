@@ -1,3 +1,2 @@
-const date = '20240416';
-
-console.log(new Date());
+const time = new Date().toLocaleDateString();
+console.log(time);

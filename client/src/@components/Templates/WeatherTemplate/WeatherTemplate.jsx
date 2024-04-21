@@ -1,7 +1,7 @@
 import { FlexColumn, FlexRow } from '../../UI/Flex/Flex';
 import WeatherMainCard from '../Cards/WeatherMainCard/WeatherMainCard';
 import WeatherSideCard from '../Cards/WeatherMainCard/WeatherSideCard';
-import moduleStyle from './WeatherTemplate.module.css';
+import moduleStyle from './Template.module.css';
 import useWeatherState from '../../../hooks/useWeatherState';
 
 const WeatherTemplate = () => {
