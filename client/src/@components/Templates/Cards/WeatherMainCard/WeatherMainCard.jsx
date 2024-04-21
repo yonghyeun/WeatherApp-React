@@ -27,7 +27,7 @@ const WeatherMainCard = (props) => {
             <Card.WeatherIcon date={date} time={time} />
           </FlexRow>
         </FlexRow>
-        <FlexRow justifyContent='space-around'>
+        <FlexRow justifyContent='space-between'>
           {InfoNames.map((infoName) => (
             <WeatherInfoCard infoName={infoName} />
           ))}
