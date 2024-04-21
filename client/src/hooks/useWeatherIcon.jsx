@@ -6,15 +6,15 @@ import { RiWaterPercentFill } from 'react-icons/ri'; // probability
 
 const useWeatherIcon = (key) => {
   switch (key) {
-    case '온도':
+    case 'temperature':
       return <FaTemperatureHigh />;
-    case '강수확률':
+    case 'precipitationProbability':
       return <RiWaterPercentFill />;
-    case '강수량':
+    case 'oneHourPrecipitation':
       return <IoIosRainy />;
-    case '풍속':
+    case 'windSpeed':
       return <TiWeatherWindyCloudy />;
-    case '습도':
+    case 'humidity':
       return <FaHandHoldingWater />;
     default:
       // throw new Error('해당 icon이 존재하지다않습니다');

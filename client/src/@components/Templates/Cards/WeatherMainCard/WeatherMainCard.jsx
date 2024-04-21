@@ -1,6 +1,6 @@
-import { FlexRow, FlexColumn } from '../../UI/Flex/Flex';
-import Card from '../../Composite/Cards/Card';
-import useTimeState from '../../../hooks/useTimeState';
+import { FlexRow, FlexColumn } from '../../../UI/Flex/Flex';
+import Card from '../../../Composite/Cards/Card';
+import useTimeState from '../../../../hooks/useTimeState';
 const WeatherMainCard = (props) => {
   const { date, time } = useTimeState();
   return (
