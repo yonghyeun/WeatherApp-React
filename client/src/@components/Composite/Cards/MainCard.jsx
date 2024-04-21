@@ -1,7 +1,6 @@
 import useTimeState from '../../../hooks/useTimeState';
 import Card from './Card';
 import { FlexRow, FlexColumn } from '../../UI/Flex/Flex';
-import InfoCard from './UI/InfoCard';
 const MainCard = ({ flexGrow }) => {
   const { date, time } = useTimeState();
   const InfoNames = [
@@ -28,15 +27,15 @@ const MainCard = ({ flexGrow }) => {
           </FlexRow>
           <FlexRow justifyContent='space-around'>
             {InfoNames.map((infoName) => (
-              <InfoCard date={date} time={time} infoName={infoName} />
+              <Card.Info date={date} time={time} infoName={infoName} />
             ))}
           </FlexRow>
         </FlexColumn>
         <FlexColumn flexRatio={[0.3, 0.3, 0.3]}>
           {/* TODO subCard 로 채우기 */}
-          <div style={{ backgroundColor: 'green' }}>1</div>
-          <div style={{ backgroundColor: 'green' }}>2</div>
-          <div style={{ backgroundColor: 'green' }}>3</div>
+          <Card.SubCard date='20240421' />
+          <Card.SubCard date='20240422' />
+          <Card.SubCard date='20240423' />
         </FlexColumn>
       </FlexRow>
     </Card>

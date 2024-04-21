@@ -49,7 +49,7 @@ const useFetching = () => {
       disptachLocation(addressName);
       dispatchWeather(forecastWeather);
       // ! 20240419 현재 네트워크 작업으로 인해 weatherText 정보 수집 안됨
-      // dispatchWeatherText(forecastWeatherText);
+      dispatchWeatherText(forecastWeatherText);
       dispatchAir(forecastAir);
       dispatchAirText({ PM: airPMText, O3: airO3Text });
     } catch (e) {

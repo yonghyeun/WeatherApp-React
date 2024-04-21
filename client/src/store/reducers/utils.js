@@ -53,19 +53,21 @@ const getAirData = (json) => {
 const getParsingWeatherText = (json) => {
   // 0. make data structure to store weather text
   const newsStore = {};
-  // 1. get Item array
-  const arr = json.response.body.items.item;
-  // 2. iterating  through an array ,parasing the text and stroing it
-  arr.forEach(({ t1 }) => {
-    let [title, content] = t1.split('○');
-    // 3. remove the < , >  in the title
-    title = title.replace('<', '').replace('>', '').trim();
+  if (json.response.body) {
+    // 1. get Item array
+    const arr = json.response.body.items.item;
+    // 2. iterating  through an array ,parasing the text and stroing it
+    arr.forEach(({ t1 }) => {
+      let [title, content] = t1.split('○');
+      // 3. remove the < , >  in the title
+      title = title.replace('<', '').replace('>', '').trim();
 
-    // 3. store only the most recent news
-    if (!newsStore[title]) {
-      newsStore[title] = content;
-    }
-  });
+      // 3. store only the most recent news
+      if (!newsStore[title]) {
+        newsStore[title] = content;
+      }
+    });
+  }
   return newsStore;
 };
 

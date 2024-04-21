@@ -4,6 +4,8 @@ import LocationTitle from './UI/Title/LocationTitle';
 import DateTitle from './UI/Title/DateTitle';
 import ChangeBar from './UI/ChangeBar/ChangeBar';
 import WeatherIcon from './UI/WeatherIcon/WeatherIcon';
+import InfoCard from './InfoCard/InfoCard';
+import SubCard from './SubCard/SubCard';
 const Card = ({ children, flexGrow }) => {
   // TODO 테마 넣어줘야 하나 ?
   if (!children)
@@ -19,4 +21,6 @@ Card.LocationTitle = LocationTitle;
 Card.DateTitle = DateTitle;
 Card.ChangeBar = ChangeBar;
 Card.WeatherIcon = WeatherIcon;
+Card.Info = InfoCard;
+Card.SubCard = SubCard;
 export default Card;
