@@ -3,11 +3,11 @@ import TitleArea from './Area/TitleArea';
 import Card from '../../Card';
 import useTimeState from '../../../../../hooks/useTimeState';
 
-const MainCardHeader = () => {
+const MainCardHeader = (props) => {
   const { date, time } = useTimeState();
 
   return (
-    <FlexRow>
+    <FlexRow flexRatio={[0.8, 0.2]}>
       <FlexColumn>
         <TitleArea />
         <Card.ChangeBar />

@@ -12,7 +12,7 @@ const MainCardFooter = () => {
   ];
 
   return (
-    <FlexRow>
+    <FlexRow justifyContent='space-around'>
       {InfoNames.map((infoName) => (
         <Card.Info date={date} time={time} infoName={infoName}></Card.Info>
       ))}

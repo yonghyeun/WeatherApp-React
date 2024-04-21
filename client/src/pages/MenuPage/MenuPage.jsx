@@ -1,7 +1,7 @@
 import moduleCss from './MenuPage.module.css';
 
 import { FlexColumn, FlexRow } from '../../@components/UI/Flex/Flex';
-import MainCard from '../../@components/Composite/Cards/MainCard';
+import MainCard from '../../@components/Composite/Cards/Templates/MainCard';
 // TODO 내용 채우기
 const MenuPage = () => {
   return (

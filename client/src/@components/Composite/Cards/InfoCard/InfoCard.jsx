@@ -2,6 +2,7 @@ import Typography from '../../Typography/Typography';
 import useWeatherState from '../../../../hooks/useWeatherState';
 import useWeatherIcon from '../../../../hooks/useWeatherIcon';
 import { FlexRow, FlexColumn } from '../../../UI/Flex/Flex';
+import Card from '../Card';
 
 const infoNameMap = {
   temperature: '온도',
@@ -26,7 +27,7 @@ const InfoCard = ({ date, time, infoName }) => {
   const unit = weatherUnitMap[infoName];
   const Icon = useWeatherIcon(infoNameMap[infoName]);
   return (
-    <section>
+    <Card>
       <FlexColumn alignItems='center'>
         <FlexRow>
           <Typography.SubTitle>
@@ -38,7 +39,7 @@ const InfoCard = ({ date, time, infoName }) => {
           {Info} {unit}
         </Typography.MainText>
       </FlexColumn>
-    </section>
+    </Card>
   );
 };
 
