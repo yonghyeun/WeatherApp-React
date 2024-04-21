@@ -18,6 +18,15 @@ const airUnitMap = {
   pm25: '㎍/㎥',
 };
 
+const airNameMap = {
+  co: '일산화탄소',
+  no2: '이산화질소',
+  o3: '오존',
+  so2: '이황산가스',
+  pm10: '미세먼지',
+  pm25: '초미세먼지',
+};
+
 const AirInfoCard = ({ name }) => {
   const fetchedAir = useAirState();
   const grade = fetchedAir[`${name}Grade`];
@@ -26,7 +35,7 @@ const AirInfoCard = ({ name }) => {
   return (
     <Card>
       <FlexColumn alignItems='center'>
-        <Typography.SubTitle>{name}</Typography.SubTitle>
+        <Typography.SubTitle>{airNameMap[name]}</Typography.SubTitle>
         <Typography.MainTitle>{gradeMap[grade]}</Typography.MainTitle>
         <Typography.SubText>
           {value}/{unit}

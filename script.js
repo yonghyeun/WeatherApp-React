@@ -1,2 +1,1 @@
-const time = new Date().toLocaleDateString();
-console.log(time);
+console.log('pm15'.toUpperCase());
