@@ -1,6 +1,8 @@
 import { FlexRow } from '../../../../UI/Flex/Flex';
 import Card from '../../Card';
-const InfoArea = ({ date, time }) => {
+import useTimeState from '../../../../../hooks/useTimeState';
+const MainCardFooter = () => {
+  const { date, time } = useTimeState();
   const InfoNames = [
     'temperature',
     'humidity',
@@ -18,4 +20,4 @@ const InfoArea = ({ date, time }) => {
   );
 };
 
-export default InfoArea;
+export default MainCardFooter;
