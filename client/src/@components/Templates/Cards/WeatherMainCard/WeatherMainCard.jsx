@@ -1,6 +1,16 @@
 import { FlexRow, FlexColumn } from '../../../UI/Flex/Flex';
 import Card from '../../../Composite/Cards/Card';
+import WeatherInfoCard from './WeatherInfoCard/WeatherInfoCard';
 import useTimeState from '../../../../hooks/useTimeState';
+
+const InfoNames = [
+  'temperature',
+  'humidity',
+  'precipitationProbability',
+  'oneHourPrecipitation',
+  'windSpeed',
+];
+
 const WeatherMainCard = (props) => {
   const { date, time } = useTimeState();
   return (
@@ -18,7 +28,9 @@ const WeatherMainCard = (props) => {
           </FlexRow>
         </FlexRow>
         <FlexRow justifyContent='space-around'>
-          <div>{/* info Card */}</div>
+          {InfoNames.map((infoName) => (
+            <WeatherInfoCard infoName={infoName} />
+          ))}
         </FlexRow>
       </FlexColumn>
     </Card>
