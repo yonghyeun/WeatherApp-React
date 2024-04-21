@@ -5,7 +5,7 @@ import AirInfoCard from '../Cards/AirInfoCard/AirInfoCard';
 import { getCurrentTime } from '../../../utils/DateUtils';
 import useLocation from '../../../hooks/useLocation';
 
-const airKeyArr = ['co', 'no2', 'o3', 'pm10', 'pm25', 'so2'];
+const airKeyArr = ['pm10', 'pm25', 'o3', 'co', 'no2', 'so2'];
 
 const AirTemplate = () => {
   const { stringDate, stringTime } = getCurrentTime();
