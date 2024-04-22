@@ -244,3 +244,100 @@ const forecastWeather = await fetchForecastFromLocation(lat, lon);
 메소드 내부를 변경하여 `fetchLocationFromString` 메소드가 `locationObject` 가 아니라 `addressName , lat , lon` 들을 반환하도록 변경해주었다.
 
 이를 통해 `fetchingWeather` 메소드를 분리해 줄 준비는 모두 끝났다.
+
+### `SearchArea.Normal` 컴포넌트 수정하기
+
+```jsx
+const SearchNormal = () => {
+  const handleFetching = useFetching();
+
+  return (
+    <SearchForm>
+      <SearchInput />
+      <SearchButton onClick={handleFetching} />
+    </SearchForm>
+  );
+};
+```
+
+![alt text](image-4.png)
+
+현재 해당 영역의 버튼 온클릭 이벤트 핸들러엔 `useFetching` 메소드에서 반환하는 `fetchingWeather` 메소드가 부착되어 있다.
+
+이제 해당 버튼의 역할은 `fetchingWeather` 전부가 아니라 일부가 되었다.
+
+![alt text](image-6.png)
+
+이제 버튼이 클릭 되면 다음과 같은 일들만 하도록 변경해주자
+
+```jsx
+import { fetchLocationFromString } from '../utils/ApiUtils';
+import { getCurrentTime } from '../utils/DateUtils';
+import useEveryDispatcher from './useEveryDispatcher';
+import useSearchRef from './useSearchRef';
+
+import { useNavigate } from 'react-router-dom';
+
+// 서울특별시 종로구의 위경도
+const BASE_LAT = 37.5735042429813;
+const BASE_LON = 126.978989954189;
+
+const useHandleClick = () => {
+  const inputRef = useSearchRef();
+  const navigate = useNavigate();
+  const { disptachLocation, disptachStatus } = useEveryDispatcher();
+
+  const { fullDate } = getCurrentTime();
+
+  const searchParams = new URLSearchParams([
+    ['date', fullDate],
+    ['lat', BASE_LAT],
+    ['lon', BASE_LON],
+  ]);
+
+  const fetchingLocation = async () => {
+    if (!inputRef.current?.value) return null;
+    try {
+      disptachStatus('LOADING');
+      const locationName = inputRef.current.value;
+      const { addressName, lat, lon } = await fetchLocationFromString(
+        locationName,
+      );
+
+      searchParams.set('lat', lat);
+      searchParams.set('lon', lon);
+
+      disptachLocation(addressName);
+    } catch (e) {
+      disptachStatus(e.message);
+      console.error(e);
+    }
+  };
+
+  const navigateToCardPage = () => {
+    navigate(`/menu1?${searchParams.toString()}`);
+  };
+
+  return { fetchingLocation, navigateToCardPage };
+};
+
+export default useHandleClick;
+```
+
+버튼에 부착해줄 `useHandleClick` 훅을 생성해주었다.
+
+해당 훅은 두 가지 메소드를 반환하는데
+
+하나는 `inputRef.current.value` 에 적힌 주소 값을 패칭해와 주소명과 위경도 이름으로 패칭해오는 `fetchingLocation` 메소드와
+
+`fetchingLocation` 메소드가 진행되며 생성된 `searchParams` 의 쿼리문에 따라 라우팅 시키는 메소드이다.
+
+이 때 `fetchLocationFromString` 메소드에서 에러가 발생하여 `lat , lon` 값이 지정되지 않을 수도 있기 때문에 `searchParams` 객체를 생성해줄 때 기본값으로 서울특별시 종로구의 위경도를 넣어 생성해주고
+
+패칭이 성공적으로 일어났다면 `set` 을 이용해 수정해주도록 변경하였다.
+
+**이전의 `useFetching` 과 다른 점은 `finally` 부분이 존재하지 않으며 `APIStatus` 를 `OK` 로 변경하지 않고 `LOADING` 상태로 놔둔다는 것이다.** 그 이유는 `/:menu1?...` 로 라우팅 이후 쿼리 파라미터에 따라 날씨 , 미세먼지 정보를 다시 패칭 해올 것이기 때문이다.
+
+![alt text](image-7.png)
+
+어떤 주소를 입력하면 `date , lat , lon` 쿼리 파라미터에 맞춰 라우팅 되는 모습을 볼 수 있다.

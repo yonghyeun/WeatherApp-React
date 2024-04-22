@@ -9,6 +9,7 @@ import moduleCss from './SearchForm.module.css';
 import useSearchRef from '../../../hooks/useSearchRef';
 import useFetching from '../../../hooks/useFetching';
 import useAPIStatus from '../../../hooks/useAPIStatus';
+import useHandleClick from '../../../hooks/useHandleClick';
 const SearchForm = ({ children }) => {
   return <Form className={moduleCss.searchForm}>{children}</Form>;
 };
@@ -87,12 +88,17 @@ const SearchErrorInput = () => {
 };
 
 const SearchNormal = () => {
-  const handleFetching = useFetching();
+  const { fetchingLocation, navigateToCardPage } = useHandleClick();
 
   return (
     <SearchForm>
       <SearchInput />
-      <SearchButton onClick={handleFetching} />
+      <SearchButton
+        onClick={async () => {
+          await fetchingLocation();
+          navigateToCardPage();
+        }}
+      />
     </SearchForm>
   );
 };
