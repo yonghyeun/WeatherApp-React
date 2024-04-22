@@ -68,11 +68,9 @@ const translateCoord = (v1, v2, code = 'toXY') => {
   return rs;
 };
 
-const getNxNyFromLatLong = ({ documents }) => {
+const getNxNyFromLatLong = (lat, lon) => {
   // 검색어가 모호하여 결과값이 많을 땐 가장 첫 데이터가 포괄적인 정보를 담고 있음
-  const address = documents[0].address ?? documents[0].road_address;
-  const { x: longitutd, y: latitude } = address;
-  const { x: nx, y: ny } = translateCoord(latitude, longitutd);
+  const { x: nx, y: ny } = translateCoord(lat, lon);
   return { nx, ny };
 };
 
@@ -81,16 +79,28 @@ const getAddressName = ({ documents }) => {
   return address.address_name;
 };
 
-const getTMCoord = ({ documents }) => {
+const getTMCoord = (lat, lon) => {
   // 변수 명칭을 적절하게 변경하고, 숫자로 변환
-  const { x: lon, y: lat } = documents[0].address ?? documents[0].road_address;
   // lat = 37.588 lon = 127.006
   const wgs84 = 'EPSG:4326'; // WGS 84
   // 중부원점 설정을 한국 중부로 가정했을 경우 (경도 127도, 위도 38도를 사용)
   const tmProj =
     '+proj=tmerc +lat_0=38 +lon_0=127 +k=0.9996 +x_0=200000 +y_0=500000 +datum=WGS84 +units=m +no_defs';
   // 순서를 [경도, 위도]로 수정
+
   const [tmX, tmY] = proj4(wgs84, tmProj, [parseFloat(lon), parseFloat(lat)]);
   return [tmX, tmY];
 };
-export { translateCoord, getNxNyFromLatLong, getAddressName, getTMCoord };
+
+const getLatLon = ({ documents }) => {
+  const { x: lon, y: lat } = documents[0].address ?? documents[0].road_address;
+  return { lon, lat };
+};
+
+export {
+  translateCoord,
+  getNxNyFromLatLong,
+  getAddressName,
+  getTMCoord,
+  getLatLon,
+};

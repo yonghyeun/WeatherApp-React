@@ -6,7 +6,12 @@ import {
   airAPI,
   airTextAPI,
 } from '../@constants/_API';
-import { getNxNyFromLatLong, getTMCoord } from './CoordinateUtils';
+import {
+  getAddressName,
+  getLatLon,
+  getNxNyFromLatLong,
+  getTMCoord,
+} from './CoordinateUtils';
 import { getCurrentTime } from './DateUtils';
 
 /**
@@ -36,25 +41,29 @@ const fetchLocationFromString = async (locationString) => {
     throw error;
   }
 
-  return json;
+  const addressName = getAddressName(json);
+  const { lat, lon } = getLatLon(json);
+
+  return { addressName, lat, lon };
 };
 
 /**
  * 이 함수는 카카오 API 를 통해 얻은 locationObject 를 인수로 받아 기상청 API로 요청을 보내 날씨 정보를 가져온다.
  * 함수 내에선 locationObject 내부에 존재하는 위경도 좌표를 nx,ny 좌표로 변경한 후 사용한다.
- * @param {Object} locationObject - location 에 대한 정보가 담긴 객체, 주로 카카오API에서 제공하는 location 객체
+ * @param {string} lat - 카카오 API 의 반환값 혹은 URL 경로에 존재하는 쿼리 파라미터 값
+ * @param {string} lat - 카카오 API 의 반환값 혹은 URL 경로에 존재하는 쿼리 파라미터 값
  * @returns {Object} - 날씨와 관련된 JSON 데이터로 기상청 API 단기예보를 사용하였음
  */
-const fetchForecastFromLocation = async (locationObject) => {
+const fetchForecastFromLocation = async (lat, lon) => {
   const { APIKEY, URI } = weatherForecastAPI;
-  const { nx, ny } = getNxNyFromLatLong(locationObject);
+  const { nx, ny } = getNxNyFromLatLong(lat, lon);
   const { baseDate, baseTime } = getCurrentTime();
   const searchParams = new URLSearchParams([
     ['serviceKey', APIKEY],
     ['base_date', baseDate],
     ['nx', nx],
     ['ny', ny],
-    ['base_time', baseTime], // ! 기상청의 baseTime 은 항상 해당 일 0500 으로 고정
+    ['base_time', baseTime],
     ['pageNo', 1],
     ['numOfRows', 1000],
     ['dataType', 'JSON'],
@@ -67,6 +76,7 @@ const fetchForecastFromLocation = async (locationObject) => {
     throw new Error('기상청 API 네트워크가 불안정합니다. 다시 시도해주세요');
 
   const json = await response.json();
+
   return json;
 };
 
@@ -89,9 +99,9 @@ const fetchForecastText = async () => {
   return json;
 };
 
-const fetchNearstStationName = async (locationObject) => {
+const fetchNearstStationName = async (lat, lon) => {
   const { APIKEY, URI } = tmCoordAPI;
-  const [tmX, tmY] = getTMCoord(locationObject);
+  const [tmX, tmY] = getTMCoord(lat, lon);
   const searchParams = new URLSearchParams([
     ['serviceKey', APIKEY],
     ['returnType', 'JSON'],

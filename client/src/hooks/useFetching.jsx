@@ -11,7 +11,6 @@ import {
   fetchAirTextPM,
   fetchAirTextO3,
 } from '../utils/ApiUtils';
-import { getAddressName } from '../utils/CoordinateUtils';
 
 const DELAYTIME = 1000;
 
@@ -33,12 +32,13 @@ const useFetching = () => {
     try {
       disptachStatus('LOADING');
       await delay(DELAYTIME);
-      // TODO Promise.all 로 모두 변경하기
       const locationString = inputRef.current.value;
-      const locationObject = await fetchLocationFromString(locationString);
-      const addressName = getAddressName(locationObject);
-      const stationResponse = await fetchNearstStationName(locationObject);
-      const forecastWeather = await fetchForecastFromLocation(locationObject);
+      const { addressName, lat, lon } = await fetchLocationFromString(
+        locationString,
+      );
+      // 기상청,  에어코리아 패칭
+      const stationResponse = await fetchNearstStationName(lat, lon);
+      const forecastWeather = await fetchForecastFromLocation(lat, lon);
       const forecastWeatherText = await fetchForecastText();
       const forecastAir = await fetchAirData(stationResponse);
       const airPMText = await fetchAirTextPM();
