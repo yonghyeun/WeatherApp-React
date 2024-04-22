@@ -245,7 +245,7 @@ const forecastWeather = await fetchForecastFromLocation(lat, lon);
 
 이를 통해 `fetchingWeather` 메소드를 분리해 줄 준비는 모두 끝났다.
 
-### `SearchArea.Normal` 컴포넌트 수정하기
+### `SearchArea.Normal button` 컴포넌트 이벤트 핸들러 수정하기
 
 ```jsx
 const SearchNormal = () => {
@@ -341,3 +341,89 @@ export default useHandleClick;
 ![alt text](image-7.png)
 
 어떤 주소를 입력하면 `date , lat , lon` 쿼리 파라미터에 맞춰 라우팅 되는 모습을 볼 수 있다.
+
+### 로딩중일 경우에는 로딩중인 카드 컴포넌트가 보이도록 수정하기
+
+현재 가장 크게 직면한 문제는 라우팅 이후
+
+자료들이 패칭 되지 않았기 때문에 카드 컴포너트를 구성 할 때 런타임 에러가 발생한다는 점이다.
+
+이에 자료가 패칭 되기 전 카드 컴포넌트들이 렌더링 되지만 로딩 중임을 표현해주는 컴포넌트를 생성해보자
+
+#### `Loading` 컴포넌트 생성
+
+```jsx
+import useTheme from '../../../hooks/useTheme';
+
+const Loading = () => {
+  const theme = useTheme();
+
+  if (theme === 'dark') {
+    return <div class='spinner-border text-light' role='status'></div>;
+  }
+
+  return <div class='spinner-border text-dark' role='status'></div>;
+};
+
+export default Loading;
+```
+
+부트스트랩에서 쌈뽕해보이는 `Loading` 컴포넌트 하나를 가져와준다.
+
+이후 `MenuPage` 컴포넌트에서 `APIStatus` 에 따라 분기처리 해준다.
+
+```jsx
+import moduleStyle from './MenuPage.module.css';
+
+import { FlexColumn } from '../../@components/UI/Flex/Flex';
+import WeatherTemplate from '../../@components/Templates/WeatherTemplate/WeatherTemplate';
+import AirTemplate from '../../@components/Templates/WeatherTemplate/AirTemplate';
+
+import Loading from '../../@components/UI/Loading/Loading';
+
+import useAPIStatus from '../../hooks/useAPIStatus';
+// TODO 내용 채우기
+const MenuPage = () => {
+  const status = useAPIStatus();
+
+  if (status !== 'OK') {
+    return (
+      <section
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        className={moduleStyle.menu}
+      >
+        <Loading />
+      </section>
+    );
+  }
+
+  return (
+    <section className={moduleStyle.menu}>
+      <FlexColumn>
+        <WeatherTemplate />
+        <AirTemplate />
+      </FlexColumn>
+    </section>
+  );
+};
+
+export default MenuPage;
+```
+
+컴포넌트 내부에서 분기처리하여 렌더링 하는 것을 좋아하지는 않지만 `react-router-dom` 에서 `<Outlet>` 컴포넌트 내부에 들어갈 수 있는 컴포넌트는 하나이기 때문에 어쩔 수 없이
+
+분기처리 해주도록 한다.
+
+![alt text](image-8.png)
+
+이를 통해 로딩중일 때에는 메인 페이지에서 로딩중임을 알 수 있게 해주었다.
+
+> 원래는 `Card` 컴포넌트에서 로딩중일 경우 분기처리를 해주려고 했으나
+> 기존 카드 컴포넌트들의 크기를 유지하면서 로딩 상태를 보여주려고 하니 쉽지 않았다.
+> 만약 각 컴포넌트들의 크기가 `px` 단위나 `%` 단위 등으로 잘 정리되어 있었다면 내부 아이템들에 로딩 상태를 넣어줬겠지만
+> 나는 모두 `flex-box` 를 이용해 만들어주었기 때문에 쉽지 않았다.
+> 그래서 조금 간편한 방법을 선택했다.
