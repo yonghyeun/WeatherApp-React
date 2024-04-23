@@ -7,7 +7,7 @@ const SidebarTitle = ({ className }) => {
   return (
     <Title className={className || moduleCss.sidebarTitle}>
       <RiDashboardFill />
-      <Link to='/'>TDWeather</Link>
+      <Link to='/'>오늘날씨</Link>
     </Title>
   );
 };

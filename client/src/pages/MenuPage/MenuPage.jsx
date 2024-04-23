@@ -7,9 +7,11 @@ import AirTemplate from '../../@components/Templates/WeatherTemplate/AirTemplate
 import Loading from '../../@components/UI/Loading/Loading';
 
 import useAPIStatus from '../../hooks/useAPIStatus';
+import useFetchingWeatherAir from '../../hooks/useFetchingWeatherAir';
 // TODO 내용 채우기
 const MenuPage = () => {
   const status = useAPIStatus();
+  useFetchingWeatherAir();
 
   if (status !== 'OK') {
     return (

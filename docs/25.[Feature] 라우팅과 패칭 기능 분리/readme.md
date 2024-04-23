@@ -427,3 +427,122 @@ export default MenuPage;
 > 만약 각 컴포넌트들의 크기가 `px` 단위나 `%` 단위 등으로 잘 정리되어 있었다면 내부 아이템들에 로딩 상태를 넣어줬겠지만
 > 나는 모두 `flex-box` 를 이용해 만들어주었기 때문에 쉽지 않았다.
 > 그래서 조금 간편한 방법을 선택했다.
+
+### `/menu1/?date= .. & lat = .. & lon = ..` 으로 라우팅 됐을 때 마저 정보 패칭해오기
+
+이전 단계에서 검색 창에 장소를 입력하면 `APIStatus` 를 `Loading` 으로 변경하고
+
+`/menu1/?date= .. & lat = .. & lon = ..` 장소로 라우팅 시키는 것 까지 완성했다.
+
+이제 `menu1/?date= .. & lat = .. & lon = ..` 으로 라우팅 됐다면 `URL query params` 들을 이용해서 패칭 시키도록 해주자
+
+#### `useFetchingWeatherAir`
+
+```jsx
+import { useEffect } from 'react';
+import {
+  fetchAirData,
+  fetchAirTextO3,
+  fetchAirTextPM,
+  fetchForecastFromLocation,
+  fetchForecastText,
+  fetchNearstStationName,
+} from '../utils/ApiUtils';
+import useEveryDispatcher from './useEveryDispatcher';
+import delay from '../utils/delay';
+
+const DELAYTIME = 1000;
+
+const useFetchingWeatherAir = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const lat = searchParams.get('lat');
+  const lon = searchParams.get('lon');
+
+  const {
+    dispatchWeather,
+    dispatchWeatherText,
+    disptachStatus,
+    dispatchAir,
+    dispatchAirText,
+  } = useEveryDispatcher();
+
+  useEffect(() => {
+    const fetchingWeatherAir = async () => {
+      try {
+        const forecastWeather = await fetchForecastFromLocation(lat, lon);
+        const forecastWeatherText = await fetchForecastText(lat, lon);
+
+        const stationName = await fetchNearstStationName(lat, lon);
+        const forecastAir = await fetchAirData(stationName);
+        const airPMText = await fetchAirTextPM();
+        const airO3Text = await fetchAirTextO3();
+
+        dispatchWeather(forecastWeather);
+        dispatchWeatherText(forecastWeatherText);
+        dispatchAir(forecastAir);
+        dispatchAirText({ PM: airPMText, O3: airO3Text });
+      } catch (e) {
+        console.error(e);
+        disptachStatus(e.message);
+        await delay(DELAYTIME);
+      } finally {
+        disptachStatus('OK');
+      }
+    };
+
+    fetchingWeatherAir();
+  }, [lat, lon]);
+};
+
+export default useFetchingWeatherAir;
+```
+
+다음처럼 `URL searchParmas` 에 있는 `lat ,lon` 값을 받아 기상 정보들을 패칭해오는 훅을 생성해주자
+
+해당 훅은 `useEffect` 로 감싸져있기 때문에 불러오는 컴포넌트가 렌더링 된 후 호출된다.
+
+```jsx
+import moduleStyle from './MenuPage.module.css';
+
+import { FlexColumn } from '../../@components/UI/Flex/Flex';
+import WeatherTemplate from '../../@components/Templates/WeatherTemplate/WeatherTemplate';
+import AirTemplate from '../../@components/Templates/WeatherTemplate/AirTemplate';
+
+import Loading from '../../@components/UI/Loading/Loading';
+
+import useAPIStatus from '../../hooks/useAPIStatus';
+import useFetchingWeatherAir from '../../hooks/useFetchingWeatherAir';
+// TODO 내용 채우기
+const MenuPage = () => {
+  const status = useAPIStatus();
+  useFetchingWeatherAir();
+
+  if (status !== 'OK') {
+    return (
+      <section
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        className={moduleStyle.menu}
+      >
+        <Loading />
+      </section>
+    );
+  }
+
+  return (
+    <section className={moduleStyle.menu}>
+      <FlexColumn>
+        <WeatherTemplate />
+        <AirTemplate />
+      </FlexColumn>
+    </section>
+  );
+};
+
+export default MenuPage;
+```
+
+이후 `MenuPage` 에서 해당 훅을 호출해주면 `MenuPage` 가 처음 렌더링 될 때 로딩 중인 페이지가 렌더링 된 후 호출된다.

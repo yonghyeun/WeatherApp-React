@@ -3,7 +3,7 @@ import moduleCss from './AboutPage.module.css';
 const AboutPage = () => {
   return (
     <section className={moduleCss.about}>
-      <h1>TDweather 를 소개하는 내용들</h1>
+      <h1>오늘날씨를 소개하는 내용들</h1>
       <p>
         <i>나중에 채웁시다</i>
       </p>
