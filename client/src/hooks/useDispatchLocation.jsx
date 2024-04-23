@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { FETCHING_LOCATION } from '../store/actions/actionTypes';
 
-const useDIspatchLocation = () => {
+const useDispatchLocation = () => {
   const dispatch = useDispatch();
 
   return (location) => {
@@ -9,4 +9,4 @@ const useDIspatchLocation = () => {
   };
 };
 
-export default useDIspatchLocation;
+export default useDispatchLocation;

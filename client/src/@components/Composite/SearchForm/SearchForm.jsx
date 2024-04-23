@@ -7,7 +7,6 @@ import moduleCss from './SearchForm.module.css';
 
 // import customHooks
 import useSearchRef from '../../../hooks/useSearchRef';
-import useFetching from '../../../hooks/useFetching';
 import useAPIStatus from '../../../hooks/useAPIStatus';
 import useHandleClick from '../../../hooks/useHandleClick';
 const SearchForm = ({ children }) => {

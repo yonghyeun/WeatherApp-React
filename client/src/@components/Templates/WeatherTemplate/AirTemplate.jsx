@@ -9,14 +9,15 @@ const airKeyArr = ['pm10', 'pm25', 'o3', 'co', 'no2', 'so2'];
 
 const AirTemplate = () => {
   const { stringDate, stringTime } = getCurrentTime();
-  const location = useLocation();
+  const { addressName } = useLocation();
+
   return (
     <section className={moduleStyle.template}>
       <FlexRow>
         <FlexColumn width='100%' padding='8px 16px'>
           {/* TODO DateTitle 말고 currentTime 쓰기 */}
           <Typography.SubTitle>
-            {stringDate} {stringTime} {location} 미세먼지 정보
+            {stringDate} {stringTime} {addressName} 미세먼지 정보
           </Typography.SubTitle>
           <FlexRow justifyContent='space-between'>
             {airKeyArr.map((name) => (

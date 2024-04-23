@@ -1,12 +1,10 @@
-import moduleTheme from './Title.module.css';
-
 import useLocation from '../../../../../hooks/useLocation';
 import Typography from '../../../Typography/Typography';
 
 const LocationTitle = () => {
-  const location = useLocation();
+  const { addressName } = useLocation();
 
-  return <Typography.MainTitle>{location}</Typography.MainTitle>;
+  return <Typography.MainTitle>{addressName}</Typography.MainTitle>;
 };
 
 export default LocationTitle;

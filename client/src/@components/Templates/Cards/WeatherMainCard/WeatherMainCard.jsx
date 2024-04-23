@@ -29,7 +29,7 @@ const WeatherMainCard = (props) => {
         </FlexRow>
         <FlexRow justifyContent='space-between'>
           {InfoNames.map((infoName) => (
-            <WeatherInfoCard infoName={infoName} />
+            <WeatherInfoCard infoName={infoName} key={infoName} />
           ))}
         </FlexRow>
       </FlexColumn>

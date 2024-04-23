@@ -11,6 +11,7 @@ const API_STATUS = 'API_STATUS';
 // 시간 , 날짜 변경과 관련된 action Types
 const CHANGE_DATE = 'CHANGE_DATE';
 const CHANGE_TIME = 'CHANGE_TIME';
+// 검색 위치와 관련된 action Types
 
 export {
   FETCHING_LOCATION,

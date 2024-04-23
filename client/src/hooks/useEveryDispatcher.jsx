@@ -1,4 +1,4 @@
-import useDIspatchLocation from './useDispatchLocation';
+import useDispatchLocation from './useDispatchLocation';
 import useDispatchWeather from './useDIspatchWeather';
 import useDispatchStatus from './useDisptachStatus';
 import useDispatchWeatherText from './useDIspatchWeatherText';
@@ -8,7 +8,7 @@ import useDispatchTime from './useDIspatchTime';
 const useEveryDispatcher = () => {
   const dispatchWeather = useDispatchWeather();
   const dispatchWeatherText = useDispatchWeatherText();
-  const disptachLocation = useDIspatchLocation();
+  const disptachLocation = useDispatchLocation();
   const disptachStatus = useDispatchStatus();
   const dispatchAir = useDispatchAir();
   const dispatchAirText = useDispatchAirText();

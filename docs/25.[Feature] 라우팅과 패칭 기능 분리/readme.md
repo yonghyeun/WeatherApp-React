@@ -546,3 +546,203 @@ export default MenuPage;
 ```
 
 이후 `MenuPage` 에서 해당 훅을 호출해주면 `MenuPage` 가 처음 렌더링 될 때 로딩 중인 페이지가 렌더링 된 후 호출된다.
+
+![alt text](result.gif)
+
+### `menu1` 버튼을 클릭했을 때 발생하는 런타임 에러 해결하기
+
+![alt text](image-9.png)
+
+사이드바에 존재하는 `menu1` 버튼을 누르면 `/menu1` 경로로 라우팅 되도록 설계해놨었다.
+
+이 때 `/menu1` 페이지로 라우팅 된다면 런타임 에러가 발생한다.
+
+![alt text](image-10.png)
+
+해당 런타임 에러는 다음과 같은 이유로 발생한다.
+
+- 메뉴 페이지를 누를 때 `API state` 는 `OK` 인 상태이다.
+- `/menu` 경로로 라우팅 되어 `MenuPage` 컴포넌트가 호출된다.
+- `API state` 가 `OK` 인 상태에서 `MenuPage` 컴포넌트가 호출되어 전역 상태에서 `fetchedData ..` 들을 불러오려 하나 존재하지 않아 런타임 에러가 발생한다.
+
+#### 어떻게 해결할까 ?
+
+현재 변경된 로직의 플로우차트는 다음과 같다.
+
+![alt text](image-11.png)
+
+현재 문제가 발생하는 부분은 `fetchedData ..` 부분들이 전역 상태에 존재하지 않을 때 `/menu` 페이지로 리다이렉트 될 때 발생한다.
+
+우선 이 부분은 `MenuPage` 렌더링에 영향을 미치는 상태는 `APIstatus State` 인데
+
+`Apistatus State` 를 `Loading` 상태로 만드는 컴포넌트가 찾기 버튼 하나 뿐이라 이런 문제가 발생했다.
+
+`MenuPage` 가 로딩중이게 될 수 있는 상황은 장소를 입력하고 찾기 버튼을 누르는 경우 말고 다른 경우들도 존재한다.
+
+- 메인 페이지에서 `menu1` 버튼을 눌러 `/menu1?date..` 경로로 라우팅 된 경우 , 라우팅 이후 쿼리문을 이용해 데이터를 패칭해와야 한다.
+- 누군가가 공유한 `URL` 경로를 통해 처음 접속한 경우 해당 경로에 맞춰 데이터를 패칭해와야 한다.
+
+그러니 `MenuPage` 가 로딩중일 수 있는 상황은 **검색 버튼을 눌렸거나 , 이전에 검색되지 않은 `date , lat , lon` 쿼리문을 가진 `URL` 경로로 라우팅** 됐을 때 이다.
+
+해결하기 위한 스텝을 생각해보자
+
+#### 라우팅 되기 위한 `searchParams` 를 구하는 방법
+
+```jsx
+import React from 'react';
+
+import Sidebar from '../../@components/Composite/Sidebar/Sidebar';
+
+const SidebarLayout = () => {
+  return (
+    <Sidebar>
+      <Sidebar.Title />
+      <Sidebar.Nav>
+        <Sidebar.Ul>
+          <Sidebar.List to='/menu1' content='menu1' />
+          <Sidebar.List to='/menu2' content='menu2' />
+          <Sidebar.List to='/menu3' content='menu3' />
+        </Sidebar.Ul>
+      </Sidebar.Nav>
+    </Sidebar>
+  );
+};
+
+export default SidebarLayout;
+```
+
+![alt text](image-12.png)
+현재 해당 컴포넌트에서 `menu서` 버튼을 눌렀을 때 라우팅 될 `to = ...` 에
+
+할당 될 쿼리 파라미터를 넣어주도록 하자
+
+이를 통해 해당 버튼을 누르면 쿼리 파라미터를 갖는 위치로 라우팅 되도록 말이다.
+
+1. 우선 쿼리문으로 사용될 수 있는 `date , lat , lon` 을 런타임에 저장되는 메모리인 `Redux` 뿐이 아닌 `localStorage , sessionStorage` 에도 저장해주도록 하자
+2. `menu1` 버튼을 눌렀을 때 리다이렉트 시킬 경로에 사용 될 `search parameter` 를 반환하는 훅을 생성하자.
+   2.1 해당 훅에선 `date , lat , lon` 값을 반환한다.
+   2.2 이 때 반환되는 `date , lat , lon` 들은 다음과 같은 우선순위로 반환된다.
+   - `window.searchParams => redux => session => local => 기본 설정`
+     다음과 같은 우선순위를 갖는 이유는 다음과 같다.
+   - 만약 사용자가 `/menu1?date ..` 와 같은 경로로 최초 접근 했을 때엔 최초 접근 할 때 이용한 `searchParams` 를 우선적으로 하여 접근해야 한다.
+   - 만약 사용자가 브라우저를 이용하면서 검색을 하였다면 `redux` 내부에 `date , lat , lon` 값이 존재할테니 접근한다.
+   - 만약 사용자가 이용 중 새로고침 하여 런타임 메모리인 `redux` 내부엔 저장된 값이 존재하지 않을 때엔, 세션 메모리에서 값을 가져온다.
+   - 만약 사용자가 세션 메모리에도 값이 존재하지 않을 경우엔 `localStroage` 에 저장되어 있는 값을 가져온다.
+   - 만약 모든 저장소에도 데이터가 존재하지 않는다면 기본적으로 설정된 값을 파라미터로 이용한다.
+
+```jsx
+import {
+  FETCHING_AIR,
+  FETCHING_AIRTEXT,
+  FETCHING_LOCATION,
+  FETCHING_WEATHER,
+  FETCHING_WEATHERTEXT,
+} from '../actions/actionTypes';
+// TODO inital State localStorage 에서 가져오기
+
+import {
+  saveToSessionStorage,
+  getWeatherData,
+  getAirData,
+  getParsingWeatherText,
+  getParsingAirText,
+} from './utils';
+
+// TODO initalState 추가하기
+
+const inistalState = {
+  fetchedLocation: {
+    lat:
+      new URLSearchParams(window.location.search).get('lat') ||
+      sessionStorage.getItem('lat') ||
+      localStorage.getItem('lat') ||
+      '127.00060686405',
+    lon:
+      new URLSearchParams(window.location.search).get('lon') ||
+      sessionStorage.getItem('lon') ||
+      localStorage.getItem('lon') ||
+      '37.5868624440018',
+    // TODO addressName 도 따로 가져오도록 변경하기
+    addressName:
+      sessionStorage.getItem('addressName') ||
+      localStorage.getItem('addressName') ||
+      '서울특별시 종로구 혜화동',
+  },
+};
+
+const dataReducer = (state = inistalState, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case FETCHING_LOCATION:
+      const fetchedLocation = payload;
+      saveToSessionStorage(fetchedLocation);
+      console.log(fetchedLocation);
+      return { ...state, fetchedLocation };
+    case FETCHING_WEATHER:
+      const fetchedWeather = getWeatherData(payload);
+      return { ...state, fetchedWeather };
+    case FETCHING_WEATHERTEXT:
+      const fetchedWeatherText = getParsingWeatherText(payload);
+      return { ...state, fetchedWeatherText };
+    case FETCHING_AIR:
+      const fetchedAir = getAirData(payload);
+      return { ...state, fetchedAir };
+    case FETCHING_AIRTEXT:
+      const fetchedAirText = getParsingAirText(payload);
+      return { ...state, fetchedAirText };
+    default:
+      return state;
+  }
+};
+
+export default dataReducer;
+```
+
+우선 `dataReducer` 에서 `initalState` 에서 초기값을 정해주었다.
+
+이를 통해 새로고침 되더라도 `Redux` 에는 쿼리파라미터 , 세션 스토리지, 로컬 스토리지 , 기본값을 우선으로 하여 `store` 가 생성된다.
+
+이후 쿼리 파라미터로 사용될 `lat , lon` 값도 `Redux` 에서 관리 될 수 있도록
+
+이전엔 `adreeName` 만 `Redux` 에서 저장했다면 `lat , lon` 도 `Redux` 에 저장 될 수 있도록 하게 한다.
+
+이렇게 `Redux` 내부에서 `date,  lat , lon` 모두 관리하고 있기 때문에
+
+해당 경로로 라우팅 시키는 버튼의 라우팅 경로를 `/menu1` 이 아닌
+
+쿼리파라미터를 조합해 작성해주자
+
+```jsx
+import React from 'react';
+import useLocation from '../../hooks/useLocation';
+import useTimeState from '../../hooks/useTimeState';
+import Sidebar from '../../@components/Composite/Sidebar/Sidebar';
+
+const SidebarLayout = () => {
+  const { lat, lon } = useLocation();
+  const { date } = useTimeState();
+  return (
+    <Sidebar>
+      <Sidebar.Title />
+      <Sidebar.Nav>
+        <Sidebar.Ul>
+          <Sidebar.List
+            to={`/menu1?date=${date}&lat=${lat}&lon=${lon}`}
+            content='기상예보'
+          />
+          <Sidebar.List to='/menu2' content='menu2' />
+          <Sidebar.List to='/menu3' content='menu3' />
+        </Sidebar.Ul>
+      </Sidebar.Nav>
+    </Sidebar>
+  );
+};
+
+export default SidebarLayout;
+```
+
+![alt text](result2.gif)
+
+이를 통해 메인페이지에서 기상 예보칸을 클릭하더라도 런타임 오류 없이
+
+이전에 검색했던 정보 혹은 내가 지정해둔 서울특별시 종로구 혜화동의 기상예보가 나오는 모습을 볼 수 있다.

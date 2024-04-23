@@ -1,5 +1,11 @@
 import { weatherKeyMap, weatherValueMap } from '../../@constants/Codemap';
 
+const saveToSessionStorage = ({ addressName, lat, lon }) => {
+  sessionStorage.setItem('addressName', addressName);
+  sessionStorage.setItem('lat', lat);
+  sessionStorage.setItem('lon', lon);
+};
+
 const getWeatherData = (json) => {
   const rawData = json.response.body.items.item;
   const result = {};
@@ -100,6 +106,7 @@ const getTime = (timeString) => {
 };
 
 export {
+  saveToSessionStorage,
   getWeatherData,
   getAirData,
   getParsingWeatherText,

@@ -33,8 +33,7 @@ const useHandleClick = () => {
 
       searchParams.set('lat', lat);
       searchParams.set('lon', lon);
-
-      disptachLocation(addressName);
+      disptachLocation({ addressName, lat, lon });
     } catch (e) {
       disptachStatus(e.message);
       console.error(e);
