@@ -51,7 +51,6 @@ const useFetchingWeatherAir = () => {
         disptachStatus('OK');
       }
     };
-    console.log(lat, lon);
     fetchingWeatherAir();
   }, [lat, lon]);
 };

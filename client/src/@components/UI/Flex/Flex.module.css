@@ -4,8 +4,6 @@
   position: relative;
   padding: 8px;
   gap: 16px;
-  /* TODO border 지우기 */
-  border: 1px solid white;
 }
 
 .flexColumn {
@@ -14,6 +12,4 @@
   position: relative;
   padding: 8px;
   gap: 16px;
-  /* TODO border 지우기 */
-  border: 1px solid white;
 }

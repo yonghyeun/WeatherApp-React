@@ -2,3 +2,9 @@
   width: 85%;
   height: 100%;
 }
+
+.Content.dark {
+  border: 5px solid white;
+  width: 85%;
+  height: 100%;
+}

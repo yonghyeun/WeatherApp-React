@@ -1,6 +1,7 @@
 .sideBar {
   width: 15%;
   height: 100%;
+  position: relative;
 }
 
 .sidebarTitle {

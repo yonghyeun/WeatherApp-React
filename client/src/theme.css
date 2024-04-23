@@ -1,15 +1,11 @@
 .dark {
-  background-color: #1e1e1e;
-  border: 1px solid #555;
+  background-color: #252526;
   color: white;
-  box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
 }
 
 .light {
-  background-color: #fafafa;
-  border: 1px solid black;
+  background-color: #e5e5e5;
   color: black;
-  box-shadow: 5px 5px 5px gray;
 }
 
 /* TODO .dark-title 이나 light-title 과 같은 세부적인 스타일링 정하기  */

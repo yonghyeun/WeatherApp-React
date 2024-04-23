@@ -23,12 +23,12 @@ const inistalState = {
       new URLSearchParams(window.location.search).get('lat') ||
       sessionStorage.getItem('lat') ||
       localStorage.getItem('lat') ||
-      '127.00060686405',
+      '37.5868624440018',
     lon:
       new URLSearchParams(window.location.search).get('lon') ||
       sessionStorage.getItem('lon') ||
       localStorage.getItem('lon') ||
-      '37.5868624440018',
+      '127.00060686405',
     // TODO addressName 도 따로 가져오도록 변경하기
     addressName:
       sessionStorage.getItem('addressName') ||
