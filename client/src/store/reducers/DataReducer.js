@@ -17,12 +17,18 @@ import {
 
 // TODO initalState 추가하기
 
+const searchParams = new URLSearchParams(window.location.search);
+const searchLat = searchParams.get('lat');
+const searchLon = searchParams.get('lon');
+
 const initalLocation = {
   lat:
+    Number(searchLat) ||
     sessionStorage.getItem('lat') ||
     localStorage.getItem('lat') ||
     '37.5868624440018',
   lon:
+    Number(searchLon) ||
     sessionStorage.getItem('lon') ||
     localStorage.getItem('lon') ||
     '127.00060686405',
@@ -42,7 +48,6 @@ const dataReducer = (state = inistalState, action) => {
     case FETCHING_LOCATION:
       const fetchedLocation = payload;
       saveToSessionStorage(fetchedLocation);
-      console.log(fetchedLocation);
       return { ...state, fetchedLocation };
     case FETCHING_WEATHER:
       const fetchedWeather = getWeatherData(payload);

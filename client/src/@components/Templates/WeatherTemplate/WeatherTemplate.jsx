@@ -11,7 +11,7 @@ const WeatherTemplate = () => {
   // TODO section 에 style module 추가하기
   return (
     <section className={moduleStyle.template}>
-      <FlexRow flexRatio={[0.8, 0.2]}>
+      <FlexRow flexRatio={[0.75, 0.2]} justifyContent='space-between'>
         <WeatherMainCard />
         <FlexColumn justifyContent='space-between' padding='0px'>
           {toDateArr.map((toDate) => (

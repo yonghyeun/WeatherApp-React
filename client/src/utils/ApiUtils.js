@@ -1,4 +1,3 @@
-import { MdContentPasteOff } from 'react-icons/md';
 import {
   initalKaKaoAPI,
   KaKaoAPI,
@@ -84,8 +83,6 @@ const fetchLocationFromString = async (locationString) => {
 const fetchForecastFromLocation = async (lat, lon) => {
   const { APIKEY, URI } = weatherForecastAPI;
   const { nx, ny } = getNxNyFromLatLong(lat, lon);
-  console.log(lat, lon);
-  console.log(nx, ny);
   const { baseDate, baseTime } = getCurrentTime();
   const searchParams = new URLSearchParams([
     ['serviceKey', APIKEY],

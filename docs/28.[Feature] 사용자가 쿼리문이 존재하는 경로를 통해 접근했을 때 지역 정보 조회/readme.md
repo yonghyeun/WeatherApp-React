@@ -139,3 +139,40 @@ const SearchForm = ({ children }) => {
 `lat , lon` 값으로 한 번 패칭을 먼저 보내고
 
 그 이후 `p_lat , p_lon` 값으로 패칭을 한 번 더 보낸다는 것이다.
+
+---
+
+해결됐다.
+
+우선 처음 들어올 때 `initalstate` 의 `lat , lon` 의 값을 `query parameter` 에서 우선적으로 가져오도록 하였다.
+
+```jsx
+const searchParams = new URLSearchParams(window.location.search);
+const searchLat = searchParams.get('lat');
+const searchLon = searchParams.get('lon');
+
+const initalLocation = {
+  lat:
+    Number(searchLat) ||
+    sessionStorage.getItem('lat') ||
+    localStorage.getItem('lat') ||
+    '37.5868624440018',
+  lon:
+    Number(searchLon) ||
+    sessionStorage.getItem('lon') ||
+    localStorage.getItem('lon') ||
+    '127.00060686405',
+  addressName:
+    sessionStorage.getItem('addressName') ||
+    localStorage.getItem('addressName') ||
+    '서울특별시 종로구 혜화동',
+};
+```
+
+이 때 `Redux` 에 저장되는 `lat , lon` 의 타입은 `Number` 타입이기 때문에 `Number` 로 맵핑하여 해주었다.
+
+이를 통해 `lat , lon` 이 입력된 쿼리문으로 직접 들어올 때에도 `FETCH_LOCATION` 액션이 먼저 시행 된 후
+
+날씨 정보를 패칭해올 수 있게 되었다.
+
+![alt text](image-2.png)
