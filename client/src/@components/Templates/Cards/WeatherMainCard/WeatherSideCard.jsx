@@ -37,12 +37,12 @@ const WeatherSideCard = ({ toDate, time = '0900' }) => {
       <Card onClick={dispatchDate}>
         <FlexRow justifyContent='center' alignItems='center'>
           <FlexColumn>
-            <Typography.SubTitle>
-              {month}.{day}
-            </Typography.SubTitle>
             <Typography.MainText>
-              {maxTemperature}/{minTemperature}
+              {month}.{day}
             </Typography.MainText>
+            <Typography.SubText>
+              {maxTemperature}/{minTemperature}
+            </Typography.SubText>
           </FlexColumn>
           <Card.WeatherIcon
             date={toDate}

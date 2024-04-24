@@ -10,9 +10,8 @@ const AirTemplate = () => {
   return (
     <section>
       <FlexRow>
-        <FlexColumn width='100%' padding='8px 16px'>
-          {/* TODO DateTitle 말고 currentTime 쓰기 */}
-          <FlexRow justifyContent='space-between'>
+        <FlexColumn width='100%' padding='0px'>
+          <FlexRow justifyContent='space-around'>
             {airKeyArr.map((name) => (
               <AirInfoCard name={name} key={name} />
             ))}

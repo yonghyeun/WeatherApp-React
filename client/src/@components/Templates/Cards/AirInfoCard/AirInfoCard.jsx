@@ -35,8 +35,8 @@ const AirInfoCard = ({ name }) => {
   return (
     <Card>
       <FlexColumn alignItems='center'>
-        <Typography.SubTitle>{airNameMap[name]}</Typography.SubTitle>
-        <Typography.MainTitle>{gradeMap[grade]}</Typography.MainTitle>
+        <Typography.MainText>{airNameMap[name]}</Typography.MainText>
+        <Typography.SubText>{gradeMap[grade]}</Typography.SubText>
         <Typography.SubText>
           {value}/{unit}
         </Typography.SubText>

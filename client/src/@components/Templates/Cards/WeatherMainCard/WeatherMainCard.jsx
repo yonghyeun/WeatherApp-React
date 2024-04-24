@@ -17,15 +17,15 @@ const WeatherMainCard = (props) => {
     <Card {...props}>
       {/* Main Card 영역 */}
       <FlexColumn flexRatio={[0.5, 0.5]}>
-        <FlexRow flexRatio={[0.8, 0.2]}>
-          <FlexColumn>
+        <FlexRow flexRatio={[0.3, 0.8]}>
+          <FlexRow>
+            <Card.WeatherIcon date={date} time={time} />
+          </FlexRow>
+          <FlexColumn justifyContent='space-between'>
             <Card.LocationTitle />
             <Card.DateTitle />
             <Card.ChangeBar />
           </FlexColumn>
-          <FlexRow>
-            <Card.WeatherIcon date={date} time={time} />
-          </FlexRow>
         </FlexRow>
         <FlexRow justifyContent='space-between'>
           {InfoNames.map((infoName) => (

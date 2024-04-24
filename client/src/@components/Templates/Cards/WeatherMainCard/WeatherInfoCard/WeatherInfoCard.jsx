@@ -31,13 +31,13 @@ const WeatherInfoCard = ({ infoName }) => {
     <Card>
       <FlexColumn>
         <FlexRow justifyContent='center' alignItems='center'>
-          <Typography.SubTitle>{infoIcon}</Typography.SubTitle>
-          <Typography.MainText>{infoTitle}</Typography.MainText>
+          <Typography.MainText>{infoIcon}</Typography.MainText>
+          <Typography.SubText>{infoTitle}</Typography.SubText>
         </FlexRow>
         <FlexRow justifyContent='center'>
-          <Typography.SubTitle>
+          <Typography.MainText>
             {value} {unit}
-          </Typography.SubTitle>
+          </Typography.MainText>
         </FlexRow>
       </FlexColumn>
     </Card>
