@@ -24,6 +24,10 @@ Typography.SubText = ({ children }) => {
   return <p className={moduleStyle.subText}>{children}</p>;
 };
 
+Typography.TinyText = ({ children }) => {
+  return <p>{children}</p>;
+};
+
 Typography.Label = ({ children }) => {
   return <p className={moduleStyle.label}>{children}</p>;
 };

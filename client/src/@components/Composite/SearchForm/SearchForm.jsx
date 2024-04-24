@@ -9,7 +9,10 @@ import moduleCss from './SearchForm.module.css';
 import useSearchRef from '../../../hooks/useSearchRef';
 import useAPIStatus from '../../../hooks/useAPIStatus';
 import useHandleClick from '../../../hooks/useHandleClick';
+import useUpdateInitalLocation from '../../../hooks/useUpdateInitalLocation';
+
 const SearchForm = ({ children }) => {
+  useUpdateInitalLocation();
   return <Form className={moduleCss.searchForm}>{children}</Form>;
 };
 

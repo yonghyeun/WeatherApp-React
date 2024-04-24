@@ -15,7 +15,8 @@ import delay from '../utils/delay';
 const DELAY_TIME = 1000;
 
 const useFetchingWeatherAir = () => {
-  const { lat, lon } = useLocation();
+  const { lat, lon } = useLocation(); // 만약 현재 searchParams 하고 다르다면 변경 할 예정
+
   const navigate = useNavigate();
   const {
     dispatchWeather,
@@ -24,6 +25,7 @@ const useFetchingWeatherAir = () => {
     dispatchAir,
     dispatchAirText,
   } = useEveryDispatcher();
+
   useEffect(() => {
     const fetchingWeatherAir = async () => {
       try {

@@ -1,7 +1,7 @@
 import { FlexRow, FlexColumn } from '../../UI/Flex/Flex';
 import AirInfoCard from '../Cards/AirInfoCard/AirInfoCard';
 import { getCurrentTime } from '../../../utils/DateUtils';
-
+import Typography from '../../Composite/Typography/Typography';
 const airKeyArr = ['pm10', 'pm25', 'o3', 'co', 'no2', 'so2'];
 
 const AirTemplate = () => {
@@ -18,9 +18,9 @@ const AirTemplate = () => {
             ))}
           </FlexRow>
           <FlexRow justifyContent='flex-end'>
-            <p>
+            <Typography.TinyText>
               {stringDate} {stringTime} 기준
-            </p>
+            </Typography.TinyText>
           </FlexRow>
         </FlexColumn>
       </FlexRow>

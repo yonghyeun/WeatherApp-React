@@ -1,4 +1,4 @@
-import { weatherKeyMap, weatherValueMap } from '../../@constants/Codemap';
+import { weatherKeyMap, weatherValueMap } from '../../../@constants/Codemap';
 
 const saveToSessionStorage = ({ addressName, lat, lon }) => {
   sessionStorage.setItem('addressName', addressName);

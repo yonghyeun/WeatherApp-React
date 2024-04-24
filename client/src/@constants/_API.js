@@ -1,3 +1,8 @@
+const initalKaKaoAPI = {
+  APIKEY: 'KakaoAK b89de562613b2476f8c5d7ee7742d257',
+  URI: 'https://dapi.kakao.com/v2/local/geo/coord2regioncode.JSON',
+};
+
 const KaKaoAPI = {
   APIKEY: 'KakaoAK b89de562613b2476f8c5d7ee7742d257',
   URI: 'https://dapi.kakao.com/v2/local/search/address.JSON',
@@ -35,6 +40,7 @@ const airTextAPI = {
 };
 
 export {
+  initalKaKaoAPI,
   KaKaoAPI,
   weatherForecastAPI,
   weatherTextAPI,

@@ -1,4 +1,6 @@
+import { MdContentPasteOff } from 'react-icons/md';
 import {
+  initalKaKaoAPI,
   KaKaoAPI,
   weatherForecastAPI,
   weatherTextAPI,
@@ -13,6 +15,31 @@ import {
   getTMCoord,
 } from './CoordinateUtils';
 import { getCurrentTime } from './DateUtils';
+
+/**
+ * 해당 함수는 urlSearchParams로 적힌 lat , lon 쿼리 파라미터가
+ * Redux initalState 로 저장된 lat , lon 과 값이 다를 때 호출되는 함수
+ */
+const fetchLocationFromCoord = async (p_lat, p_lon) => {
+  try {
+    const { APIKEY, URI } = initalKaKaoAPI;
+    const ENDPOINT = `${URI}?x=${p_lon}&y=${p_lat}`;
+    const response = await fetch(ENDPOINT, {
+      headers: { Authorization: APIKEY },
+    });
+
+    if (!response.ok) {
+      throw new Error('카카오 API 네트워크가 불안정합니다. 다시 시도해주세요');
+    }
+    const json = await response.json();
+    const addressObject = json.documents[0];
+    const addressName = addressObject['address_name'];
+    const { x: lon, y: lat } = addressObject;
+    return { addressName, lat, lon };
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 /**
  * 함수는 문자열로 이뤄진 문자열을 받아 카카오 API를 이용해 위치 정보가 담긴 객체를 반환하는 함수
@@ -57,6 +84,8 @@ const fetchLocationFromString = async (locationString) => {
 const fetchForecastFromLocation = async (lat, lon) => {
   const { APIKEY, URI } = weatherForecastAPI;
   const { nx, ny } = getNxNyFromLatLong(lat, lon);
+  console.log(lat, lon);
+  console.log(nx, ny);
   const { baseDate, baseTime } = getCurrentTime();
   const searchParams = new URLSearchParams([
     ['serviceKey', APIKEY],
@@ -168,6 +197,7 @@ const fetchAirTextO3 = async () => {
 };
 
 export {
+  fetchLocationFromCoord,
   fetchLocationFromString,
   fetchForecastFromLocation,
   fetchForecastText,

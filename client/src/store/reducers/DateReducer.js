@@ -1,5 +1,5 @@
 import { CHANGE_DATE, CHANGE_TIME } from '../actions/actionTypes';
-import { getTime } from './utils';
+import { getTime } from './utils/utils';
 import { getCurrentTime } from '../../utils/DateUtils';
 
 const { fullDate, time } = getCurrentTime();
