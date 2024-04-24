@@ -6,7 +6,6 @@ import ChangeBar from './UI/ChangeBar/ChangeBar';
 import WeatherIcon from './UI/WeatherIcon/WeatherIcon';
 import useTheme from '../../../hooks/useTheme';
 const Card = ({ children, onClick, ...props }) => {
-  // TODO 테마 넣어줘야 하나 ?
   if (!children)
     throw new Error('카드 컴포넌트는 하위 컴포넌트 없이 사용 될 수 없습니다.');
 
