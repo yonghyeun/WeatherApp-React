@@ -24,7 +24,6 @@ const useFetchingWeatherAir = () => {
     dispatchAir,
     dispatchAirText,
   } = useEveryDispatcher();
-
   useEffect(() => {
     // ! TODO useEffect 가 두번씩 호출되는 이유가 뭘까 ?
     // ! 의존성 배열은 잘 들어가있는 것 같은데

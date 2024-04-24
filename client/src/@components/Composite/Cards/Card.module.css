@@ -17,3 +17,13 @@
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
   padding: 8px;
 }
+
+.cardDark:hover {
+  transition: 500ms;
+  scale: 1.01;
+}
+
+.cardLight:hover {
+  transition: 500ms;
+  scale: 1.005;
+}

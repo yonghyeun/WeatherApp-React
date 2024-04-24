@@ -15,8 +15,6 @@ const SidebarLayout = () => {
             to={`/menu1?date=${date}&lat=${lat}&lon=${lon}`}
             content='기상예보'
           />
-          <Sidebar.List to='/menu2' content='menu2' />
-          <Sidebar.List to='/menu3' content='menu3' />
         </Sidebar.Ul>
       </Sidebar.Nav>
     </Sidebar>
