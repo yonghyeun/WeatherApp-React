@@ -25,17 +25,23 @@ const useFetchingWeatherAir = () => {
     dispatchAirText,
   } = useEveryDispatcher();
   useEffect(() => {
-    // ! TODO useEffect 가 두번씩 호출되는 이유가 뭘까 ?
-    // ! 의존성 배열은 잘 들어가있는 것 같은데
     const fetchingWeatherAir = async () => {
       try {
-        const forecastWeather = await fetchForecastFromLocation(lat, lon);
-        const forecastWeatherText = await fetchForecastText(lat, lon);
-
         const stationName = await fetchNearstStationName(lat, lon);
-        const forecastAir = await fetchAirData(stationName);
-        const airPMText = await fetchAirTextPM();
-        const airO3Text = await fetchAirTextO3();
+
+        const [
+          forecastWeather,
+          forecastWeatherText,
+          forecastAir,
+          airPMText,
+          airO3Text,
+        ] = await Promise.all([
+          fetchForecastFromLocation(lat, lon),
+          fetchForecastText(lat, lon),
+          fetchAirData(stationName),
+          fetchAirTextPM(),
+          fetchAirTextO3(),
+        ]);
 
         dispatchWeather(forecastWeather);
         dispatchWeatherText(forecastWeatherText);
