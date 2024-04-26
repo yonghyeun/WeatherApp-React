@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/weatherApp/static/css/main.fc59a7ac.css",
-    "main.js": "/weatherApp/static/js/main.12e837cc.js",
-    "static/media/day_cloudy.png": "/weatherApp/static/media/day_cloudy.94bb00500e4bee42d34c.png",
-    "static/media/day_sunny_cloudy.png": "/weatherApp/static/media/day_sunny_cloudy.94bb00500e4bee42d34c.png",
-    "static/media/night_snow.png": "/weatherApp/static/media/night_snow.f367e1899cdaa233d517.png",
-    "static/media/night_rainy_snow.png": "/weatherApp/static/media/night_rainy_snow.0c639d6152bdba16f49a.png",
-    "static/media/day_rainy.png": "/weatherApp/static/media/day_rainy.41ca21b0c42bc77784b8.png",
-    "static/media/night_rainy.png": "/weatherApp/static/media/night_rainy.45195bcf1b5970600e1a.png",
-    "static/media/night_cloudy.png": "/weatherApp/static/media/night_cloudy.6fcd455b10b43edf14b6.png",
-    "static/media/night_sunny_cloudy.png": "/weatherApp/static/media/night_sunny_cloudy.6fcd455b10b43edf14b6.png",
-    "static/media/day_rainy_snow.png": "/weatherApp/static/media/day_rainy_snow.ae986a023ad5428bbf1d.png",
-    "static/media/day_snow.png": "/weatherApp/static/media/day_snow.9183a0c4542f2b943cb4.png",
-    "static/media/night_sunny.png": "/weatherApp/static/media/night_sunny.4627f65bc1573c486f1e.png",
-    "static/media/day_sunny.png": "/weatherApp/static/media/day_sunny.9668469af8b7c947556e.png",
-    "index.html": "/weatherApp/index.html",
-    "main.fc59a7ac.css.map": "/weatherApp/static/css/main.fc59a7ac.css.map",
-    "main.12e837cc.js.map": "/weatherApp/static/js/main.12e837cc.js.map"
+    "main.css": "/WeatherApp-React/static/css/main.fc59a7ac.css",
+    "main.js": "/WeatherApp-React/static/js/main.ec1ab7f4.js",
+    "static/media/day_cloudy.png": "/WeatherApp-React/static/media/day_cloudy.94bb00500e4bee42d34c.png",
+    "static/media/day_sunny_cloudy.png": "/WeatherApp-React/static/media/day_sunny_cloudy.94bb00500e4bee42d34c.png",
+    "static/media/night_snow.png": "/WeatherApp-React/static/media/night_snow.f367e1899cdaa233d517.png",
+    "static/media/night_rainy_snow.png": "/WeatherApp-React/static/media/night_rainy_snow.0c639d6152bdba16f49a.png",
+    "static/media/day_rainy.png": "/WeatherApp-React/static/media/day_rainy.41ca21b0c42bc77784b8.png",
+    "static/media/night_rainy.png": "/WeatherApp-React/static/media/night_rainy.45195bcf1b5970600e1a.png",
+    "static/media/night_cloudy.png": "/WeatherApp-React/static/media/night_cloudy.6fcd455b10b43edf14b6.png",
+    "static/media/night_sunny_cloudy.png": "/WeatherApp-React/static/media/night_sunny_cloudy.6fcd455b10b43edf14b6.png",
+    "static/media/day_rainy_snow.png": "/WeatherApp-React/static/media/day_rainy_snow.ae986a023ad5428bbf1d.png",
+    "static/media/day_snow.png": "/WeatherApp-React/static/media/day_snow.9183a0c4542f2b943cb4.png",
+    "static/media/night_sunny.png": "/WeatherApp-React/static/media/night_sunny.4627f65bc1573c486f1e.png",
+    "static/media/day_sunny.png": "/WeatherApp-React/static/media/day_sunny.9668469af8b7c947556e.png",
+    "index.html": "/WeatherApp-React/index.html",
+    "main.fc59a7ac.css.map": "/WeatherApp-React/static/css/main.fc59a7ac.css.map",
+    "main.ec1ab7f4.js.map": "/WeatherApp-React/static/js/main.ec1ab7f4.js.map"
   },
   "entrypoints": [
     "static/css/main.fc59a7ac.css",
-    "static/js/main.12e837cc.js"
+    "static/js/main.ec1ab7f4.js"
   ]
 }
