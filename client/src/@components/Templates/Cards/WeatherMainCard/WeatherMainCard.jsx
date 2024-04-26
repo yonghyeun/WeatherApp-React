@@ -2,7 +2,6 @@ import { FlexRow, FlexColumn } from '../../../UI/Flex/Flex';
 import Card from '../../../Composite/Cards/Card';
 import WeatherInfoCard from './WeatherInfoCard/WeatherInfoCard';
 import useTimeState from '../../../../hooks/useTimeState';
-import Typography from '../../../Composite/Typography/Typography';
 const InfoNames = [
   'temperature',
   'humidity',

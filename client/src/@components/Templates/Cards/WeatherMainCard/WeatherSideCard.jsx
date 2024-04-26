@@ -30,11 +30,11 @@ const WeatherSideCard = ({ toDate, time = '0900' }) => {
           <Typography.MainText>
             {month}.{day}
           </Typography.MainText>
-          <Typography.SubText>
+          <span>
             <p style={{ ...minTempStyle }}>{minTemperature}</p>
             <p style={{ display: 'inline' }}> / </p>
             <p style={{ ...maxTempStyle }}>{maxTemperature}</p>
-          </Typography.SubText>
+          </span>
         </FlexColumn>
         <Card.WeatherIcon date={toDate} time={time} width='40%' height='60%' />
       </FlexRow>
