@@ -1,3 +1,56 @@
-.changeBar {
-  width: 500px;
+.sliderContainer {
+  position: relative;
+  width: 100%;
+}
+.ChangeBar {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  outline: none;
+  background: linear-gradient(
+    to right,
+    #a9d6e5 0%,
+    /* Light Blue (Morning) */ #a9d6e5 25%,
+    /* Transition to Day at 6 AM */ #fcbf49 25%,
+    /* Start Day */ #fcbf49 75%,
+    /* End Day at 6 PM */ #14213d 75%,
+    /* Start Night */ #14213d 100% /* Back to Early Morning */
+  );
+  border-radius: 5px; /* Optional: adds rounded corners */
+}
+
+/* Make sure to style the thumb to be visible on both light and dark portions */
+.ChangeBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #ffffff; /* White thumb to stand out */
+  border: 1px solid #bbbbbb; /* Optional: adds a border around the thumb */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.ChangeBar::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border: 1px solid #bbbbbb;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.tickMarks {
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none; /* Prevents interference with slider operation */
+}
+
+.tickMarks span {
+  position: absolute;
+  transform: translateX(-50%); /* Centers the labels correctly */
+  text-align: center;
 }

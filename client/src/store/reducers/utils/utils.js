@@ -39,10 +39,10 @@ const getWeatherData = (json) => {
             weatherValueMap[newCategory][fcstValue];
           break;
         case 'minTemperature':
-          result[fcstDate]['minTemperature'] = fcstValue;
+          result[fcstDate]['minTemperature'] = Math.floor(fcstValue);
           break;
         case 'maxTemperature':
-          result[fcstDate]['maxTemperature'] = fcstValue;
+          result[fcstDate]['maxTemperature'] = Math.floor(fcstValue);
           break;
         default:
           result[fcstDate][fcstTime][newCategory] = fcstValue;

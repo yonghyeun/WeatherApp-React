@@ -1,14 +1,14 @@
 import moduleCss from './Sidebar.module.css';
-import Title from '../../UI/Title/Title';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { BsBrightnessAltLow } from 'react-icons/bs';
+import Typography from '../Typography/Typography';
 
-const SidebarTitle = ({ className }) => {
+const SidebarTitle = () => {
   return (
-    <Title className={className || moduleCss.sidebarTitle}>
+    <Typography.MainTitle className={moduleCss.sidebarTitle}>
       <BsBrightnessAltLow />
-      <Link to='/'>오늘날씨</Link>
-    </Title>
+      <NavLink to='/'>오늘날씨</NavLink>
+    </Typography.MainTitle>
   );
 };
 

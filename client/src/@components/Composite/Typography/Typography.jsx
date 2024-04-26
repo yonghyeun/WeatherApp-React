@@ -8,16 +8,28 @@ const Typography = ({ children }) => {
   return <span>{children}</span>;
 };
 
-Typography.MainTitle = ({ children }) => {
-  return <h1 className={moduleStyle.mainTitle}>{children}</h1>;
+Typography.MainTitle = ({ children, className, ...props }) => {
+  return (
+    <h1 style={{ ...props }} className={className || moduleStyle.mainTitle}>
+      {children}
+    </h1>
+  );
 };
 
-Typography.SubTitle = ({ children }) => {
-  return <h2 className={moduleStyle.subTitle}>{children}</h2>;
+Typography.SubTitle = ({ children, ...props }) => {
+  return (
+    <h2 style={{ ...props }} className={moduleStyle.subTitle}>
+      {children}
+    </h2>
+  );
 };
 
-Typography.MainText = ({ children }) => {
-  return <p className={moduleStyle.mainText}>{children}</p>;
+Typography.MainText = ({ children, ...props }) => {
+  return (
+    <p style={{ ...props }} className={moduleStyle.mainText}>
+      {children}
+    </p>
+  );
 };
 
 Typography.SubText = ({ children }) => {

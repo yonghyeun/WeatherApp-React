@@ -1,7 +1,15 @@
-.sideBar {
+.sideBarDark {
   width: 15%;
   height: 100%;
   position: relative;
+  background-color: #38383a;
+}
+
+.sideBarLight {
+  width: 15%;
+  height: 100%;
+  position: relative;
+  background-color: white;
 }
 
 .sidebarTitle {
@@ -10,19 +18,13 @@
   justify-content: center;
   align-items: center;
   font-size: 2vw;
+  font-weight: 800;
+  text-decoration: none;
+  color: #1b8ef2;
 }
 
 .sideBarTitle svg {
   margin-right: 0.5vw;
-}
-
-.sideBarTitle a {
-  text-decoration: none;
-}
-
-/* ? visited 과 관련된 속성은 외부 스타일에 남겨둬야 할까? */
-.sideBarTitle :visited {
-  color: black;
 }
 
 .sidebarList {
@@ -31,33 +33,44 @@
   justify-content: center;
   width: 100%;
   height: 8vh;
+  text-decoration: none;
+}
+
+.sidebarUl {
+  padding: 0px;
+  margin: 0px;
 }
 
 .notSelected {
-  text-decoration: none;
-  font-size: 1.5vw;
-  padding: 3% 20%;
-  /* border-radius: 10%; */
+  padding: 1rem;
   background-color: none;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5vw;
+  font-weight: 700;
+  color: #1b8ef2;
 }
 
 .notSelected:visited {
   color: inherit;
 }
 
-.selected {
-  text-decoration: none;
+.selectedDark {
+  background-color: #555555;
+  color: white;
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
   font-size: 1.5vw;
-  padding: 3% 20%;
-  /* border-radius: 10%; */
-  background-color: blue;
+  font-weight: 700;
 }
 
-.selected :visited {
-  color: inherit;
-}
-
-.sidebarUl {
-  padding: 0px;
-  margin: 0px;
+.selectedLight {
+  background-color: #1b8ef2;
+  color: white;
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5vw;
+  font-weight: 700;
 }

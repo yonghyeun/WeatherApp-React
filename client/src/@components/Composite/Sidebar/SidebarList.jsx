@@ -1,13 +1,18 @@
 import { NavLink } from 'react-router-dom';
 import moduleCss from './Sidebar.module.css';
+import useTheme from '../../../hooks/useTheme';
 
-const SidebarList = ({ to, content, className }) => {
+const SidebarList = ({ to, content }) => {
+  const theme = useTheme();
+  const className =
+    theme === 'dark' ? moduleCss.selectedDark : moduleCss.selectedLight;
+
   return (
-    <li key={content} className={className || moduleCss.sidebarList}>
+    <li key={content} className={moduleCss.sidebarList}>
       <NavLink
         to={to}
         className={({ isActive }) =>
-          isActive ? moduleCss.selected : moduleCss.notSelected
+          isActive ? className : moduleCss.notSelected
         }
       >
         {content}
@@ -15,5 +20,4 @@ const SidebarList = ({ to, content, className }) => {
     </li>
   );
 };
-
 export default SidebarList;

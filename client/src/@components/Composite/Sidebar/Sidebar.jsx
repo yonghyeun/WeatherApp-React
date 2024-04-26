@@ -6,11 +6,13 @@ import SidebarNav from './SidebarNav';
 import SidebarTitle from './SidebarTitle';
 import SidebarUl from './SidebarUl';
 
-const Sidebar = ({ children, className }) => {
+const Sidebar = ({ children }) => {
   const theme = useTheme();
+  const className =
+    theme === 'dark' ? moduleCss.sideBarDark : moduleCss.sideBarLight;
   if (!children) throw new Error('Sidebar 는 단독으로 사용 될 수 없어요');
   return (
-    <section className={className || `${moduleCss.sideBar} ${theme}`}>
+    <section className={className}>
       <div className={theme}></div>
       {children}
     </section>
